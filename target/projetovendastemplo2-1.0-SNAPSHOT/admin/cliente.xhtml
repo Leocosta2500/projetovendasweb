@@ -1,0 +1,332 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        <h:outputText value="Cliente"></h:outputText>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="frmList">
+            <h:panelGroup id="pngList">
+                <p:growl id="growl" showDetail="true" />
+                <p:fieldset toggleable="true">
+                    <p:dataTable id="datalist" value="#{clienteController.clienteAll()}" var="item"                                 
+                                 selectionMode="single" selection="#{clienteController.selected}"
+                                 widgetVar="datalistClienteWidgetVar"
+                                 rowKey="#{item.cod_cliente}"
+                                 paginator="true"
+                                 rows="5"
+                                 rowsPerPageTemplate="5,10,50,100"
+                                 emptyMessage="Nenhuma usario cadastrado..."
+                                 >
+
+                        <p:ajax event="rowSelect"   update="btnEdit btnDelete btnView"/>
+                        <p:ajax event="rowUnselect" update="btnEdit btnDelete btnView"/>
+
+
+                        <p:column width="4" sortBy="#{item.cod_cliente}" filterBy="#{item.cod_cliente}">
+                            <f:facet name="header">
+                                <h:outputText value="ID"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cod_cliente}"/> 
+                        </p:column> 
+
+
+                        <p:column width="4" sortBy="#{item.nome}" filterBy="#{item.nome}">
+                            <f:facet name="header">
+                                <h:outputText value="Nome"/>
+                            </f:facet>
+                            <h:outputText value="#{item.nome}"/> 
+                        </p:column> 
+
+                        <p:column width="6%" sortBy="#{item.dta_nasc}" filterBy="#{item.dta_nasc}">
+                            <f:facet name="header">
+                                <h:outputText value="Nascimento"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dta_nasc}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"  />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column width="4" sortBy="#{item.telefone}" filterBy="#{item.telefone}">
+                            <f:facet name="header">
+                                <h:outputText value="Telefone"/>
+                            </f:facet>
+                            <h:outputText value="#{item.telefone}"/> 
+                        </p:column> 
+
+                        <p:column width="8" sortBy="#{item.email}" filterBy="#{item.email}">
+                            <f:facet name="header">
+                                <h:outputText value="Email"/>
+                            </f:facet>
+                            <h:outputText value="#{item.email}"/> 
+                        </p:column> 
+
+                        <p:column width="4" sortBy="#{item.endereco}" filterBy="#{item.endereco}">
+                            <f:facet name="header">
+                                <h:outputText value="Endereco"/>
+                            </f:facet>
+                            <h:outputText value="#{item.endereco}"/> 
+                        </p:column> 
+
+                        <p:column width="4" sortBy="#{item.cidade}" filterBy="#{item.cidade}">
+                            <f:facet name="header">
+                                <h:outputText value="Cidade"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cidade}"/> 
+                        </p:column> 
+
+                        <p:column width="4" sortBy="#{item.complemento}" filterBy="#{item.complemento}">
+                            <f:facet name="header">
+                                <h:outputText value="Complemento"/>
+                            </f:facet>
+                            <h:outputText value="#{item.complemento}"/> 
+                        </p:column> 
+
+                        <p:column width="2" sortBy="#{item.uf}" filterBy="#{item.uf}">
+                            <f:facet name="header">
+                                <h:outputText value="UF"/>
+                            </f:facet>
+                            <h:outputText value="#{item.uf}"/> 
+                        </p:column> 
+
+
+
+                        <p:column width="4" sortBy="#{item.cep}" filterBy="#{item.cep}">
+                            <f:facet name="header">
+                                <h:outputText value="CEP"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cep}"/> 
+                        </p:column> 
+
+
+
+
+
+                        <f:facet name="footer">
+
+
+
+                            <!--Botão utilizado para abrir a modal de criação -->
+                            <p:commandButton id="btnCreate" value="Incluir Cliente"  icon="pi pi-file" 
+                                             actionListener="#{clienteController.prepareAdicionar()}"
+                                             update=":CreateForm"
+                                             oncomplete="PF('dlgCreate').show()"/>  
+
+
+
+
+
+                            <!--Botão utilizado para abrir a modal de edição -->
+                            <p:commandButton id="btnEdit" icon="pi pi-user-edit"  value="Editar Pessoa" 
+                                             update="formEdit" oncomplete="PF('dlgEdit').show()" 
+                                             disabled="#{empty clienteController.selected}"/>
+
+                            <!--Botão utilizado para excluir o registro selecionado-->                            
+                            <p:commandButton id="btnDelete" icon="pi pi-trash"  value="Excluir Cliente" 
+                                             actionListener="#{clienteController.deletarCliente()}" update="frmList" 
+                                             disabled="#{empty clienteController.selected}">
+                                <p:confirm header="Confirmar Exclusão" message="Você confirma exclusão do registro?" 
+                                           icon="ui-icon-alert"  />
+                            </p:commandButton>
+
+                            <!--Botão utilizado para abrir a modal de visualização -->
+                            <p:commandButton id="btnView" icon="pi pi-user-edit"  value="Detalhes da Pessoa" 
+                                             update="formView" oncomplete="PF('dlgView').show()" 
+                                             disabled="#{empty clienteController.selected}"/>
+
+                        </f:facet>
+
+                    </p:dataTable>
+                </p:fieldset>
+
+
+                <!--Diálogo para confirmação da exclusão -->
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+                </p:confirmDialog>
+
+
+
+            </h:panelGroup>
+        </h:form>
+
+
+        <!--Criar novo usuario -->
+
+
+
+        <p:dialog header="Novo Usuario" widgetVar="dlgCreate" height="400" width="600" showEffect="fade" modal="true">
+            <h:form id="CreateForm">
+                <p:growl id="growl" showDetail="true" />
+                <h:panelGrid columns="2">
+                    <p:outputLabel id="oplNome" value="Nome:" for="iptNome"/>
+                    <p:inputText id="iptNome" size="40" label="Nome" required="true" 
+                                 requiredMessage="O atributo nome é obrigatório"
+                                 value="#{clienteController.cliente.nome}" maxlength="50" />
+
+                    <p:outputLabel id="oplDataNascimento" for="ipmDataNascimento" value="Data de Nascimento"  />
+                    <p:inputMask id="ipmDataNascimento" value="#{clienteController.cliente.dta_nasc}" 
+                                 mask="99/99/9999" required="true" requiredMessage="O atributo data de nascimento é obrigatório">
+                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                    </p:inputMask>
+
+                    <p:outputLabel id="oplFone" value="Telefone:" for="iptFone" />
+                    <p:inputMask id="iptFone" mask="(99) 99999-9999" size="40" label="Fone" required="true" 
+                                 requiredMessage="O atributo telefone é obrigatório"
+                                 value="#{clienteController.cliente.telefone}" />
+
+                    <p:outputLabel id="oplEmail" value="Email:" for="iptEmail"/>
+                    <p:inputText id="iptEmail" size="40" label="Nome" required="true" 
+                                 requiredMessage="O atributo email é obrigatório" validatorMessage="Campo email é inválido"
+                                 value="#{clienteController.cliente.email}" maxlength="50" >
+                        <f:validateRegex pattern="[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})"  />
+                    </p:inputText>
+
+                    <p:outputLabel id="oplEndereco" value="Endereço:" for="iptEndereco"/>
+                    <p:inputText id="iptEndereco" size="40" label="Endereço" required="true" 
+                                 requiredMessage="O atributo Endereço é obrigatório"
+                                 value="#{clienteController.cliente.endereco}" maxlength="50" />  
+
+                    <p:outputLabel id="oplCidade" value="Cidade:" for="iptCidade"/>
+                    <p:inputText id="iptCidade" size="40" label="Cidade" required="true" 
+                                 requiredMessage="O atributo Cidade é obrigatório"
+                                 value="#{clienteController.cliente.cidade}" maxlength="50" />   
+
+                    <p:outputLabel id="oplCompl" value="Complemento:" for="iptCompl"/>
+                    <p:inputText id="iptCompl" size="40" label="Complemento" 
+                                 value="#{clienteController.cliente.complemento}" maxlength="50" />  
+
+                    <p:outputLabel id="oplUf" value="UF:" for="iptUf"/>
+                    <p:selectOneMenu id="iptUf" value="#{clienteController.cliente.uf}" required="true" requiredMessage="O atributo UF é obrigatório">
+                        <f:selectItem itemLabel="Selecione uma UF..." itemValue="" />
+                        <f:selectItems value="#{ufController.UFs}" />
+                    </p:selectOneMenu> 
+
+                    <p:outputLabel id="oplCep" value="CEP:" for="iptCep"/>
+                    <p:inputMask id="iptCep" mask="99999-999" size="40" label="CEP" required="true" 
+                                 requiredMessage="O atributo CEP é obrigatório"
+                                 value="#{clienteController.cliente.cep}" />
+                </h:panelGrid>
+
+
+                <p:commandButton id="btnCadastrar" value="Cadastrar" update=":frmList, CreateForm" icon="pi pi-save" 
+                                 action="#{clienteController.adicionarCliente()}" onclick="dlgCreate.hide()"/>
+
+            </h:form>
+        </p:dialog>
+
+        <!--Editar usuario -->             
+
+
+        <p:dialog widgetVar="dlgEdit" modal="true" resizable="false" appendTo="@(body)" header="Editar Cliente">
+            <h:form id="formEdit">
+                <p:growl id="growl" showDetail="true" />
+                <h:panelGrid id="pngEdicao" columns="2" rendered="#{clienteController.selected != null}">   
+                    <p:outputLabel id="oplId" value="ID:" for="iptId"/>
+                         <p:inputText id="iptId" size="10" label="Código Cliente" disabled="true"
+                                      value="#{clienteController.selected.cod_cliente}"  />
+
+                       <p:outputLabel id="oplNome" value="Nome:" for="iptNome"/>
+                  <p:inputText id="iptNome" size="40" label="Nome" required="true" 
+                               requiredMessage="O atributo nome é obrigatório"
+                               value="#{clienteController.selected.nome}" maxlength="50" />
+
+                  <p:outputLabel id="oplDataNascimento" for="ipmDataNascimento" value="Data de Nascimento"  />
+                  <p:inputMask id="ipmDataNascimento" value="#{clienteController.selected.dta_nasc}" 
+                               mask="99/99/9999" required="true" requiredMessage="O atributo data de nascimento é obrigatório">
+                      <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                  </p:inputMask>
+
+                  <p:outputLabel id="oplFone" value="Telefone:" for="iptFone" />
+                  <p:inputMask id="iptFone" mask="(99) 99999-9999" size="40" label="Fone" required="true" 
+                               requiredMessage="O atributo telefone é obrigatório"
+                               value="#{clienteController.selected.telefone}" />
+
+                  <p:outputLabel id="oplEmail" value="Email:" for="iptEmail"/>
+                  <p:inputText id="iptEmail" size="40" label="Nome" required="true" 
+                               requiredMessage="O atributo email é obrigatório" validatorMessage="Campo email é inválido"
+                               value="#{clienteController.selected.email}" maxlength="50" >
+                      <f:validateRegex pattern="[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})"  />
+                  </p:inputText>
+
+                  <p:outputLabel id="oplEndereco" value="Endereço:" for="iptEndereco"/>
+                  <p:inputText id="iptEndereco" size="40" label="Endereço" required="true" 
+                               requiredMessage="O atributo Endereço é obrigatório"
+                               value="#{clienteController.selected.endereco}" maxlength="50" />  
+
+                  <p:outputLabel id="oplCidade" value="Cidade:" for="iptCidade"/>
+                  <p:inputText id="iptCidade" size="40" label="Cidade" required="true" 
+                               requiredMessage="O atributo Cidade é obrigatório"
+                               value="#{clienteController.selected.cidade}" maxlength="50" />   
+
+                  <p:outputLabel id="oplCompl" value="Complemento:" for="iptCompl"/>
+                  <p:inputText id="iptCompl" size="40" label="Complemento" required="true" 
+                               value="#{clienteController.selected.complemento}" maxlength="50" />  
+
+                  <p:outputLabel id="oplUf" value="UF:" for="iptUf"/>
+                  <p:selectOneMenu id="iptUf" value="#{clienteController.selected.uf}" required="true" requiredMessage="O atributo UF é obrigatório">
+                      <f:selectItem itemLabel="Selecione uma UF..." itemValue="" />
+                      <f:selectItems value="#{ufController.UFs}" />
+                  </p:selectOneMenu> 
+
+                  <p:outputLabel id="oplCep" value="CEP:" for="iptCep"/>
+                  <p:inputMask id="iptCep" mask="99999-999" size="40" label="CEP" required="true" 
+                               requiredMessage="O atributo CEP é obrigatório"
+                               value="#{clienteController.selected.cep}" />
+              </h:panelGrid>
+                
+                <p:commandButton id="btnSalvarEdicao" value="Salvar" update="@form, :frmList" 
+                                 onclick="dlgEdit.hide()" icon="pi pi-save"
+                                 action="#{clienteController.editarCliente()}" />
+            </h:form>
+        </p:dialog>
+
+
+        <p:dialog header="Visualizar Detalhes da Pessoa" widgetVar="dlgView"  height="250" 
+                  width="500" showEffect="fade" modal="true">
+            <h:form id="formView">
+                    <h:panelGrid id="pngView" columns="2">   
+                         <p:outputLabel value="Codido Cliente" />
+                         <p:outputLabel value="#{clienteController.selected.cod_cliente}"  />
+
+                         <p:outputLabel value="Nome: " />
+                         <p:outputLabel value="#{clienteController.selected.nome}" />
+
+                         <p:outputLabel value="Data de Nascimento: "  />
+                         <p:outputLabel value="#{clienteController.selected.dta_nasc}" >
+                             <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                         </p:outputLabel>
+
+                         <p:outputLabel value="Telefone: "/>
+                         <p:outputLabel value="#{clienteController.selected.telefone}" />
+                         
+                         <p:outputLabel value="Email: " />                    
+                         <p:outputLabel value="#{clienteController.selected.email}" />
+                         
+                         <p:outputLabel value="Endereco: " />                    
+                         <p:outputLabel value="#{clienteController.selected.endereco}" />
+
+                         <p:outputLabel value="Cidade: " />                    
+                         <p:outputLabel value="#{clienteController.selected.cidade}" />
+
+                         <p:outputLabel value="Complemento: " />                    
+                         <p:outputLabel value="#{clienteController.selected.complemento}" />
+
+                         <p:outputLabel value="UF: " />                    
+                         <p:outputLabel value="#{clienteController.selected.uf}" />
+
+                         <p:outputLabel value="CEP: " />                    
+                         <p:outputLabel value="#{clienteController.selected.cep}" />
+
+                </h:panelGrid>   
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>

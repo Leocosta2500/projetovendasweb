@@ -1,0 +1,414 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        <h:outputText value="Venda"></h:outputText>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="frmList">            
+            <h:panelGroup id="pngList"> 
+                <p:growl id="growl" showDetail="true" />
+                <p:fieldset toggleable="true">
+                    <p:dataTable id="datalist" value="#{vendaController.vendaAll()}" var="item"   
+                                 selectionMode="single" selection="#{vendaController.selected}"
+                                 widgetVar="datalistVendaWidgetVar"
+                                 rowKey="#{item.num_cupom}"
+                                 paginator="true"
+                                 rows="5"
+                                 rowsPerPageTemplate="5,10,50,100"
+                                 emptyMessage="Nenhuma venda cadastrada..."
+                                 >
+                        <!--Ação AJAX para atualizar somente os botões definidos em update -->
+                        <!--quando selecionado ou não -->
+                        <p:ajax event="rowSelect"   update=" btnDelete btnView btnItensVenda"/>
+                        <p:ajax event="rowUnselect" update=" btnDelete btnView btnItensVenda"/>
+
+                        <p:column width="4%" sortBy="#{item.num_cupom}" filterBy="#{item.num_cupom}">
+                            <f:facet name="header">
+                                <h:outputText value="Num Cupom"/>
+                            </f:facet>
+                            <h:outputText value="#{item.num_cupom}"/>
+                        </p:column>
+
+                        <p:column width="4%" sortBy="#{item.vlr_total_vda}" filterBy="#{item.vlr_total_vda}">
+                            <f:facet name="header">
+                                <h:outputText value="Valor Total Venda"/>
+                            </f:facet>
+                            <h:outputText value="#{item.vlr_total_vda}">
+                                <f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR" minFractionDigits="2" maxFractionDigits="2"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column width="6%" sortBy="#{item.dta_hor_mov}" filterBy="#{item.dta_hor_mov}">
+                            <f:facet name="header">
+                                <h:outputText value="Dta Movimento"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dta_hor_mov}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column width="3%" sortBy="#{item.tip_venda}" filterBy="#{item.tip_venda}">
+                            <f:facet name="header">
+                                <h:outputText value="Tipo Venda"/>
+                            </f:facet>
+                            <h:outputText value="#{item.tip_venda}"/>
+                        </p:column>
+
+
+                        <p:column width="5%" sortBy="#{item.cod_operacao}" filterBy="#{item.cod_operacao}">
+                            <f:facet name="header">
+                                <h:outputText value="Operação"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cod_operacao}"/>
+                        </p:column>
+
+                        <p:column width="3%" sortBy="#{item.qtd_itens}" filterBy="#{item.qtd_itens}">
+                            <f:facet name="header">
+                                <h:outputText value="Qtd Itens"/>
+                            </f:facet>
+                            <h:outputText value="#{item.qtd_itens}"/>
+                        </p:column>
+
+
+                        <p:column width="3%" sortBy="#{item.des_uf_cli}" filterBy="#{item.des_uf_cli}">
+                            <f:facet name="header">
+                                <h:outputText value="UF Cliente"/>
+                            </f:facet>
+                            <h:outputText value="#{item.des_uf_cli}"/>
+                        </p:column>
+
+
+                        <p:column width="5%" sortBy="#{item.des_cliente}" filterBy="#{item.des_cliente}">
+                            <f:facet name="header">
+                                <h:outputText value="des cliente"/>
+                            </f:facet>
+                            <h:outputText value="#{item.des_cliente}"/>
+                        </p:column>
+
+                        <p:column width="5%" sortBy="#{item.cod_usuario.nome_user}" filterBy="#{item.cod_usuario.nome_user}">
+                            <f:facet name="header">
+                                <h:outputText value="Usuario"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cod_usuario.nome_user}"/>
+                        </p:column>
+
+
+                        <p:column width="5%" sortBy="#{item.cod_cliente.nome}" filterBy="#{item.cod_cliente.nome}">
+                            <f:facet name="header">
+                                <h:outputText value="Cliente"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cod_cliente.nome}"/>
+                        </p:column>                        
+
+
+
+                        <f:facet name="footer">
+                            <!--Botão utilizado para abrir a modal de criação -->
+                            <p:commandButton id="btnCreate" value="Incluir Venda"  icon="pi pi-file" 
+                                             actionListener="#{vendaController.prepareAdicionar()}"
+                                             update=":CreateForm"
+                                             onclick="PF('dlgCreate').show()"/>  
+
+
+
+                            <!--Botão utilizado para excluir o registro selecionado-->                            
+                            <p:commandButton id="btnDelete" icon="pi pi-trash"  value="Excluir Venda" 
+                                             actionListener="#{vendaController.deletarVenda()}" update="frmList" 
+                                             disabled="#{empty vendaController.selected}">
+                                <p:confirm header="Confirmar Exclusão" message="Você confirma exclusão do registro?" 
+                                           icon="ui-icon-alert"  />
+                            </p:commandButton>
+
+                            <!--Botão utilizado para abrir a modal de visualização -->
+                            <p:commandButton id="btnView" icon="pi pi-user-edit"  value="Detalhes da Venda" 
+                                             update="formView" oncomplete="PF('dlgView').show()" 
+                                             disabled="#{empty vendaController.selected}"/>
+
+
+                            <p:commandButton id="btnItensVenda" value="Itens da Venda" icon="pi pi-list"
+                                             actionListener="#{vendaController.prepareItensVenda()}"
+                                             update=":frmItensVenda"
+                                             oncomplete="PF('dlgItensVenda').show()"
+                                             disabled="#{empty vendaController.selected}"
+                                             style="margin-left: 5px;" />
+
+
+
+
+
+                        </f:facet>
+                    </p:dataTable>
+                </p:fieldset>
+                <!--Diálogo para confirmação da exclusão -->
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+                </p:confirmDialog>
+
+            </h:panelGroup>
+        </h:form>
+
+        <p:dialog header="Nova Venda" widgetVar="dlgCreate" height="450" width="600" showEffect="fade" modal="true">
+            <h:form id="CreateForm">
+                <p:growl id="growl" showDetail="true" />
+                <h:panelGrid id="pngCadastro" columns="2">  
+
+
+
+                    <p:outputLabel value="Usuário:" for="usuario" />
+                    <p:selectOneMenu id="usuario" value="#{vendaController.venda.cod_usuario}" 
+                                     required="true" requiredMessage="O atributo Usuário é obrigatório!"
+                                     panelStyle="width:180px" filter="true" filterMatchMode="contains"
+                                     disabled="true">
+                        <f:selectItem itemLabel="Selecione um Usuário..." itemValue="" />                        
+                        <f:selectItems value="#{usuarioController.usuarioAll()}" var="usuario"
+                                       itemValue="#{usuario}" itemLabel="#{usuario.nome_user}" />
+                    </p:selectOneMenu>
+
+
+
+
+
+                    <p:outputLabel value="Cliente: " for="cod_cliente" />
+                    <p:selectOneMenu id="cod_cliente" value="#{vendaController.venda.cod_cliente}" 
+                                     required="false" requiredMessage="O atributo Cliente é obrigatório!"
+                                     panelStyle="width:180px" filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="Selecione um Cliente..."/>                        
+                        <f:selectItems value="#{clienteController.clienteAll()}"
+                                       var="codclienteItem"
+                                       itemValue="#{codclienteItem}"
+                                       itemLabel="#{codclienteItem.nome}"/>
+                        <p:ajax event="change" update="iptdesCliente iptdesUfCli" listener="#{vendaController.updateClienteInfo}" partialSubmit="true"/>
+                    </p:selectOneMenu>
+
+
+
+                    <p:outputLabel id="opldesCliente" value="Descrição do Clinete" for="iptdesCliente"/>
+                    <p:inputText id="iptdesCliente" size="40" label="desCliente" required="true"
+                                 requiredMessage="O atributo Descrição do Clinete é obrigatório"
+                                 value="#{vendaController.venda.des_cliente}" />
+
+
+                    <p:outputLabel id="opldesUfCli" value="UF" for="iptdesUfCli"/>
+                    <p:inputText id="iptdesUfCli" size="40" label="desUfCli" required="true" 
+                                 requiredMessage="O atributo UF é obrigatório"
+                                 value="#{vendaController.venda.des_uf_cli}" />
+
+
+                    <p:outputLabel id="opldtaHorMov" for="ipmdtaHorMov" value="Registro"  />
+                    <p:inputText id="ipmdtaHorMov" value="#{vendaController.venda.dta_hor_mov}"  disabled="true">
+                        <f:convertDateTime pattern="dd/MM/yy HH:mm" timeZone="America/Sao_Paulo" />
+                    </p:inputText> 
+
+
+                    <p:outputLabel id="opltipvenda" value="Tipo Venda" for="ipttipvenda"/>
+                    <p:selectOneMenu id="ipttipvenda" value="#{vendaController.venda.tip_venda}" required="true">
+                        <f:selectItem itemLabel="Selecione um Tipo..." itemValue="#{null}" />
+                        <f:selectItem itemLabel="Vista" itemValue="301" />
+                        <f:selectItem itemLabel="Parcelado" itemValue="302" />
+                        <p:ajax event="change" update="iptcodOperacao" listener="#{vendaController.updateCodOperacao}" partialSubmit="true"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel id="oplcodOperacao" value="Operação" for="iptcodOperacao"/>
+                    <p:inputNumber id="iptcodOperacao" value="#{vendaController.venda.cod_operacao}" minValue="1" decimalPlaces="0"/>
+
+
+
+                    <p:outputLabel id="oplqtdItens" value="Quantidade de itens" for="iptqtdItens"/>
+                    <p:inputNumber id="iptqtdItens" value="#{vendaController.venda.qtd_itens}"  readonly="true"/>
+
+
+                    <p:outputLabel id="oplvlrTotalVda" value="Valor total venda" for="iptvlrTotalVda"/>
+                    <p:inputText id="iptvlrTotalVda" size="40" label="vlrTotalVda"
+                                 value="#{vendaController.venda.vlr_total_vda}" readonly="true">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                    </p:inputText>
+
+
+                </h:panelGrid>   
+
+                <p:commandButton actionListener="#{vendaController.adicionarVenda()}" 
+                                 icon="pi pi-save" value="Cadastrar" 
+                                 update=":frmList, CreateForm" 
+                                 onclick="dlgCreate.hide()"/>
+
+            </h:form>
+
+
+
+        </p:dialog>
+
+        <p:dialog header="Editar Venda" widgetVar="dlgEdit"  height="500" width="600" showEffect="fade" modal="true">
+            <h:form id="formEdit">
+                <p:growl id="growl" showDetail="true" />
+
+
+                <h:panelGrid id="pngEdicao" columns="2" rendered="#{vendaController.selected != null}">   
+                    <p:outputLabel id="oplId" value="Cupom:" for="iptId"/>
+                    <p:inputText id="iptId" size="10" label="ID" disabled="true"
+                                 value="#{vendaController.selected.num_cupom}"  />
+
+                    <p:outputLabel value="Usuario: " for="cod_usuario" />
+                    <p:selectOneMenu id="cod_usuario" value="#{vendaController.selected.cod_usuario}" 
+                                     required="false" requiredMessage="O atributo Usuario é obrigatório!"
+                                     panelStyle="width:180px" filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="Selecione uma Usuario..."/>                        
+                        <f:selectItems value="#{usuarioController.usuarioAll()}"
+                                       var="cod_usuarioItem"
+                                       itemValue="#{cod_usuarioItem}"
+                                       itemLabel="#{cod_usuarioItem.nome_user}"/>
+                    </p:selectOneMenu>
+
+
+
+
+                    <p:outputLabel value="Cliente: " for="cod_cliente" />
+                    <p:selectOneMenu id="cod_cliente" value="#{vendaController.selected.cod_cliente}" 
+                                     required="false" requiredMessage="O atributo Cliente é obrigatório!"
+                                     panelStyle="width:180px" filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="Selecione um Cliente..."/>                        
+                        <f:selectItems value="#{clienteController.clienteAll()}"
+                                       var="codclienteItem"
+                                       itemValue="#{codclienteItem}"
+                                       itemLabel="#{codclienteItem.nome}"/>
+                        <p:ajax event="change" update="iptdesCliente iptdesUfCli" listener="#{vendaController.updateClienteInfoS}" partialSubmit="true"/>
+                    </p:selectOneMenu>
+
+
+
+                    <p:outputLabel id="opldesCliente" value="Descrição do Cliente" for="iptdesCliente"/>
+                    <p:inputText id="iptdesCliente" size="40" label="desCliente" required="true" 
+                                 requiredMessage="O atributo Descrição do Cliente é obrigatório"
+                                 value="#{vendaController.selected.des_cliente}" />
+
+
+                    <p:outputLabel id="opldesUfCli" value="UF" for="iptdesUfCli"/>
+                    <p:inputText id="iptdesUfCli" size="40" label="desUfCli" required="true" 
+                                 requiredMessage="O atributo UF é obrigatório"
+                                 value="#{vendaController.selected.des_uf_cli}" />
+
+                    <p:outputLabel id="opldtaHorMov" for="ipmdtaHorMov" value="Registro"  />
+                    <p:inputText id="ipmdtaHorMov" value="#{vendaController.selected.dta_hor_mov}"  disabled="true">
+                        <f:convertDateTime pattern="dd/MM/yy HH:mm" timeZone="America/Sao_Paulo" />
+                    </p:inputText> 
+
+
+                    <p:outputLabel id="opltipvenda" value="Tipo Venda" for="ipttipvenda"/>
+                    <p:selectOneMenu id="ipttipvenda" value="#{vendaController.selected.tip_venda}" required="true">
+                        <f:selectItem itemLabel="Selecione um Tipo..." itemValue="#{null}" />
+                        <f:selectItem itemLabel="Vista" itemValue="301" />
+                        <f:selectItem itemLabel="Parcelado" itemValue="302" />
+                        <p:ajax event="change" update="iptcodOperacao" listener="#{vendaController.updateCodOperacaoS}" partialSubmit="true"/>
+                    </p:selectOneMenu>
+
+
+
+                    <p:outputLabel id="oplcodOperacao" value="Operação" for="iptcodOperacao"/>
+                    <p:inputNumber id="iptcodOperacao" value="#{vendaController.selected.cod_operacao}" minValue="1" decimalPlaces="0" />
+
+
+                    <p:outputLabel id="oplqtdItens" value="Quantidade de itens" for="iptqtdItens"/>
+                    <p:inputNumber id="iptqtdItens" value="#{vendaController.selected.qtd_itens}" minValue="1" decimalPlaces="0" />
+
+
+                    <p:outputLabel id="oplvlrTotalVda" value="Valor total venda" for="iptvlrTotalVda"/>
+                    <p:inputText id="iptvlrTotalVda" size="40" label="vlrTotalVda" required="true" 
+                                 requiredMessage="O atributo vlrTotalVda é obrigatório"
+                                 value="#{vendaController.selected.vlr_total_vda}">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                    </p:inputText>
+
+
+
+                </h:panelGrid>   
+
+
+                <p:commandButton id="btnSalvarEdicao" value="Salvar" update="@form, :frmList" 
+                                 onclick="dlgEdit.hide()" icon="pi pi-save"
+                                 action="#{vendaController.editarVenda()}" />
+
+
+
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Visualizar Detalhes da venda" widgetVar="dlgView"  height="250" 
+                  width="500" showEffect="fade" modal="true">
+            <h:form id="formView">
+
+
+                <h:panelGrid id="pngView" columns="2" rendered="#{vendaController.selected!= null}">    
+                    <p:outputLabel value="Cupom: " />
+                    <p:outputLabel value="#{vendaController.selected.num_cupom}"  />
+
+                    <p:outputLabel value="Valor total venda: "  />
+                    <p:outputLabel value="#{vendaController.selected.vlr_total_vda}"  >                     
+                    </p:outputLabel>
+
+                    <p:outputLabel value="Registro: "  />
+                    <p:outputLabel value="#{vendaController.selected.dta_hor_mov}" >
+                        <f:convertDateTime pattern="dd/MM/yy HH:mm"  />
+                    </p:outputLabel>
+
+                    <p:outputLabel value="Tipo Venda: " />
+                    <p:outputLabel value="#{vendaController.selected.tip_venda}" />
+
+
+                    <p:outputLabel value="Operação: " />                    
+                    <p:outputLabel value="#{vendaController.selected.cod_operacao}" />
+
+                    <p:outputLabel value="Quantidade de itens:"/>
+                    <p:outputLabel value="#{vendaController.selected.qtd_itens}" />
+
+                    <p:outputLabel value="UF: "/>
+                    <p:outputLabel value="#{vendaController.selected.des_uf_cli}"/>
+
+
+                    <p:outputLabel value="Descrição do Cliente:  "/>
+                    <p:outputLabel value="#{vendaController.selected.des_cliente}"/>
+
+                    <p:outputLabel value="cod_usuario "/>
+                    <p:outputLabel value="#{vendaController.selected.cod_usuario}"/>
+
+                    <p:outputLabel value="cod_cliente "/>
+                    <p:outputLabel value="#{vendaController.selected.cod_cliente}"/>
+
+
+                </h:panelGrid>   
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Itens da Venda" widgetVar="dlgItensVenda" height="400" width="600" showEffect="fade" modal="true">
+            <h:form id="frmItensVenda">
+                <p:dataTable id="itensVendaList" value="#{vendaController.itensVendaList}" var="item"
+                             emptyMessage="Nenhum item encontrado para esta venda.">
+                    <p:column headerText="ID Item">
+                        <h:outputText value="#{item.id_item_vda}" />
+                    </p:column>
+                    <p:column headerText="Quantidade">
+                        <h:outputText value="#{item.qtd_venda}" />
+                    </p:column>
+                    <p:column headerText="Valor">
+                        <h:outputText value="#{item.vlr_venda}">
+                            <f:convertNumber currencySymbol="R$" type="currency" />
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="Total">
+                        <h:outputText value="#{item.vlr_total}">
+                            <f:convertNumber currencySymbol="R$" type="currency" />
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>
+
+

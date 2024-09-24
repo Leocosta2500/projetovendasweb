@@ -1,0 +1,424 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        <h:outputText value="Itens"></h:outputText>
+    </ui:define>
+
+    <f:metadata>
+        <f:viewAction action="#{itensVendaController.init}" />
+    </f:metadata>
+
+
+    <ui:define name="content">
+        <h:form id="frmList">            
+            <h:panelGroup id="pngList"> 
+                <p:growl id="growl" showDetail="true" />
+                <p:fieldset toggleable="true">
+                    <p:dataTable id="datalist" value="#{itensVendaController.itensvendaAll()}" var="item"   
+                                 selectionMode="single" selection="#{itensVendaController.selected}"
+                                 widgetVar="datalistItensVendaWidgetVar"
+                                 rowKey="#{item.id_item_vda}"
+                                 paginator="true"
+                                 rows="5"
+                                 rowsPerPageTemplate="5,10,50,100"
+                                 emptyMessage="Nenhuma venda cadastrada..."
+                                 >
+                        <!--Ação AJAX para atualizar somente os botões definidos em update -->
+                        <!--quando selecionado ou não -->
+                        <p:ajax event="rowSelect" update=" btnDelete btnView" listener="#{itensVendaController.prepararEdicao(item)}"/>
+                        <p:ajax event="rowUnselect" update=" btnDelete btnView"/>
+
+                        <p:column width="4%" sortBy="#{item.id_item_vda}" filterBy="#{item.id_item_vda}">
+                            <f:facet name="header">
+                                <h:outputText value="Cod item vda"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id_item_vda}"/>
+                        </p:column>
+
+                        <p:column width="3%" sortBy="#{item.qtd_venda}" filterBy="#{item.qtd_venda}">
+                            <f:facet name="header">
+                                <h:outputText value="Qtd Venda"/>
+                            </f:facet>
+                            <h:outputText value="#{item.qtd_venda}"/>
+                        </p:column>
+
+
+                        <p:column width="4%" sortBy="#{item.vlr_venda}" filterBy="#{item.vlr_venda}">
+                            <f:facet name="header">
+                                <h:outputText value="Valor Venda"/>
+                            </f:facet>
+                            <h:outputText value="#{item.vlr_venda}">
+                                <f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR" minFractionDigits="2" maxFractionDigits="2"/>
+                            </h:outputText>
+                        </p:column>
+
+
+                        <p:column width="4%" sortBy="#{item.vlr_total}" filterBy="#{item.vlr_total}">
+                            <f:facet name="header">
+                                <h:outputText value="Valor Total"/>
+                            </f:facet>
+                            <h:outputText value="#{item.vlr_total}">
+                                <f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR" minFractionDigits="2" maxFractionDigits="2"/>
+                            </h:outputText>
+                        </p:column>
+
+
+                        <p:column width="5%" sortBy="#{item.cod_usuario_vda}" filterBy="#{item.cod_usuario_vda}">
+                            <f:facet name="header">
+                                <h:outputText value="Usuário"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cod_usuario_vda}"/>
+                        </p:column>
+
+
+                        <p:column width="6%" sortBy="#{item.dta_hor_vda}" filterBy="#{item.dta_hor_vda}">
+                            <f:facet name="header">
+                                <h:outputText value="Dta Venda"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dta_hor_vda}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo" />
+                            </h:outputText>
+                        </p:column>
+
+
+                        <p:column width="5%" sortBy="#{item.des_cliente_vda}" filterBy="#{item.des_cliente_vda}">
+                            <f:facet name="header">
+                                <h:outputText value="Des Cliente"/>
+                            </f:facet>
+                            <h:outputText value="#{item.des_cliente_vda}"/>
+                        </p:column>
+
+
+                        <p:column width="3%" sortBy="#{item.dta_lancamento}" filterBy="#{item.dta_lancamento}">
+                            <f:facet name="header">
+                                <h:outputText value="Data Lançamento"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dta_lancamento}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>
+
+
+                        <p:column width="5%" sortBy="#{item.cod_cliente_vda}" filterBy="#{item.cod_cliente_vda}">
+                            <f:facet name="header">
+                                <h:outputText value="Cod Cliente"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cod_cliente_vda}"/>
+                        </p:column>
+
+                        <p:column width="4%" sortBy="#{item.num_cupom}" filterBy="#{item.num_cupom}">
+                            <f:facet name="header">
+                                <h:outputText value="Num Cupom"/>
+                            </f:facet>
+                            <h:outputText value="#{item.num_cupom}"/>
+                        </p:column>
+
+
+                        <p:column width="3%" sortBy="#{item.id_item}" filterBy="#{item.id_item}">
+                            <f:facet name="header">
+                                <h:outputText value="ID Item"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id_item}"/>
+                        </p:column>
+
+
+
+
+                        <f:facet name="footer">
+                            <!--Botão utilizado para abrir a modal de criação -->
+                            <p:commandButton id="btnCreate" value="Incluir Venda(I)"  icon="pi pi-file" 
+                                             actionListener="#{itensVendaController.prepareAdicionar()}"
+                                             update=":CreateForm"
+                                             onclick="PF('dlgCreate').show()"/>  
+
+                            <!--Botão utilizado para abrir a modal de edição -->
+
+
+
+
+
+
+
+
+                            <!--Botão utilizado para excluir o registro selecionado-->                            
+                            <p:commandButton id="btnDelete" icon="pi pi-trash"  value="Excluir Venda(I)" 
+                                             actionListener="#{itensVendaController.deletarItensVenda()}" update="frmList" 
+                                             disabled="#{empty itensVendaController.selected}">
+                                <p:confirm header="Confirmar Exclusão" message="Você confirma exclusão do registro?" 
+                                           icon="ui-icon-alert"  />
+                            </p:commandButton>
+
+                            <!--Botão utilizado para abrir a modal de visualização -->
+                            <p:commandButton id="btnView" icon="pi pi-user-edit"  value="Detalhes Venda(I)" 
+                                             update="formView" oncomplete="PF('dlgView').show()" 
+                                             disabled="#{empty itensVendaController.selected}"/>
+
+                        </f:facet>
+                    </p:dataTable>
+                </p:fieldset>
+                <!--Diálogo para confirmação da exclusão -->
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+                </p:confirmDialog>
+
+            </h:panelGroup>
+        </h:form>
+
+        <p:dialog header="Novo Itens(V)" widgetVar="dlgCreate" height="450" width="600" showEffect="fade" modal="true">
+            <h:form id="CreateForm">
+                <p:growl id="growl" showDetail="true" />
+                <h:panelGrid id="pngCadastro" columns="2">   
+
+                    <p:outputLabel value="Cupom: " for="num_cupom" />
+                    <p:selectOneMenu id="num_cupom" value="#{itensVendaController.itensVenda.num_cupom}" 
+                                     required="true" requiredMessage="O atributo Usuário é obrigatório!"
+                                     panelStyle="width:180px" filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="Selecione um Cupom..."/>                        
+                        <f:selectItems value="#{vendaController.vendaAll()}"
+                                       var="codCupomItem"
+                                       itemValue="#{codCupomItem}"
+                                       itemLabel="#{codCupomItem.num_cupom}"/>
+                        <p:ajax event="change" listener="#{itensVendaController.onCupomSelect}" update="iptcodClienteVda iptdesCliente iptcodUsuarioVda" />
+                    </p:selectOneMenu>
+
+
+
+
+                    <p:outputLabel value="Item: " for="id_item" />
+                    <p:selectOneMenu id="id_item" value="#{itensVendaController.itensVenda.id_item}" 
+                                     required="false" requiredMessage="O atributo Cliente é obrigatório!"
+                                     panelStyle="width:180px" filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="Selecione um Item..."/>                        
+                        <f:selectItems value="#{itemController.itemAll()}"
+                                       var="codIdItem"
+                                       itemValue="#{codIdItem}"
+                                       itemLabel="#{codIdItem.desc_item}"/>
+                        <p:ajax event="change" update="@form" listener="#{itensVendaController.updateValorItem}"/>
+
+                    </p:selectOneMenu>
+
+
+                    <p:outputLabel id="oplcodClienteVda" value="Codigo Cliente" for="iptcodClienteVda"/>
+                    <p:inputNumber id="iptcodClienteVda" value="#{itensVendaController.itensVenda.cod_cliente_vda}" minValue="1" decimalPlaces="0" />
+
+
+
+                    <p:outputLabel id="opldesCliente" value="Descrição do Cliente" for="iptdesCliente"/>
+                    <p:inputText id="iptdesCliente" size="40" label="desCliente" required="true" 
+                                 requiredMessage="O atributo Descrição do Cliente é obrigatório"
+                                 value="#{itensVendaController.itensVenda.des_cliente_vda}" />
+
+
+
+
+                    <p:outputLabel id="oplcodUsuarioVda" value="Codigo Usuario" for="iptcodUsuarioVda"/>
+                    <p:inputNumber id="iptcodUsuarioVda" value="#{itensVendaController.itensVenda.cod_usuario_vda}" minValue="1" decimalPlaces="0" />
+
+
+
+
+                    <p:outputLabel id="oplqtdVenda" value="Quantidade Vendida" for="iptqtdVenda"/>
+                    <p:inputNumber id="iptqtdVenda" value="#{itensVendaController.itensVenda.qtd_venda}" minValue="1" decimalPlaces="0">
+                        <p:ajax event="change" update="iptvlrTotal" listener="#{itensVendaController.calcularValorTotal}"/>
+                    </p:inputNumber>
+
+                    <p:outputLabel id="oplvlrVenda" value="Valor Venda" for="iptvlrVenda"/>
+                    <p:inputText id="iptvlrVenda" size="40" label="vlrVenda" required="true" 
+                                 requiredMessage="O atributo vlrVenda é obrigatório"
+                                 value="#{itensVendaController.itensVenda.vlr_venda}">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                        <p:ajax event="change" update="iptvlrTotal" listener="#{itensVendaController.calcularValorTotal}"/>
+                    </p:inputText>
+
+                    <p:outputLabel id="oplvlrTotal" value="Valor Total" for="iptvlrTotal"/>
+                    <p:inputText id="iptvlrTotal" size="40" label="vlrTotal" required="true" 
+                                 requiredMessage="O atributo vlrTotal é obrigatório"
+                                 value="#{itensVendaController.itensVenda.vlr_total}" readonly="true">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                    </p:inputText>
+
+
+
+                    <p:outputLabel id="opldtaHorVda" for="ipmdtaHorVda" value="Data/Hora Venda" />
+                    <p:inputText id="ipmdtaHorVda" value="#{itensVendaController.itensVenda.dta_hor_vda}" disabled="true">
+                        <f:convertDateTime pattern="dd/MM/yy HH:mm" timeZone="America/Sao_Paulo" />
+                    </p:inputText>
+
+
+                    <p:outputLabel id="opldtaLancamento" for="ipmdtaLancamento" value="Data de Lancamento" />
+                    <p:inputMask id="ipmdtaLancamento" value="#{itensVendaController.itensVenda.dta_lancamento}" 
+                                 mask="99/99/9999" readonly="true">
+                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                    </p:inputMask>
+
+
+
+
+
+                </h:panelGrid>   
+
+
+
+                <p:commandButton style="margin-right: 10px;" actionListener="#{itensVendaController.adicionarItem()}"
+                                 icon="pi pi-plus" value="Adicionar"
+                                 update=":frmList, CreateForm" />
+
+
+                <p:commandButton actionListener="#{itensVendaController.adicionarItensVenda()}" 
+                                 icon="pi pi-save" value="Cadastrar" 
+                                 update=":frmList, CreateForm" 
+                                 onclick="dlgCreate.hide()"/>
+
+
+
+
+
+
+            </h:form>
+        </p:dialog>
+
+        <p:dialog header="Editar Venda" widgetVar="dlgEdit" height="500" width="600" showEffect="fade" modal="true">
+            <h:form id="formEdit">
+                <p:growl id="growl" showDetail="true" />
+                <h:panelGrid id="pngEdicao" columns="2" rendered="#{itensVendaController.selected != null}">   
+                    <p:outputLabel id="oplId" value="Cupom:" for="iptId"/>
+                    <p:inputText id="iptId" size="10" label="ID" disabled="true"
+                                 value="#{itensVendaController.selected.id_item_vda}"  />
+
+                    <p:outputLabel value="Cupom: " for="num_cupom" />
+                    <p:selectOneMenu id="num_cupom" value="#{itensVendaController.selected.num_cupom}" 
+                                     required="true" requiredMessage="O atributo Cupom é obrigatório!"
+                                     panelStyle="width:180px" filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="Selecione um Cupom..."/>                        
+                        <f:selectItems value="#{vendaController.vendaAll()}"
+                                       var="codCupomItem"
+                                       itemValue="#{codCupomItem}"
+                                       itemLabel="#{codCupomItem.num_cupom}"/>
+                        <p:ajax event="change" update="cod_cliente_vda des_cliente_vda cod_usuario_vda" listener="#{itensVendaController.onCupomSelectS}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Item: " for="id_item" />
+                    <p:selectOneMenu id="id_item" value="#{itensVendaController.selected.id_item}" 
+                                     required="false" requiredMessage="O atributo Item é obrigatório!"
+                                     panelStyle="width:180px" filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="Selecione um Item..."/>                        
+                        <f:selectItems value="#{itemController.itemAll()}"
+                                       var="codIdItem"
+                                       itemValue="#{codIdItem}"
+                                       itemLabel="#{codIdItem.desc_item}"/>
+                        <p:ajax event="change" update="iptvlrVenda iptvlrTotal" listener="#{itensVendaController.updateValorItemS}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Código Cliente: " for="cod_cliente_vda" />
+                    <p:inputText id="cod_cliente_vda" value="#{itensVendaController.selected.cod_cliente_vda}" readonly="true"/>
+
+                    <p:outputLabel value="Descrição do Cliente: " for="des_cliente_vda" />
+                    <p:inputText id="des_cliente_vda" value="#{itensVendaController.selected.des_cliente_vda}" readonly="true"/>
+
+                    <p:outputLabel value="Código Usuário: " for="cod_usuario_vda" />
+                    <p:inputText id="cod_usuario_vda" value="#{itensVendaController.selected.cod_usuario_vda}" readonly="true"/>
+
+                    <p:outputLabel value="Quantidade Vendida" for="iptqtdVenda"/>
+                    <p:inputNumber id="iptqtdVenda" value="#{itensVendaController.selected.qtd_venda}" minValue="1" decimalPlaces="0">
+                        <p:ajax event="change" update="iptvlrTotal" listener="#{itensVendaController.calcularValorTotalS}"/>
+                    </p:inputNumber>
+
+                    <p:outputLabel value="Valor Venda" for="iptvlrVenda"/>
+                    <p:inputText id="iptvlrVenda" size="40" value="#{itensVendaController.selected.vlr_venda}">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                        <p:ajax event="change" update="iptvlrTotal" listener="#{itensVendaController.calcularValorTotalS}"/>
+                    </p:inputText>
+
+                    <p:outputLabel value="Valor Total" for="iptvlrTotal"/>
+                    <p:inputText id="iptvlrTotal" size="40" value="#{itensVendaController.selected.vlr_total}" readonly="true">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                    </p:inputText>
+
+                    <p:outputLabel id="opldtaHorVda" for="ipmdtaHorVda" value="Data/Hora Venda" />
+                    <p:inputText id="ipmdtaHorVda" value="#{itensVendaController.selected.dta_hor_vda}" disabled="true">
+                        <f:convertDateTime pattern="dd/MM/yy HH:mm" timeZone="America/Sao_Paulo" />
+                    </p:inputText>
+
+                    <p:outputLabel id="opldtaLancamento" for="ipmdtaLancamento" value="Data de Lancamento"  />
+                    <p:inputMask id="ipmdtaLancamento" value="#{itensVendaController.selected.dta_lancamento}" 
+                                 mask="99/99/9999" required="true" requiredMessage="O atributo data de nascimento é obrigatório">
+                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                    </p:inputMask>
+                </h:panelGrid>   
+
+                <p:commandButton id="btnSalvarEdicao" value="Salvar" update="@form, :frmList" 
+                                 onclick="PF('dlgEdit').hide(); location.reload();" icon="pi pi-save"
+                                 action="#{itensVendaController.editarItensVenda()}" />
+
+            </h:form>
+        </p:dialog>
+
+
+
+
+
+
+        <p:dialog header="Visualizar Detalhes da venda" widgetVar="dlgView"  height="250" 
+                  width="500" showEffect="fade" modal="true">
+            <h:form id="formView">
+
+
+                <h:panelGrid id="pngView" columns="2" rendered="#{itensVendaController.selected!= null}">    
+                    <p:outputLabel value="Cupom: " />
+                    <p:outputLabel value="#{itensVendaController.selected.id_item_vda}"  />
+
+                    <p:outputLabel value="Quantidade Vendida: " />
+                    <p:outputLabel value="#{itensVendaController.selected.qtd_venda}" />
+
+                    <p:outputLabel value="Valor Venda: " />
+                    <p:outputLabel value="#{itensVendaController.selected.vlr_venda}">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                    </p:outputLabel>
+
+                    <p:outputLabel value="Valor Total: " />
+                    <p:outputLabel value="#{itensVendaController.selected.vlr_total}">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                    </p:outputLabel>
+
+                    <p:outputLabel value="Codigo Usuario: " />
+                    <p:outputLabel value="#{itensVendaController.selected.cod_usuario_vda}" />
+
+                    <p:outputLabel value="Data/Hora Venda: " />
+                    <p:outputLabel value="#{itensVendaController.selected.dta_hor_vda}">
+                        <f:convertDateTime pattern="dd/MM/yy HH:mm" timeZone="America/Sao_Paulo" />
+                    </p:outputLabel>
+
+                    <p:outputLabel value="Descrição do Cliente: " />
+                    <p:outputLabel value="#{itensVendaController.selected.des_cliente_vda}" />
+
+                    <p:outputLabel value="Data de Lançamento: " />
+                    <p:outputLabel value="#{itensVendaController.selected.dta_lancamento}">
+                        <f:convertDateTime pattern="dd/MM/yyy" timeZone="America/Sao_Paulo" />
+                    </p:outputLabel>
+
+                    <p:outputLabel value="Codigo Cliente: " />
+                    <p:outputLabel value="#{itensVendaController.selected.cod_cliente_vda}" />
+
+                    <p:outputLabel value="Cupom: " />
+                    <p:outputLabel value="#{itensVendaController.selected.num_cupom}" />
+
+                    <p:outputLabel value="Item: " />
+                    <p:outputLabel value="#{itensVendaController.selected.id_item}" />
+
+
+
+
+                </h:panelGrid>   
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>
+
+

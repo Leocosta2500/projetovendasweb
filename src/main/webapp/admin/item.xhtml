@@ -1,0 +1,279 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        <h:outputText value="Item"></h:outputText>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="frmList">
+            <h:panelGroup id="pngList">
+                <p:growl id="growl" showDetail="true" />
+                <p:fieldset toggleable="true">
+                    <p:dataTable id="datalist" value="#{itemController.itemAll()}" var="item"                                 
+                                 selectionMode="single" selection="#{itemController.selected}"
+                                 widgetVar="datalistItemWidgetVar"
+                                 rowKey="#{item.id_item}"
+                                 paginator="true"
+                                 rows="5"
+                                 rowsPerPageTemplate="5,10,50,100"
+                                 emptyMessage="Nenhuma usario cadastrado..."
+                                 >
+
+                        <p:ajax event="rowSelect"   update="btnEdit btnDelete btnView"/>
+                        <p:ajax event="rowUnselect" update="btnEdit btnDelete btnView"/>
+
+
+                        <p:column width="4" sortBy="#{item.id_item}" filterBy="#{item.id_item}">
+                            <f:facet name="header">
+                                <h:outputText value="ID"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id_item}"/> 
+                        </p:column> 
+
+
+                        <p:column width="4" sortBy="#{item.desc_item}" filterBy="#{item.desc_item}">
+                            <f:facet name="header">
+                                <h:outputText value="Descrição Item"/>
+                            </f:facet>
+                            <h:outputText value="#{item.desc_item}"/> 
+                        </p:column> 
+
+
+                        <p:column width="4" sortBy="#{item.vlr_item}" filterBy="#{item.vlr_item}">
+                            <f:facet name="header">
+                                <h:outputText value="Valor Item"/>
+                            </f:facet>
+                            <h:outputText value="#{item.vlr_item}">
+                                <f:convertNumber pattern="#,##0.00"/>
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column width="8" sortBy="#{item.id_status}" filterBy="#{item.id_status}">
+                            <f:facet name="header">
+                                <h:outputText value="Status"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id_status}"/> 
+                        </p:column> 
+
+                        <p:column width="4" sortBy="#{item.cod_item}" filterBy="#{item.cod_item}">
+                            <f:facet name="header">
+                                <h:outputText value="Codigo do item"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cod_item}"/> 
+                        </p:column> 
+
+                        <p:column width="4" sortBy="#{item.cod_barras}" filterBy="#{item.cod_barras}">
+                            <f:facet name="header">
+                                <h:outputText value="Codigo de Barras"/>
+                            </f:facet>
+                            <h:outputText value="#{item.cod_barras}"/> 
+                        </p:column> 
+
+
+
+
+
+
+                        <f:facet name="footer">
+
+
+
+                            <!--Botão utilizado para abrir a modal de criação -->
+                            <p:commandButton id="btnCreate" value="Incluir Item"  icon="pi pi-file" 
+                                             actionListener="#{itemController.prepareAdicionar()}"
+                                             update=":CreateForm"
+                                             oncomplete="PF('dlgCreate').show()"/>  
+
+
+
+
+
+                            <!--Botão utilizado para abrir a modal de edição -->
+                            <p:commandButton id="btnEdit" icon="pi pi-user-edit"  value="Editar Item" 
+                                             update="formEdit" oncomplete="PF('dlgEdit').show()" 
+                                             disabled="#{empty itemController.selected}"/>
+
+                            <!--Botão utilizado para excluir o registro selecionado-->                            
+                            <p:commandButton id="btnDelete" icon="pi pi-trash"  value="Excluir Item" 
+                                             actionListener="#{itemController.deletarItem()}" update="frmList" 
+                                             disabled="#{empty itemController.selected}">
+                                <p:confirm header="Confirmar Exclusão" message="Você confirma exclusão do registro?" 
+                                           icon="ui-icon-alert"  />
+                            </p:commandButton>
+
+                            <!--Botão utilizado para abrir a modal de visualização -->
+                            <p:commandButton id="btnView" icon="pi pi-user-edit"  value="Detalhes da Item" 
+                                             update="formView" oncomplete="PF('dlgView').show()" 
+                                             disabled="#{empty itemController.selected}"/>
+
+                        </f:facet>
+
+                    </p:dataTable>
+                </p:fieldset>
+
+
+                <!--Diálogo para confirmação da exclusão -->
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+                </p:confirmDialog>
+
+
+
+            </h:panelGroup>
+        </h:form>
+
+
+        <!--Criar novo usuario -->
+
+
+
+        <p:dialog header="Novo Item" widgetVar="dlgCreate" height="400" width="600" showEffect="fade" modal="true">
+            <h:form id="CreateForm">
+                <p:growl id="growl" showDetail="true" />    
+                <h:panelGrid columns="2" rendered="#{itemController.item != null}"> 
+
+
+
+                    <p:outputLabel id="oplCodItem" value="Código do Item:" for="iptCodItem"/>
+                    <p:inputText id="iptCodItem" size="40" label="Código do Item" required="true" 
+                                 requiredMessage="O código do item é obrigatório"
+                                 value="#{itemController.item.cod_item}">
+                        <f:convertNumber />
+                    </p:inputText>
+
+
+
+                    <p:outputLabel id="oplCodBarras" value="Código de Barras:" for="iptCodBarras"/>
+                    <p:inputText id="iptCodBarras" size="40" label="Código de Barras" 
+                                 value="#{itemController.item.cod_barras}" maxlength="50" />
+
+
+                    <p:outputLabel id="oplDescItem" value="Descrição do Item:" for="iptDescItem"/>
+                    <p:inputText id="iptDescItem" size="40" label="Descrição do Item" required="true" 
+                                 requiredMessage="A descrição do item é obrigatória"
+                                 value="#{itemController.item.desc_item}" maxlength="50" />
+
+
+                    <p:outputLabel id="oplVlrItem" value="Valor do Item:" for="iptVlrItem"/>
+                    <p:inputText id="iptVlrItem" size="40" label="Valor do Item" required="true" 
+                                 requiredMessage="O valor do item é obrigatório"
+                                 value="#{itemController.item.vlr_item}">
+                        <f:convertNumber pattern="#,##0.00" />
+                    </p:inputText>
+
+
+                    <p:outputLabel id="oplIdStatus" value="Status do Item:" for="iptIdStatus"/>
+                    <p:selectOneMenu id="iptIdStatus" value="#{itemController.item.id_status}" required="true" requiredMessage="O status do item é obrigatório">
+                        <f:selectItem itemLabel="Selecione um status..." itemValue="" />
+                        <f:selectItem itemLabel="Ativo" itemValue="Ativo" />
+                        <f:selectItem itemLabel="Inativo" itemValue="Inativo" />
+                    </p:selectOneMenu>
+
+
+
+
+
+                </h:panelGrid>
+
+
+
+
+                <p:commandButton id="btnCadastrar" value="Cadastrar" update=":frmList, CreateForm" icon="pi pi-save" 
+                                 action="#{itemController.adicionarItem()}" onclick="dlgCreate.hide()"/>
+
+            </h:form>
+        </p:dialog>
+
+        <!--Editar usuario -->             
+
+
+        <p:dialog widgetVar="dlgEdit" modal="true" resizable="false" appendTo="@(body)" header="Editar Cliente">
+            <h:form id="formEdit">
+                <p:growl id="growl" showDetail="true" />
+                <h:panelGrid id="pngEdicao" columns="2" rendered="#{itemController.selected != null}">   
+                    <p:outputLabel id="oplId" value="ID:" for="iptId"/>
+                    <p:inputText id="iptId" size="10" label="Código Item" disabled="true"
+                                 value="#{itemController.selected.id_item}"  />
+
+                    <p:outputLabel id="oplCodItem" value="Código do Item:" for="iptCodItem"/>
+                    <p:inputText id="iptCodItem" size="40" label="Código do Item" required="true" 
+                                 requiredMessage="O código do item é obrigatório"
+                                 value="#{itemController.selected.cod_item}">
+                        <f:convertNumber />
+                    </p:inputText>
+
+                    <p:outputLabel id="oplCodBarras" value="Código de Barras:" for="iptCodBarras"/>
+                    <p:inputText id="iptCodBarras" size="40" label="Código de Barras" 
+                                 value="#{itemController.selected.cod_barras}" maxlength="50" />
+
+
+                    <p:outputLabel id="oplDescItem" value="Descrição do Item:" for="iptDescItem"/>
+                    <p:inputText id="iptDescItem" size="40" label="Descrição do Item" required="true" 
+                                 requiredMessage="A descrição do item é obrigatória"
+                                 value="#{itemController.selected.desc_item}" maxlength="50" />
+
+                    <p:outputLabel id="oplVlrItem" value="Valor do Item:" for="iptVlrItem"/>
+                    <p:inputText id="iptVlrItem" size="40" label="Valor do Item" required="true" 
+                                 requiredMessage="O valor do item é obrigatório"
+                                 value="#{itemController.selected.vlr_item}">
+                        <f:convertNumber pattern="#,##0.00" />
+                    </p:inputText>
+
+
+                    <p:outputLabel id="oplIdStatus" value="Status do Item:" for="iptIdStatus"/>
+                    <p:selectOneMenu id="iptIdStatus" value="#{itemController.selected.id_status}" required="true" requiredMessage="O status do item é obrigatório">
+                        <f:selectItem itemLabel="Selecione um status..." itemValue="" />
+                        <f:selectItem itemLabel="Ativo" itemValue="Ativo" />
+                        <f:selectItem itemLabel="Inativo" itemValue="Inativo" />
+                    </p:selectOneMenu>
+
+
+
+                </h:panelGrid>
+
+
+
+                <p:commandButton id="btnSalvarEdicao" value="Salvar" update="@form, :frmList" 
+                                 onclick="dlgEdit.hide()" icon="pi pi-save"
+                                 action="#{itemController.editarItem()}" />
+            </h:form>
+        </p:dialog>
+
+
+        <p:dialog header="Visualizar Detalhes da Item" widgetVar="dlgView"  height="250" 
+                  width="500" showEffect="fade" modal="true">
+            <h:form id="formView">
+                <h:panelGrid id="pngView" columns="2">   
+                    <p:outputLabel value="ID do Item:" />
+                    <p:outputLabel value="#{itemController.selected.id_item}" />
+
+                    <p:outputLabel value="Descrição do Item:" />
+                    <p:outputLabel value="#{itemController.selected.desc_item}" />
+
+                    <p:outputLabel value="Valor do Item:" />
+                    <p:outputLabel value="#{itemController.selected.vlr_item}">
+                        <f:convertNumber pattern="#,##0.00" />
+                    </p:outputLabel>
+
+                    <p:outputLabel value="Status do Item:" />
+                    <p:outputLabel value="#{itemController.selected.id_status}" />
+
+                    <p:outputLabel value="Código do Item:" />
+                    <p:outputLabel value="#{itemController.selected.id_item}" />
+
+                    <p:outputLabel value="Código de Barras:" />
+                    <p:outputLabel value="#{itemController.selected.cod_barras}" />
+
+
+                </h:panelGrid>   
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+</ui:composition>
