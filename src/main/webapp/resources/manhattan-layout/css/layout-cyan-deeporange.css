@@ -1778,7 +1778,8 @@ a {
   }
 }
 .login-body {
-  background-image: linear-gradient(235deg, #565867, #191a25);
+  /*background-image: linear-gradient(235deg, #565867, #191a25);*/
+  background-color: #F8F8F8; /* Cor de gelo */
   background-size: cover;
   height: 100vh;
 }
@@ -4883,5 +4884,25 @@ p:last-child {
 .widget-stats .legend .completed .legend-color {
   background-color: #ed3c76;
 }
+
+.profile-item {
+    display: flex;
+    align-items: center;
+}
+
+.profile-item img {
+    margin-right: 2px;
+}
+
+.logout-link {
+    margin-left: 40px;
+    display: flex;
+    align-items: center;
+    color: black; /* Define a cor do texto e ícone como preto */
+    font-size: 16px; /* Aumenta o tamanho da fonte */
+}
+
+
+
 
 /* Add your customizations of the layout styles here */
