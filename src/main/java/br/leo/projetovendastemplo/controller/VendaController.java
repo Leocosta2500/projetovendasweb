@@ -1,3 +1,5 @@
+
+
 package br.leo.projetovendastemplo.controller;
 
 import br.leo.projetovendastemplo.entity.ItensVendaEntity;
@@ -49,25 +51,19 @@ public class VendaController implements Serializable {
     public List<ItensVendaEntity> getItensVendaList() {
         return itensVendaList;
     }
+    
+    private boolean mostrarIncluirVenda = false;
 
-//    public List<VendaEntity> getVendaList() {
-//        return ejbFacade.buscarTodos();
-//    }
-//    public void setVendaList(List<VendaEntity> vendaList) {
-//        this.vendaList = vendaList;
-//    }
-//public void calcularValorTotalVendaAtual() {
-//    if (venda != null && venda.getNum_cupom() != null) {
-//        BigDecimal valorTotalVenda = BigDecimal.ZERO;
-    //      List<ItensVendaEntity> itensVendaList = itensVendaFacade.findByNumCupom(venda.getNum_cupom());
-    //      for (ItensVendaEntity item : itensVendaList) {
-    //         valorTotalVenda = valorTotalVenda.add(item.getVlr_total());
-    //       }
-//      venda.setVlr_total_vda(valorTotalVenda);
-    // Adicione esta linha para verificar se o método está sendo chamado
-//        System.out.println("Valor total venda atualizado: " + valorTotalVenda);
-//    }
-//}
+public boolean isMostrarIncluirVenda() {
+    return mostrarIncluirVenda;
+}
+
+
+public void toggleIncluirVenda() {
+    this.mostrarIncluirVenda = !this.mostrarIncluirVenda;
+}
+
+
     public String getTipoVendaDescricao(String tipoVenda) {
         switch (tipoVenda) {
             case "301":
@@ -95,17 +91,7 @@ public class VendaController implements Serializable {
             }
         }
     }
-    //   public void updateClienteDescricao() {
-    //       if (venda.getCod_cliente() != null) {
-//            venda.setDes_cliente(venda.getCod_cliente().getNome());
-//        }
-//    }
 
-    //      public void updateClienteDescricaoUF() {
-    //       if (venda.getCod_cliente() != null) {
-    //          venda.setDes_uf_cli(venda.getCod_cliente().getUf());
-    //      }
-    //  }
     public void setUsuarioLogado() {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
