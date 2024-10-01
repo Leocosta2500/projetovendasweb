@@ -102,16 +102,22 @@
                     </div>
 
                     <!-- Botão para salvar a nova venda -->
-                    <p:commandButton actionListener="#{vendaController.adicionarVenda()}"
-                                     icon="pi pi-save" value="Cadastrar"
-                                     update="frmList" style="margin-top: 20px; width: 20%;" />
+<p:commandButton actionListener="#{vendaController.adicionarVenda()}" 
+                 icon="pi pi-save" value="Cadastrar" 
+                 update=":frmList, CreateForm" 
+                 oncomplete="if (!args.validationFailed) PF('dlgCreate').hide()" />
+
+             
+                                 
 
                     <!-- Botão para incluir itens -->
-                    <p:commandButton value="Incluir Itens" icon="pi pi-plus" style="margin-top: 20px; width: 20%;" />
                 </p:panel>
 
                 <!-- Novo Painel para Incluir Itens de Venda -->
-                <p:panel header="Novo Itens(V)" style="margin-top:20px; width: 100%;">
+                
+ <p:panel header="Novo Itens(V)" style="margin-top:20px; width: 100%;">                    
+     <h:form id="CreateForm">
+                        <p:growl id="growl" showDetail="true" />
                     <div class="grid p-fluid">
                         <!-- Primeira linha - Cupom e Item -->
                         <div class="field col-12 md:col-6">
@@ -203,17 +209,52 @@
                                 <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
                             </p:inputMask>
                         </div>
-                    </div>
+                    
 
                     <!-- Botões para Adicionar e Cadastrar -->
                     <p:commandButton style="margin-right: 10px;" actionListener="#{itensVendaController.adicionarItem()}"
                                      icon="pi pi-plus" value="Adicionar"
-                                     update=":frmList" />
+                                     update=":frmList, CreateForm"/>
 
                     <p:commandButton actionListener="#{itensVendaController.adicionarItensVenda()}" 
                                      icon="pi pi-save" value="Cadastrar" 
-                                     update=":frmList" />
-                </p:panel>
+                                     update=":frmList CreateForm" 
+                                        onclick="dlgCreate.hide()"/>
+                    
+                    </div>
+
+
+
+     
+                
+                                    <!-- Tabela para exibir itens adicionados -->
+                                    
+                                    
+                                                        <p:dataTable id="itensVendaList" value="#{itensVendaController.itensVendaList}" var="item" 
+                                 emptyMessage="Nenhum item adicionado."
+                                 style="margin-top: 20px; width: 100%;">
+                        <p:column headerText="Código Item">
+                            <h:outputText value="#{item.id_item}" />
+                        </p:column>
+                        <p:column headerText="Descrição Item">
+                            <h:outputText value="#{item.id_item.desc_item}" />
+                        </p:column>
+                        <p:column headerText="Quantidade Vendida">
+                            <h:outputText value="#{item.qtd_venda}" />
+                        </p:column>
+                        <p:column headerText="Valor Unitário">
+                            <h:outputText value="#{item.vlr_venda}">
+                                <f:convertNumber currencySymbol="R$" minFractionDigits="2" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="Valor Total">
+                            <h:outputText value="#{item.vlr_total}">
+                                <f:convertNumber currencySymbol="R$" minFractionDigits="2" />
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+         </p:panel>
 
             </h:panelGroup>
         </h:form>
