@@ -18,22 +18,40 @@
                 <!-- Componente de feedback para mensagens (sucesso, erro, etc.) -->
                 <p:growl id="growl" showDetail="true" />
 
+<p:commandButton id="btnCreate" value="Incluir Venda" icon="pi pi-file"
+                 actionListener="#{vendaController.prepareAdicionar()}"
+                 update="@form" 
+                 process="@form" 
+                 partialSubmit="true"
+                 immediate="true"
+                 onclick="PF('dlgCreate').show()"
+                 style="margin-bottom: 20px;" />
+
+
+
+
+
+                <p:tabView orientation="top" style="margin-top:20px; width: 100%;">
+
+
+                     <p:tab title="Venda">
                 <!-- Formulário de inclusão de nova venda -->
                 <p:panel header="Incluir Nova Venda" style="margin-top:20px; width: 100%;">
                     <div class="grid p-fluid">
 
                         <!-- Primeira linha - Usuário e Cliente (mesma linha) -->
-                        <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Usuário:" for="usuario" />
-                            <p:selectOneMenu id="usuario" value="#{vendaController.venda.cod_usuario}" 
-                                             required="true" requiredMessage="O atributo Usuário é obrigatório!"
-                                             style="width: 100%;" panelStyle="width:300px;" filter="true" filterMatchMode="contains"
-                                             disabled="true">
-                                <f:selectItem itemLabel="Selecione um Usuário..." itemValue="" />                        
-                                <f:selectItems value="#{usuarioController.usuarioAll()}" var="usuario"
-                                               itemValue="#{usuario}" itemLabel="#{usuario.nome_user}" />
-                            </p:selectOneMenu>
-                        </div> 
+                <div class="field col-12 md:col-6">
+                                <p:outputLabel value="Usuário:" for="usuario" />
+                                <p:selectOneMenu id="usuario" value="#{vendaController.venda.cod_usuario}" 
+                                                 required="true" requiredMessage="O atributo Usuário é obrigatório!"
+                                                 style="width: 100%;" panelStyle="width:300px;" filter="true" filterMatchMode="contains"
+                                                 disabled="true">
+                                    <f:selectItem itemLabel="Selecione um Usuário..." itemValue="" />
+                                    <f:selectItems value="#{usuarioController.usuarioAll()}" var="usuario"
+                                                   itemValue="#{usuario}" itemLabel="#{usuario.nome_user}" />
+                                </p:selectOneMenu>
+                            </div>
+                        
 
                         <div class="field col-12 md:col-6">
                             <p:outputLabel value="Cliente:" for="cod_cliente" />
@@ -101,136 +119,125 @@
                         </div> 
                     </div>
 
-                    <!-- Botão para salvar a nova venda -->
-<p:commandButton actionListener="#{vendaController.adicionarVenda()}" 
-                 icon="pi pi-save" value="Cadastrar" 
-                 update=":frmList, CreateForm" 
-                 oncomplete="if (!args.validationFailed) PF('dlgCreate').hide()" />
+                    <p:commandButton actionListener="#{vendaController.adicionarVenda()}" 
+                                     icon="pi pi-save" value="Cadastrar" 
+                                     update=":frmList" 
+                                     oncomplete="if (!args.validationFailed) PF('dlgCreate').hide()" />
 
-             
-                                 
+
 
                     <!-- Botão para incluir itens -->
                 </p:panel>
-
-                <!-- Novo Painel para Incluir Itens de Venda -->
-                
- <p:panel header="Novo Itens(V)" style="margin-top:20px; width: 100%;">                    
-     <h:form id="CreateForm">
-                        <p:growl id="growl" showDetail="true" />
-                    <div class="grid p-fluid">
-                        <!-- Primeira linha - Cupom e Item -->
-                        <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Cupom: " for="num_cupomItem" />
-                            <p:selectOneMenu id="num_cupomItem" value="#{itensVendaController.itensVenda.num_cupom}" 
-                                             required="true" requiredMessage="O Cupom é obrigatório!"
-                                             panelStyle="width:180px" filter="true" filterMatchMode="contains">
-                                <f:selectItem itemLabel="Selecione um Cupom..."/>                        
-                                <f:selectItems value="#{vendaController.vendaAll()}"
-                                               var="codCupomItem"
-                                               itemValue="#{codCupomItem}"
-                                               itemLabel="#{codCupomItem.num_cupom}"/>
-                                <p:ajax event="change" listener="#{itensVendaController.onCupomSelect}" update="iptCodClienteItem iptDesClienteItem iptCodUsuarioItem" />
-                            </p:selectOneMenu>
-                        </div>
-
-                        <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Item: " for="id_itemItem" />
-                            <p:selectOneMenu id="id_itemItem" value="#{itensVendaController.itensVenda.id_item}" 
-                                             required="false" requiredMessage="O Item é obrigatório!"
-                                             panelStyle="width:180px" filter="true" filterMatchMode="contains">
-                                <f:selectItem itemLabel="Selecione um Item..."/>                        
-                                <f:selectItems value="#{itemController.itemAll()}"
-                                               var="codIdItem"
-                                               itemValue="#{codIdItem}"
-                                               itemLabel="#{codIdItem.desc_item}"/>
-                                <p:ajax event="change" update="@form" listener="#{itensVendaController.updateValorItem}"/>
-                            </p:selectOneMenu>
-                        </div>
-
-                        <!-- Segunda linha - Código Cliente e Descrição do Cliente -->
-                        <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Código Cliente" for="iptCodClienteItem" />
-                            <p:inputNumber id="iptCodClienteItem" value="#{itensVendaController.itensVenda.cod_cliente_vda}" minValue="1" decimalPlaces="0" />
-                        </div>
-
-                        <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Descrição do Cliente" for="iptDesClienteItem" />
-                            <p:inputText id="iptDesClienteItem" size="40" required="true" 
-                                         requiredMessage="A Descrição do Cliente é obrigatória!"
-                                         value="#{itensVendaController.itensVenda.des_cliente_vda}" />
-                        </div>
-
-                        <!-- Terceira linha - Código Usuário e Quantidade Vendida -->
-                        <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Código Usuário" for="iptCodUsuarioItem" />
-                            <p:inputNumber id="iptCodUsuarioItem" value="#{itensVendaController.itensVenda.cod_usuario_vda}" minValue="1" decimalPlaces="0" />
-                        </div>
-
-                        <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Quantidade Vendida" for="iptQtdVendaItem" />
-                            <p:inputNumber id="iptQtdVendaItem" value="#{itensVendaController.itensVenda.qtd_venda}" minValue="1" decimalPlaces="0">
-                                <p:ajax event="change" update="iptVlrTotalItem" listener="#{itensVendaController.calcularValorTotal}"/>
-                            </p:inputNumber>
-                        </div>
-
-                        <!-- Quarta linha - Valor Venda e Valor Total -->
-                        <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Valor Venda" for="iptVlrVendaItem" />
-                            <p:inputText id="iptVlrVendaItem" size="40" required="true" 
-                                         requiredMessage="O Valor da Venda é obrigatório!"
-                                         value="#{itensVendaController.itensVenda.vlr_venda}">
-                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
-                                <p:ajax event="change" update="iptVlrTotalItem" listener="#{itensVendaController.calcularValorTotal}"/>
-                            </p:inputText>
-                        </div>
-
-                        <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Valor Total" for="iptVlrTotalItem" />
-                            <p:inputText id="iptVlrTotalItem" size="40" required="true" 
-                                         requiredMessage="O Valor Total é obrigatório!"
-                                         value="#{itensVendaController.itensVenda.vlr_total}" readonly="true">
-                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
-                            </p:inputText>
-                        </div>
-
-                        <!-- Quinta linha - Data/Hora Venda e Data de Lançamento -->
-                        <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Data/Hora Venda" for="ipmdtaHorVdaItem" />
-                            <p:inputText id="ipmdtaHorVdaItem" value="#{itensVendaController.itensVenda.dta_hor_vda}" disabled="true">
-                                <f:convertDateTime pattern="dd/MM/yy HH:mm" timeZone="America/Sao_Paulo" />
-                            </p:inputText>
-                        </div>
-
-                        <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Data de Lançamento" for="ipmdtaLancamentoItem" />
-                            <p:inputMask id="ipmdtaLancamentoItem" value="#{itensVendaController.itensVenda.dta_lancamento}" 
-                                         mask="99/99/9999" readonly="true">
-                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
-                            </p:inputMask>
-                        </div>
+</p:tab>
                     
+                         <!-- Aba Itens de Venda -->
+               <p:tab title="Itens Venda">
+                    <p:panel header="Novo Itens(V)" style="margin-top:20px; width: 100%;">
+                        <div class="grid p-fluid">
 
-                    <!-- Botões para Adicionar e Cadastrar -->
-                    <p:commandButton style="margin-right: 10px;" actionListener="#{itensVendaController.adicionarItem()}"
-                                     icon="pi pi-plus" value="Adicionar"
-                                     update=":frmList, CreateForm"/>
+                            <!-- Primeira linha - Cupom e Item -->
+                            <div class="field col-12 md:col-6">
+                                <p:outputLabel value="Cupom: " for="num_cupomItem" />
+                                <p:selectOneMenu id="num_cupomItem" value="#{itensVendaController.itensVenda.num_cupom}" 
+                                                 required="true" requiredMessage="O Cupom é obrigatório!"
+                                                 panelStyle="width:180px" filter="true" filterMatchMode="contains">
+                                    <f:selectItem itemLabel="Selecione um Cupom..."/>                        
+                                    <f:selectItems value="#{vendaController.vendaAll()}"
+                                                   var="codCupomItem"
+                                                   itemValue="#{codCupomItem}"
+                                                   itemLabel="#{codCupomItem.num_cupom}"/>
+                                    <p:ajax event="change" listener="#{itensVendaController.onCupomSelect}" 
+                                            update="iptCodClienteItem iptDesClienteItem iptCodUsuarioItem" />
+                                </p:selectOneMenu>
+                            </div>
 
-                    <p:commandButton actionListener="#{itensVendaController.adicionarItensVenda()}" 
-                                     icon="pi pi-save" value="Cadastrar" 
-                                     update=":frmList CreateForm" 
-                                        onclick="dlgCreate.hide()"/>
-                    
-                    </div>
+                            <div class="field col-12 md:col-6">
+                                <p:outputLabel value="Item: " for="id_itemItem" />
+                                <p:selectOneMenu id="id_itemItem" value="#{itensVendaController.itensVenda.id_item}" 
+                                                 required="false" requiredMessage="O Item é obrigatório!"
+                                                 panelStyle="width:180px" filter="true" filterMatchMode="contains">
+                                    <f:selectItem itemLabel="Selecione um Item..."/>                        
+                                    <f:selectItems value="#{itemController.itemAll()}"
+                                                   var="codIdItem"
+                                                   itemValue="#{codIdItem}"
+                                                   itemLabel="#{codIdItem.desc_item}"/>
+                                    <p:ajax event="change" update="@form" listener="#{itensVendaController.updateValorItem}"/>
+                                </p:selectOneMenu>
+                            </div>
+
+                            <!-- Segunda linha - Código Cliente e Descrição do Cliente -->
+                            <div class="field col-12 md:col-6">
+                                <p:outputLabel value="Código Cliente" for="iptCodClienteItem" />
+                                <p:inputNumber id="iptCodClienteItem" value="#{itensVendaController.itensVenda.cod_cliente_vda}" 
+                                               minValue="1" decimalPlaces="0" />
+                            </div>
+
+                            <div class="field col-12 md:col-6">
+                                <p:outputLabel value="Descrição do Cliente" for="iptDesClienteItem" />
+                                <p:inputText id="iptDesClienteItem" size="40" required="true" 
+                                             requiredMessage="A Descrição do Cliente é obrigatória!"
+                                             value="#{itensVendaController.itensVenda.des_cliente_vda}" />
+                            </div>
+
+                            <!-- Terceira linha - Código Usuário e Quantidade Vendida -->
+                            <div class="field col-12 md:col-6">
+                                <p:outputLabel value="Código Usuário" for="iptCodUsuarioItem" />
+                                <p:inputNumber id="iptCodUsuarioItem" value="#{itensVendaController.itensVenda.cod_usuario_vda}" 
+                                               minValue="1" decimalPlaces="0" />
+                            </div>
+
+                            <div class="field col-12 md:col-6">
+                                <p:outputLabel value="Quantidade Vendida" for="iptQtdVendaItem" />
+                                <p:inputNumber id="iptQtdVendaItem" value="#{itensVendaController.itensVenda.qtd_venda}" minValue="1" decimalPlaces="0">
+                                    <p:ajax event="change" update="iptVlrTotalItem" listener="#{itensVendaController.calcularValorTotal}"/>
+                                </p:inputNumber>
+                            </div>
+
+                            <!-- Quarta linha - Valor Venda e Valor Total -->
+                            <div class="field col-12 md:col-6">
+                                <p:outputLabel value="Valor Venda" for="iptVlrVendaItem" />
+                                <p:inputText id="iptVlrVendaItem" size="40" required="true" 
+                                             requiredMessage="O Valor da Venda é obrigatório!"
+                                             value="#{itensVendaController.itensVenda.vlr_venda}">
+                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                                    <p:ajax event="change" update="iptVlrTotalItem" listener="#{itensVendaController.calcularValorTotal}"/>
+                                </p:inputText>
+                            </div>
+
+                            <div class="field col-12 md:col-6">
+                                <p:outputLabel value="Valor Total" for="iptVlrTotalItem" />
+                                <p:inputText id="iptVlrTotalItem" size="40" required="true" 
+                                             requiredMessage="O Valor Total é obrigatório!"
+                                             value="#{itensVendaController.itensVenda.vlr_total}" readonly="true">
+                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
+                                </p:inputText>
+                            </div>
+
+                            <!-- Quinta linha - Data/Hora Venda e Data de Lançamento -->
+                            <div class="field col-12 md:col-6">
+                                <p:outputLabel value="Data/Hora Venda" for="ipmdtaHorVdaItem" />
+                                <p:inputText id="ipmdtaHorVdaItem" value="#{itensVendaController.itensVenda.dta_hor_vda}" disabled="true">
+                                    <f:convertDateTime pattern="dd/MM/yy HH:mm" timeZone="America/Sao_Paulo" />
+                                </p:inputText>
+                            </div>
+
+                            <div class="field col-12 md:col-6">
+                                <p:outputLabel value="Data de Lançamento" for="ipmdtaLancamentoItem" />
+                                <p:inputMask id="ipmdtaLancamentoItem" value="#{itensVendaController.itensVenda.dta_lancamento}" 
+                                             mask="99/99/9999" readonly="true">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                                </p:inputMask>
+                            </div>
+
+                        </div>
 
 
-
+                        
      
-                
-                                    <!-- Tabela para exibir itens adicionados -->
-                                    
-                                    
-                                                        <p:dataTable id="itensVendaList" value="#{itensVendaController.itensVendaList}" var="item" 
+                    </p:panel>
+
+                    <!-- Tabela para exibir itens adicionados -->
+                    <p:dataTable id="itensVendaList" value="#{itensVendaController.itensVendaList}" var="item" 
                                  emptyMessage="Nenhum item adicionado."
                                  style="margin-top: 20px; width: 100%;">
                         <p:column headerText="Código Item">
@@ -250,12 +257,13 @@
                         <p:column headerText="Valor Total">
                             <h:outputText value="#{item.vlr_total}">
                                 <f:convertNumber currencySymbol="R$" minFractionDigits="2" />
-                                </h:outputText>
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-         </p:panel>
+                            </h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab> 
 
+                <!-- Novo Painel para Incluir Itens de Venda -->
+  </p:tabView>
             </h:panelGroup>
         </h:form>
     </ui:define>
