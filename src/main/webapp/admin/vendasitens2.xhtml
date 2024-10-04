@@ -12,7 +12,7 @@
             <p:tabView orientation="top">
 
                 <!-- Aba Venda -->
-   <p:tab title="Venda">
+                <p:tab title="Venda">
                     <p:panel header="Incluir Nova Venda" style="margin-top:20px; width: 100%;">
                         <div class="grid p-fluid">
 
@@ -96,20 +96,20 @@
                         </div>
 
                         <!-- Botão para salvar a nova venda -->
-                        
-                                                    <p:commandButton id="btnCreate" value="Incluir Venda(I)"  icon="pi pi-file" 
-                                             actionListener="#{itensVendaController.prepareAdicionar()}"
-                                             update=":frmVenda"
-                                             onclick="PF('dlgCreate').show()"/>  
-                                                    
-                                                    
-                                                                          <p:commandButton actionListener="#{vendaController.adicionarVenda()}"
+
+                        <p:commandButton id="btnCreate" value="Incluir Venda(I)"  icon="pi pi-file" 
+                                         actionListener="#{itensVendaController.prepareAdicionar()}"
+                                         update=":frmVenda"
+                                         onclick="PF('dlgCreate').show()"/>  
+
+
+                        <p:commandButton actionListener="#{vendaController.adicionarVenda()}"
                                          value="Cadastrar" icon="pi pi-save"
                                          update=":frmVenda"
                                          oncomplete="PF('dlgCreate').hide()" />
-                                                                            
-       
-                     
+
+
+
                     </p:panel>
                 </p:tab>
 
@@ -223,8 +223,8 @@
                         <p:commandButton actionListener="#{itensVendaController.adicionarItensVenda()}" 
                                          icon="pi pi-save" value="Cadastrar" 
                                          update=":frmVenda" />
-                        
-     
+
+
                     </p:panel>
 
                     <!-- Tabela para exibir itens adicionados -->

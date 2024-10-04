@@ -189,12 +189,19 @@ public class ItensVendaController implements Serializable {
         Date dta_hor_vda = new Timestamp(System.currentTimeMillis());
         itensVenda.setDta_hor_vda(dta_hor_vda);
         itensVenda.setDta_lancamento(new Date()); // Definindo a data de lançamento como a data atual
+
+        // Salva o item no banco de dados
         ejbFacade.createReturn(itensVenda);
+
+        // Adiciona o item à lista local
+        itensVendaList.add(itensVenda);
+
+        // Reseta o objeto para permitir a adição de novos itens
         VendaEntity vendaAtual = itensVenda.getNum_cupom();
-        // Resetar o objeto itensVenda para permitir adicionar um novo item
         itensVenda = new ItensVendaEntity();
-        itensVenda.setDta_lancamento(new Date()); // Definindo novamente a data de lançamento para o novo item
+        itensVenda.setDta_lancamento(new Date());
         itensVenda.setNum_cupom(vendaAtual);
+
         if (vendaAtual != null) {
             itensVenda.setDes_cliente_vda(vendaAtual.getDes_cliente());
             if (vendaAtual.getCod_cliente() != null) {
@@ -204,6 +211,7 @@ public class ItensVendaController implements Serializable {
                 itensVenda.setCod_usuario_vda(vendaAtual.getCod_usuario().getCod_usuario());
             }
         }
+        // itensVenda = new ItensVendaEntity();
     }
 
     public ItensVendaEntity prepareAdicionar() {
@@ -231,6 +239,9 @@ public class ItensVendaController implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Venda concluída com sucesso!", null));
 
         //     vendaController.calcularValorTotalVendaAtual();
+        itensVendaList.clear();
+        itensVenda = new ItensVendaEntity();
+
     }
 
     public void editarItensVenda() {

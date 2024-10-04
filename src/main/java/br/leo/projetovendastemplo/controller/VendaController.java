@@ -1,5 +1,3 @@
-
-
 package br.leo.projetovendastemplo.controller;
 
 import br.leo.projetovendastemplo.entity.ItensVendaEntity;
@@ -51,18 +49,28 @@ public class VendaController implements Serializable {
     public List<ItensVendaEntity> getItensVendaList() {
         return itensVendaList;
     }
-    
+
     private boolean mostrarIncluirVenda = false;
 
-public boolean isMostrarIncluirVenda() {
-    return mostrarIncluirVenda;
-}
+    private int activeTabIndex = 0;  // Índice da aba inicial
 
+    // Getter para activeTabIndex
+    public int getActiveTabIndex() {
+        return activeTabIndex;
+    }
 
-public void toggleIncluirVenda() {
-    this.mostrarIncluirVenda = !this.mostrarIncluirVenda;
-}
+    // Setter para activeTabIndex
+    public void setActiveTabIndex(int activeTabIndex) {
+        this.activeTabIndex = activeTabIndex;
+    }
 
+    public boolean isMostrarIncluirVenda() {
+        return mostrarIncluirVenda;
+    }
+
+    public void toggleIncluirVenda() {
+        this.mostrarIncluirVenda = !this.mostrarIncluirVenda;
+    }
 
     public String getTipoVendaDescricao(String tipoVenda) {
         switch (tipoVenda) {
@@ -174,12 +182,13 @@ public void toggleIncluirVenda() {
         venda.setDta_hor_mov(dta_hor_mov);
         persist(VendaController.PersistAction.CREATE, "Registro incluído com sucesso!");
 
-        try {
-            Integer lastNumCupom = ejbFacade.findLastNumCupom();
-            FacesContext.getCurrentInstance().getExternalContext().redirect("itensvenda.xhtml?num_cupom=" + lastNumCupom);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //     try {
+        //         Integer lastNumCupom = ejbFacade.findLastNumCupom();
+        //          FacesContext.getCurrentInstance().getExternalContext().redirect("itensvenda.xhtml?num_cupom=" + lastNumCupom);
+        //      } catch (IOException e) {
+        //          e.printStackTrace();
+        //      }
+        vendaList.add(venda);
     }
 
     public void prepareItensVenda() {
