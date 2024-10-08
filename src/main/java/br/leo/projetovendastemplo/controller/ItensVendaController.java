@@ -57,6 +57,22 @@ public class ItensVendaController implements Serializable {
 //        vendaController.calcularValorTotalVenda(itensVenda.getNum_cupom().getNum_cupom());
 //    }
 //}
+    public int getTotalQuantidadeVendida() {
+        int total = 0;
+        for (ItensVendaEntity item : itensVendaList) {
+            total += item.getQtd_venda();
+        }
+        return total;
+    }
+
+    public BigDecimal getTotalValorTotal() {
+        BigDecimal total = BigDecimal.ZERO;
+        for (ItensVendaEntity item : itensVendaList) {
+            total = total.add(item.getVlr_total());
+        }
+        return total;
+    }
+
     public void removerItem(ItensVendaEntity item) {
         if (item != null) {
             try {

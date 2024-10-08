@@ -284,6 +284,7 @@
                         <p:dataTable id="itensVendaList" value="#{itensVendaController.itensVendaList}" var="item" 
                                      emptyMessage="Nenhum item adicionado."
                                      style="margin-top: 20px; width: 100%;">
+
                             <p:column headerText="Código Item">
                                 <h:outputText value="#{item.id_item}" />
                             </p:column>
@@ -304,7 +305,6 @@
                                 </h:outputText>
                             </p:column>
 
-                            <!-- Nova coluna para o botão de lixeira -->
                             <p:column headerText="Ações" style="text-align: center;">
                                 <p:commandButton icon="pi pi-trash" 
                                                  title="Excluir" 
@@ -313,8 +313,20 @@
                                                  process="@this" 
                                                  ajax="true" />
                             </p:column>
-                        </p:dataTable>
 
+                            <f:facet name="footer">
+                                <div class="grid p-fluid">
+                                    <div class="field col-12 md:col-3">
+                                        Total Quantidade: <h:outputText value="#{itensVendaController.totalQuantidadeVendida}" />
+                                    </div>
+                                    <div class="field col-12 md:col-3">
+                                        Total Valor: <h:outputText value="#{itensVendaController.totalValorTotal}">
+                                            <f:convertNumber currencySymbol="R$" minFractionDigits="2" />
+                                        </h:outputText>
+                                    </div>
+                                </div>
+                            </f:facet>
+                        </p:dataTable>
 
 
 
