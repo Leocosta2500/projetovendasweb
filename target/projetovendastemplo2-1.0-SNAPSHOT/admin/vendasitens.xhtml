@@ -151,9 +151,11 @@
                         </p:panel>
                     </p:tab>
 
+
+
                     <!-- Aba Itens de Venda -->
                     <p:tab title="Itens Venda" id="itensVendaTab">
-
+                        '
 
                         <p:panel header="Novo Itens(V)" style="margin-top:20px; width: 100%;">
                             <div class="grid p-fluid">
@@ -301,7 +303,19 @@
                                     <f:convertNumber currencySymbol="R$" minFractionDigits="2" />
                                 </h:outputText>
                             </p:column>
+
+                            <!-- Nova coluna para o botão de lixeira -->
+                            <p:column headerText="Ações" style="text-align: center;">
+                                <p:commandButton icon="pi pi-trash" 
+                                                 title="Excluir" 
+                                                 update="itensVendaList" 
+                                                 actionListener="#{itensVendaController.removerItem(item)}"
+                                                 process="@this" 
+                                                 ajax="true" />
+                            </p:column>
                         </p:dataTable>
+
+
 
 
 

@@ -57,6 +57,30 @@ public class ItensVendaController implements Serializable {
 //        vendaController.calcularValorTotalVenda(itensVenda.getNum_cupom().getNum_cupom());
 //    }
 //}
+    public void removerItem(ItensVendaEntity item) {
+        if (item != null) {
+            try {
+                // Remover o item do banco de dados
+                ejbFacade.remove(item);
+
+                // Remover o item da lista local (para atualizar a UI)
+                itensVendaList.remove(item);
+
+                // Mensagem de sucesso para feedback ao usuário
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_INFO, "Item removido com sucesso!", null));
+            } catch (Exception e) {
+                // Mensagem de erro caso haja falha ao remover
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao remover item: " + e.getMessage(), null));
+            }
+        } else {
+            // Mensagem de erro caso o item seja nulo
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha ao remover o item.", null));
+        }
+    }
+
     public List<ItensVendaEntity> itensvendaAll() {
         return ejbFacade.buscarTodos();
     }
