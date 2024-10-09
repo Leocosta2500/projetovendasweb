@@ -269,7 +269,17 @@ public class ItensVendaController implements Serializable {
     public void adicionarItensVenda() {
         Date dta_hor_vda = new Timestamp(System.currentTimeMillis());
         itensVenda.setDta_hor_vda(dta_hor_vda);
-        persist(PersistAction.CREATE, "Registro incluído com sucesso!");
+
+        // Tratar valores nulos apenas se o item NÃO for selecionado
+        if (itensVenda.getId_item() == null) {
+            if (itensVenda.getQtd_venda() == null) {
+                itensVenda.setQtd_venda(1); // Define quantidade padrão como 1
+            }
+            if (itensVenda.getVlr_venda() == null) {
+                itensVenda.setVlr_venda(BigDecimal.ZERO); // Define valor da venda padrão como 0
+            }
+            calcularValorTotal(); // Calcula o valor total
+        }
 
         // Calcular valor total da venda após adicionar o item
         vendaController.calcularValorTotalVenda(itensVenda.getNum_cupom().getNum_cupom());

@@ -28,9 +28,6 @@
                                  style="margin-bottom: 20px;" />
 
 
-
-
-
                 <p:tabView id="tabView" orientation="top" style="margin-top:20px; width: 100%;" 
                            activeIndex="#{vendaController.activeTabIndex}">
 
@@ -134,19 +131,6 @@
                                              partialSubmit="true"
                                              ajax="true" />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
                             <!-- Botão para incluir itens -->
                         </p:panel>
                     </p:tab>
@@ -193,36 +177,37 @@
                                 <div class="field col-12 md:col-6">
                                     <p:outputLabel value="Código Cliente" for="iptCodClienteItem" />
                                     <p:inputNumber id="iptCodClienteItem" value="#{itensVendaController.itensVenda.cod_cliente_vda}" 
-                                                   minValue="1" decimalPlaces="0" />
+                                                   minValue="1" decimalPlaces="0" rendered="#{not empty itensVendaController.itensVenda.id_item}" /> 
                                 </div>
 
                                 <div class="field col-12 md:col-6">
                                     <p:outputLabel value="Descrição do Cliente" for="iptDesClienteItem" />
-                                    <p:inputText id="iptDesClienteItem" size="40" required="true" 
+                                    <p:inputText id="iptDesClienteItem" size="40" 
+                                                 required="#{not empty itensVendaController.itensVenda.id_item}"
                                                  requiredMessage="A Descrição do Cliente é obrigatória!"
-                                                 value="#{itensVendaController.itensVenda.des_cliente_vda}" />
+                                                 value="#{itensVendaController.itensVenda.des_cliente_vda}" rendered="#{not empty itensVendaController.itensVenda.id_item}" /> 
                                 </div>
 
-                                <!-- Terceira linha - Código Usuário e Quantidade Vendida -->
                                 <div class="field col-12 md:col-6">
                                     <p:outputLabel value="Código Usuário" for="iptCodUsuarioItem" />
                                     <p:inputNumber id="iptCodUsuarioItem" value="#{itensVendaController.itensVenda.cod_usuario_vda}" 
-                                                   minValue="1" decimalPlaces="0" />
+                                                   minValue="1" decimalPlaces="0" rendered="#{not empty itensVendaController.itensVenda.id_item}" /> 
                                 </div>
 
                                 <div class="field col-12 md:col-6">
                                     <p:outputLabel value="Quantidade Vendida" for="iptQtdVendaItem" />
-                                    <p:inputNumber id="iptQtdVendaItem" value="#{itensVendaController.itensVenda.qtd_venda}" minValue="1" decimalPlaces="0">
+                                    <p:inputNumber id="iptQtdVendaItem" value="#{itensVendaController.itensVenda.qtd_venda}" minValue="1" decimalPlaces="0"
+                                                   rendered="#{not empty itensVendaController.itensVenda.id_item}">
                                         <p:ajax event="change" update="iptVlrTotalItem" listener="#{itensVendaController.calcularValorTotal}"/>
                                     </p:inputNumber>
                                 </div>
 
-                                <!-- Quarta linha - Valor Venda e Valor Total -->
                                 <div class="field col-12 md:col-6">
                                     <p:outputLabel value="Valor Venda" for="iptVlrVendaItem" />
-                                    <p:inputText id="iptVlrVendaItem" size="40" required="true" 
+                                    <p:inputText id="iptVlrVendaItem" size="40" 
+                                                 required="#{not empty itensVendaController.itensVenda.id_item}"
                                                  requiredMessage="O Valor da Venda é obrigatório!"
-                                                 value="#{itensVendaController.itensVenda.vlr_venda}">
+                                                 value="#{itensVendaController.itensVenda.vlr_venda}" rendered="#{not empty itensVendaController.itensVenda.id_item}"> 
                                         <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
                                         <p:ajax event="change" update="iptVlrTotalItem" listener="#{itensVendaController.calcularValorTotal}"/>
                                     </p:inputText>
@@ -230,9 +215,10 @@
 
                                 <div class="field col-12 md:col-6">
                                     <p:outputLabel value="Valor Total" for="iptVlrTotalItem" />
-                                    <p:inputText id="iptVlrTotalItem" size="40" required="true" 
+                                    <p:inputText id="iptVlrTotalItem" size="40" 
+                                                 required="#{not empty itensVendaController.itensVenda.id_item}"
                                                  requiredMessage="O Valor Total é obrigatório!"
-                                                 value="#{itensVendaController.itensVenda.vlr_total}" readonly="true">
+                                                 value="#{itensVendaController.itensVenda.vlr_total}" readonly="true" rendered="#{not empty itensVendaController.itensVenda.id_item}"> 
                                         <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
                                     </p:inputText>
                                 </div>
