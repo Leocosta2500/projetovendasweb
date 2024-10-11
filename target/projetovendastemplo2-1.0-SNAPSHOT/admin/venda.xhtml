@@ -110,11 +110,13 @@
 
                         <f:facet name="footer">
                             <!--Botão utilizado para abrir a modal de criação -->
-                            <p:commandButton id="btnCreate" value="Incluir Venda"  icon="pi pi-file" 
-                                             actionListener="#{vendaController.prepareAdicionar()}"
-                                             update=":CreateForm"
-                                             onclick="PF('dlgCreate').show()"/>  
 
+                           
+                            
+                            <p:commandButton id="btnCreateVenda" value="Incluir Venda" icon="pi pi-file" 
+                                             actionListener="#{vendaController.prepareAdicionar()}"
+                                             update=":frmList"
+                                             />
 
 
                             <!--Botão utilizado para excluir o registro selecionado-->                            

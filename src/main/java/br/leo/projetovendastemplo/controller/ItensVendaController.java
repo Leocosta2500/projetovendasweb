@@ -14,6 +14,7 @@ import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.FacesConverter;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -288,6 +289,11 @@ public class ItensVendaController implements Serializable {
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Venda concluída com sucesso!", null));
 
+            try {
+        FacesContext.getCurrentInstance().getExternalContext().redirect("venda.xhtml");
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
         //     vendaController.calcularValorTotalVendaAtual();
         itensVendaList.clear();
         itensVenda = new ItensVendaEntity();

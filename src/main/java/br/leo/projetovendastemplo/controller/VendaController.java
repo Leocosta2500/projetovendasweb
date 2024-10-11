@@ -53,6 +53,8 @@ public class VendaController implements Serializable {
     private boolean mostrarIncluirVenda = false;
 
     private int activeTabIndex = 0;  // Índice da aba inicial
+    
+    
 
     // Getter para activeTabIndex
     public int getActiveTabIndex() {
@@ -167,11 +169,18 @@ public class VendaController implements Serializable {
         this.venda = venda;
     }
 
-    public VendaEntity prepareAdicionar() {
-        venda = new VendaEntity();
-        setUsuarioLogado();
-        return venda;
+public VendaEntity prepareAdicionar() {
+    venda = new VendaEntity();
+    setUsuarioLogado(); // Definir o usuário logado
+    try {
+        // Redirecionando para a página vendasitens.xhtml
+        FacesContext.getCurrentInstance().getExternalContext().redirect("vendasitens.xhtml");
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+    return venda;
+}
+
 
     public void prepareEditar(VendaEntity venda) {
         this.selected = venda;

@@ -13,19 +13,12 @@
     <!-- Conteúdo principal da página -->
     <ui:define name="content">
         <h:form id="frmList">
+            
             <h:panelGroup id="pngList">
 
                 <!-- Componente de feedback para mensagens (sucesso, erro, etc.) -->
                 <p:growl id="growl" showDetail="true" />
 
-                <p:commandButton id="btnCreate" value="Incluir Venda" icon="pi pi-file"
-                                 actionListener="#{vendaController.prepareAdicionar()}"
-                                 update="@form" 
-                                 process="@form" 
-                                 partialSubmit="true"
-                                 immediate="true"
-                                 onclick="PF('dlgCreate').show()"
-                                 style="margin-bottom: 20px;" />
 
 
                 <p:tabView id="tabView" orientation="top" style="margin-top:20px; width: 100%;" 
@@ -139,7 +132,7 @@
 
                     <!-- Aba Itens de Venda -->
                     <p:tab title="Itens Venda" id="itensVendaTab">
-                        '
+                        
 
                         <p:panel header="Novo Itens(V)" style="margin-top:20px; width: 100%;">
                             <div class="grid p-fluid">
@@ -256,8 +249,6 @@
                                              icon="pi pi-save" 
                                              value="Cadastrar" 
                                              update="itensVendaList, :frmList" />
-
-
 
 
 
