@@ -53,8 +53,6 @@ public class VendaController implements Serializable {
     private boolean mostrarIncluirVenda = false;
 
     private int activeTabIndex = 0;  // Índice da aba inicial
-    
-    
 
     // Getter para activeTabIndex
     public int getActiveTabIndex() {
@@ -169,18 +167,17 @@ public class VendaController implements Serializable {
         this.venda = venda;
     }
 
-public VendaEntity prepareAdicionar() {
-    venda = new VendaEntity();
-    setUsuarioLogado(); // Definir o usuário logado
-    try {
-        // Redirecionando para a página vendasitens.xhtml
-        FacesContext.getCurrentInstance().getExternalContext().redirect("vendasitens.xhtml");
-    } catch (IOException e) {
-        e.printStackTrace();
+    public VendaEntity prepareAdicionar() {
+        venda = new VendaEntity();
+        setUsuarioLogado(); // Definir o usuário logado
+        try {
+            // Redirecionando para a página vendasitens.xhtml
+            FacesContext.getCurrentInstance().getExternalContext().redirect("vendasitens.xhtml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return venda;
     }
-    return venda;
-}
-
 
     public void prepareEditar(VendaEntity venda) {
         this.selected = venda;
@@ -214,8 +211,32 @@ public VendaEntity prepareAdicionar() {
     }
 
     public void deletarVenda() {
-        persist(VendaController.PersistAction.DELETE,
-                "Registro excluído com sucesso!");
+        if (selected != null) {
+            Integer numCupom = selected.getNum_cupom();
+            try {
+                // Excluir todos os itens associados a essa venda
+                List<ItensVendaEntity> itensVendaList = itensVendaFacade.findByNumCupom(numCupom);
+                for (ItensVendaEntity item : itensVendaList) {
+                    itensVendaFacade.remove(item); // Remover o item do banco de dados
+                }
+
+                // Agora excluir a própria venda
+                ejbFacade.remove(selected);
+
+                // Mensagem de sucesso
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Venda e itens removidos com sucesso!"));
+
+                // Limpar a seleção
+                selected = null;
+                vendaList = null; // Atualizar a lista de vendas para refletir a remoção
+
+            } catch (Exception e) {
+                // Tratar erro ao excluir a venda ou os itens
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao remover venda e itens: " + e.getMessage(), null));
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Nenhuma venda selecionada para exclusão.", null));
+        }
     }
 
     public static void addErrorMessage(String msg) {

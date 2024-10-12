@@ -25,8 +25,8 @@
                                  >
                         <!--Ação AJAX para atualizar somente os botões definidos em update -->
                         <!--quando selecionado ou não -->
-                        <p:ajax event="rowSelect"   update=" btnDelete btnView btnItensVenda"/>
-                        <p:ajax event="rowUnselect" update=" btnDelete btnView btnItensVenda"/>
+                        <p:ajax event="rowSelect"   update=" btnDelete  btnItensVenda"/>
+                        <p:ajax event="rowUnselect" update=" btnDelete  btnItensVenda"/>
 
                         <p:column width="4%" sortBy="#{item.num_cupom}" filterBy="#{item.num_cupom}">
                             <f:facet name="header">
@@ -111,8 +111,8 @@
                         <f:facet name="footer">
                             <!--Botão utilizado para abrir a modal de criação -->
 
-                           
-                            
+
+
                             <p:commandButton id="btnCreateVenda" value="Incluir Venda" icon="pi pi-file" 
                                              actionListener="#{vendaController.prepareAdicionar()}"
                                              update=":frmList"
@@ -128,9 +128,7 @@
                             </p:commandButton>
 
                             <!--Botão utilizado para abrir a modal de visualização -->
-                            <p:commandButton id="btnView" icon="pi pi-user-edit"  value="Detalhes da Venda" 
-                                             update="formView" oncomplete="PF('dlgView').show()" 
-                                             disabled="#{empty vendaController.selected}"/>
+
 
 
                             <p:commandButton id="btnItensVenda" value="Itens da Venda" icon="pi pi-list"
@@ -340,75 +338,120 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog header="Visualizar Detalhes da venda" widgetVar="dlgView"  height="250" 
-                  width="500" showEffect="fade" modal="true">
-            <h:form id="formView">
 
 
-                <h:panelGrid id="pngView" columns="2" rendered="#{vendaController.selected!= null}">    
-                    <p:outputLabel value="Cupom: " />
-                    <p:outputLabel value="#{vendaController.selected.num_cupom}"  />
-
-                    <p:outputLabel value="Valor total venda: "  />
-                    <p:outputLabel value="#{vendaController.selected.vlr_total_vda}"  >                     
-                    </p:outputLabel>
-
-                    <p:outputLabel value="Registro: "  />
-                    <p:outputLabel value="#{vendaController.selected.dta_hor_mov}" >
-                        <f:convertDateTime pattern="dd/MM/yy HH:mm"  />
-                    </p:outputLabel>
-
-                    <p:outputLabel value="Tipo Venda: " />
-                    <p:outputLabel value="#{vendaController.selected.tip_venda}" />
-
-
-                    <p:outputLabel value="Operação: " />                    
-                    <p:outputLabel value="#{vendaController.selected.cod_operacao}" />
-
-                    <p:outputLabel value="Quantidade de itens:"/>
-                    <p:outputLabel value="#{vendaController.selected.qtd_itens}" />
-
-                    <p:outputLabel value="UF: "/>
-                    <p:outputLabel value="#{vendaController.selected.des_uf_cli}"/>
-
-
-                    <p:outputLabel value="Descrição do Cliente:  "/>
-                    <p:outputLabel value="#{vendaController.selected.des_cliente}"/>
-
-                    <p:outputLabel value="cod_usuario "/>
-                    <p:outputLabel value="#{vendaController.selected.cod_usuario}"/>
-
-                    <p:outputLabel value="cod_cliente "/>
-                    <p:outputLabel value="#{vendaController.selected.cod_cliente}"/>
-
-
-                </h:panelGrid>   
-            </h:form>
-        </p:dialog>
-
-        <p:dialog header="Itens da Venda" widgetVar="dlgItensVenda" height="400" width="600" showEffect="fade" modal="true">
+        <p:dialog header="Itens da Venda" widgetVar="dlgItensVenda" height="600" width="1300" showEffect="fade" modal="true">
             <h:form id="frmItensVenda">
                 <p:dataTable id="itensVendaList" value="#{vendaController.itensVendaList}" var="item"
                              emptyMessage="Nenhum item encontrado para esta venda.">
-                    <p:column headerText="ID Item">
-                        <h:outputText value="#{item.id_item_vda}" />
+
+                    <p:column width="4%" sortBy="#{item.id_item_vda}">
+                        <f:facet name="header">
+                            <h:outputText value="Cod item vda"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id_item_vda}"/>
                     </p:column>
-                    <p:column headerText="Quantidade">
-                        <h:outputText value="#{item.qtd_venda}" />
+
+                    <p:column width="3%" sortBy="#{item.qtd_venda}">
+                        <f:facet name="header">
+                            <h:outputText value="Qtd Venda"/>
+                        </f:facet>
+                        <h:outputText value="#{item.qtd_venda}"/>
                     </p:column>
-                    <p:column headerText="Valor">
+
+                    <p:column width="4%" sortBy="#{item.vlr_venda}">
+                        <f:facet name="header">
+                            <h:outputText value="Valor Venda"/>
+                        </f:facet>
                         <h:outputText value="#{item.vlr_venda}">
-                            <f:convertNumber currencySymbol="R$" type="currency" />
+                            <f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR" minFractionDigits="2" maxFractionDigits="2"/>
                         </h:outputText>
                     </p:column>
-                    <p:column headerText="Total">
+
+                    <p:column width="4%" sortBy="#{item.vlr_total}">
+                        <f:facet name="header">
+                            <h:outputText value="Valor Total"/>
+                        </f:facet>
                         <h:outputText value="#{item.vlr_total}">
-                            <f:convertNumber currencySymbol="R$" type="currency" />
+                            <f:convertNumber type="currency" currencySymbol="R$" locale="pt_BR" minFractionDigits="2" maxFractionDigits="2"/>
                         </h:outputText>
                     </p:column>
+
+                    <p:column width="5%" sortBy="#{item.cod_usuario_vda}">
+                        <f:facet name="header">
+                            <h:outputText value="Usuário"/>
+                        </f:facet>
+                        <h:outputText value="#{item.cod_usuario_vda}"/>
+                    </p:column>
+
+                    <p:column width="6%" sortBy="#{item.dta_hor_vda}">
+                        <f:facet name="header">
+                            <h:outputText value="Dta Venda"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dta_hor_vda}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column width="5%" sortBy="#{item.des_cliente_vda}">
+                        <f:facet name="header">
+                            <h:outputText value="Des Cliente"/>
+                        </f:facet>
+                        <h:outputText value="#{item.des_cliente_vda}"/>
+                    </p:column>
+
+                    <p:column width="3%" sortBy="#{item.dta_lancamento}">
+                        <f:facet name="header">
+                            <h:outputText value="Data Lançamento"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dta_lancamento}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column width="5%" sortBy="#{item.cod_cliente_vda}">
+                        <f:facet name="header">
+                            <h:outputText value="Cod Cliente"/>
+                        </f:facet>
+                        <h:outputText value="#{item.cod_cliente_vda}"/>
+                    </p:column>
+
+                    <p:column width="4%" sortBy="#{item.num_cupom}">
+                        <f:facet name="header">
+                            <h:outputText value="Num Cupom"/>
+                        </f:facet>
+                        <h:outputText value="#{item.num_cupom}"/>
+                    </p:column>
+
+                    <p:column width="3%" sortBy="#{item.id_item}">
+                        <f:facet name="header">
+                            <h:outputText value="ID Item"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id_item}"/>
+                    </p:column>
+
+                    <!-- Coluna para o botão de exclusão (lixeira) -->
+                    <p:column width="5%">
+                        <f:facet name="header">
+                            <h:outputText value="Ação"/>
+                        </f:facet>
+
+                        <p:commandButton icon="pi pi-trash" title="Excluir Item"
+                                         actionListener="#{itensVendaController.deletarItensVenda(item)}"
+                                         update="frmItensVenda"
+                                         process="@this">
+                            <p:confirm header="Confirmar Exclusão" message="Você confirma exclusão do item?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+
+
+                    </p:column>
+
                 </p:dataTable>
             </h:form>
         </p:dialog>
+
+
     </ui:define>
 
 </ui:composition>
