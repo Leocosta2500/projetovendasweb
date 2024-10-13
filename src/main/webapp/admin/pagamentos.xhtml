@@ -1,0 +1,118 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <!-- Título da página -->
+    <ui:define name="title">
+        <h:outputText value="Pagamentos"></h:outputText>
+    </ui:define>
+
+    <!-- Conteúdo principal da página -->
+    <ui:define name="content">
+        <h:form id="frmPagamento">
+            <h:panelGroup id="pngPagamento">
+                <p:growl id="growl" showDetail="true" />
+
+                <p:tabView id="tabViewPagamento" orientation="top" style="margin-top:20px; width: 100%;">
+                    <p:tab title="Pagamento">
+                        <p:panel header="Registrar Novo Pagamento" style="margin-top:20px; width: 100%;">
+                            <div class="grid p-fluid">
+
+                                <!-- Campo Cupom -->
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel value="Cupom: " for="num_cupom" />
+                                    <p:selectOneMenu id="num_cupom" value="#{pagamentoController.pagamento.num_cupom}" 
+                                                     required="true" requiredMessage="O cupom é obrigatório!"
+                                                     panelStyle="width:180px" filter="true" filterMatchMode="contains">
+                                        <f:selectItem itemLabel="Selecione um Cupom..." itemValue="" />
+                                        <f:selectItems value="#{vendaController.vendaAll()}" var="codCupomItem"
+                                                       itemValue="#{codCupomItem}" itemLabel="#{codCupomItem.num_cupom}" />
+                                        <p:ajax event="change" update="@form" listener="#{pagamentoController.onCupomSelect}" />
+                                    </p:selectOneMenu>
+                                </div>
+
+                                <!-- Valor Total do Pagamento -->
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel value="Valor Total do Pagamento:" for="iptVlrTotalPag" />
+                                    <p:inputText id="iptVlrTotalPag" value="#{pagamentoController.pagamento.vlr_total_pag}" 
+                                                 required="true" requiredMessage="O valor total do pagamento é obrigatório">
+                                        <f:convertNumber pattern="#,##0.00" />
+                                    </p:inputText>
+                                </div>
+
+                                <!-- Código do Usuário Pagamento -->
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel value="Código do Usuário Pagamento:" for="iptCodUsuarioPag" />
+                                    <p:inputText id="iptCodUsuarioPag" value="#{pagamentoController.pagamento.cod_usuario_pag}" 
+                                                 required="true" requiredMessage="O código do usuário do pagamento é obrigatório">
+                                        <f:convertNumber />
+                                    </p:inputText>
+                                </div>
+
+                                <!-- Tipo de Pagamento -->
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel value="Tipo de Pagamento:" for="tipo_pagamento" />
+                                    <p:selectOneMenu id="tipo_pagamento" value="#{pagamentoController.pagamento.tipo_pag}" 
+                                                     required="true" requiredMessage="O tipo de pagamento é obrigatório!">
+                                        <f:selectItem itemLabel="Selecione um tipo de pagamento..." itemValue="" />
+                                        <f:selectItem itemLabel="Pix" itemValue="Pix" />
+                                        <f:selectItem itemLabel="Cartão Débito" itemValue="Cartão Débito" />
+                                        <f:selectItem itemLabel="Cartão de Crédito" itemValue="Cartão de Crédito" />
+                                    </p:selectOneMenu>
+                                </div>
+
+                                <!-- Status do Pagamento -->
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel value="Status do Pagamento:" for="iptStatusPag" />
+                                    <p:selectOneMenu id="iptStatusPag" value="#{pagamentoController.pagamento.status_pag}" 
+                                                     required="true" requiredMessage="O status do pagamento é obrigatório">
+                                        <f:selectItem itemLabel="Selecione um Status..." itemValue="" />
+                                        <f:selectItem itemLabel="Pago" itemValue="Pago" />
+                                        <f:selectItem itemLabel="Parcelado" itemValue="Parcelado" />
+                                    </p:selectOneMenu>
+                                </div>
+
+                                <!-- Data e Hora do Pagamento -->
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel value="Data e Hora do Pagamento:" for="iptDtaHorPag" />
+                                    <p:inputText id="iptDtaHorPag" value="#{pagamentoController.pagamento.dta_hor_pag}" 
+                                                 disabled="true" requiredMessage="A data e hora do pagamento são obrigatórias">
+                                        <f:convertDateTime pattern="dd/MM/yy HH:mm" timeZone="America/Sao_Paulo" />
+                                    </p:inputText>
+                                </div>
+
+                                <!-- Valor Pago -->
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel value="Valor Pago:" for="iptVlrPago" />
+                                    <p:inputText id="iptVlrPago" value="#{pagamentoController.pagamento.vlr_pago}" 
+                                                 required="true" requiredMessage="O valor total do pagamento é obrigatório">
+                                        <f:convertNumber pattern="#,##0.00" />
+                                        <p:ajax event="blur" update="iptVlrPago iptSaldoDevedor" 
+                                                listener="#{pagamentoController.calcularSaldoDevedor}" />
+                                    </p:inputText>
+                                </div>
+
+                                <!-- Saldo Devedor -->
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel value="Saldo Devedor:" for="iptSaldoDevedor" />
+                                    <p:inputText id="iptSaldoDevedor" value="#{pagamentoController.pagamento.saldo_devedor}" 
+                                                 requiredMessage="O valor total do pagamento é obrigatório">
+                                        <f:convertNumber pattern="#,##0.00" />
+                                    </p:inputText>
+                                </div>
+
+                            </div>
+
+                            <!-- Botão de Cadastro -->
+                            <p:commandButton id="btnCadastrar" value="Cadastrar" update=":frmPagamento" 
+                                             action="#{pagamentoController.adicionarItem()}" icon="pi pi-save" />
+                        </p:panel>
+                    </p:tab>
+                </p:tabView>
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>
