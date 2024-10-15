@@ -58,6 +58,12 @@ public class ItensVendaController implements Serializable {
 //        vendaController.calcularValorTotalVenda(itensVenda.getNum_cupom().getNum_cupom());
 //    }
 //}
+    
+    public List<ItensVendaEntity> findByNumCupom(Integer numCupom) {
+    return ejbFacade.findByNumCupom(numCupom);
+}
+
+    
     public int getTotalQuantidadeVendida() {
         int total = 0;
         for (ItensVendaEntity item : itensVendaList) {

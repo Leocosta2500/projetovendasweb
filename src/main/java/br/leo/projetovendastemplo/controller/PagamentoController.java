@@ -11,6 +11,7 @@ import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.FacesConverter;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -34,6 +35,9 @@ public class PagamentoController implements Serializable {
 
     @EJB
     private br.leo.projetovendastemplo.facade.PagamentoFacade ejbFacade;
+    
+        @Inject
+    private ItensVendaController itensVendaController; 
 
     private PagamentoEntity pagamento = new PagamentoEntity();
     private List<PagamentoEntity> pagamentoList = new ArrayList<>();
@@ -135,6 +139,8 @@ public void onCupomSelect() {
                 selected.setCod_usuario_pag(venda.getCod_usuario().getCod_usuario());
             }
         }
+                itensVendaController.setItensVendaList(itensVendaController.findByNumCupom(pagamento.getNum_cupom().getNum_cupom()));
+
     }
 }
 

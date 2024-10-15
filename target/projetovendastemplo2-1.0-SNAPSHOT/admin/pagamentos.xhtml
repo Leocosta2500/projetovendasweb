@@ -34,6 +34,33 @@
                                     </p:selectOneMenu>
                                 </div>
 
+                                <!-- Itens do Cupom Selecionado -->
+                                <p:panel header="Itens do Cupom" style="margin-top:20px; width: 100%;" rendered="#{not empty itensVendaController.itensVendaList}">
+                                    <p:dataTable id="itensCupomList" value="#{itensVendaController.itensVendaList}" var="item" 
+                                                 emptyMessage="Nenhum item encontrado para o cupom.">
+                                        <p:column headerText="Código Item">
+                                            <h:outputText value="#{item.id_item}" />
+                                        </p:column>
+                                        <p:column headerText="Descrição Item">
+                                            <h:outputText value="#{item.id_item.desc_item}" />
+                                        </p:column>
+                                        <p:column headerText="Quantidade Vendida">
+                                            <h:outputText value="#{item.qtd_venda}" />
+                                        </p:column>
+                                        <p:column headerText="Valor Unitário">
+                                            <h:outputText value="#{item.vlr_venda}">
+                                                <f:convertNumber currencySymbol="R$" minFractionDigits="2" />
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Valor Total">
+                                            <h:outputText value="#{item.vlr_total}">
+                                                <f:convertNumber currencySymbol="R$" minFractionDigits="2" />
+                                            </h:outputText>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+
+
                                 <!-- Valor Total do Pagamento -->
                                 <div class="field col-12 md:col-6">
                                     <p:outputLabel value="Valor Total do Pagamento:" for="iptVlrTotalPag" />
