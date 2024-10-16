@@ -128,9 +128,11 @@
 
 
                             <!--Botão utilizado para abrir a modal de edição -->
-                            <p:commandButton id="btnEdit" icon="pi pi-user-edit"  value="Editar pagamento" 
-                                             update="formEdit" oncomplete="PF('dlgEdit').show()" 
+                            <p:commandButton id="btnEdit" icon="pi pi-user-edit" value="Editar pagamento" 
+                                             action="#{pagamentoController.prepararEdicao()}" 
+                                             update="@form" 
                                              disabled="#{empty pagamentoController.selected}"/>
+
 
                             <!--Botão utilizado para excluir o registro selecionado-->                            
                             <!--Botão utilizado para excluir o registro selecionado-->                            

@@ -2,6 +2,7 @@ package br.leo.projetovendastemplo.controller;
 
 import br.leo.projetovendastemplo.entity.PagamentoEntity;
 import br.leo.projetovendastemplo.entity.VendaEntity;
+import jakarta.annotation.PostConstruct;
 import jakarta.ejb.EJB;
 import jakarta.ejb.EJBException;
 import jakarta.enterprise.context.SessionScoped;
@@ -113,8 +114,43 @@ public class PagamentoController implements Serializable {
             }
         }
     }
-    
-    
+
+    public void prepararEdicao() {
+        if (selected != null) {
+            try {
+                
+                // Redireciona para a página de edição com os dados do pagamento selecionado
+                FacesContext.getCurrentInstance().getExternalContext().getFlash().put("pagamento", selected);
+                FacesContext.getCurrentInstance().getExternalContext().redirect("pagamentoseditar.xhtml");
+            } catch (IOException e) {
+                e.printStackTrace();
+                addErrorMessage("Erro ao redirecionar para a página de edição: " + e.getMessage());
+            }
+        } else {
+            addErrorMessage("Nenhum pagamento selecionado para edição.");
+        }
+    }
+
+    @PostConstruct
+    public void init() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (facesContext.getExternalContext().getFlash().get("pagamento") != null) {
+            selected = (PagamentoEntity) facesContext.getExternalContext().getFlash().get("pagamento");
+        }
+    }
+
+    public void mostrarCampoAdicional() {
+        this.valorAdicional = BigDecimal.ZERO; // ou qualquer valor inicial que faça sentido
+    }
+
+    public void calcularSaldoDevedorComAdicional() {
+        BigDecimal total = selected.getVlr_total_pag() != null ? selected.getVlr_total_pag() : BigDecimal.ZERO;
+        BigDecimal pago = selected.getVlr_pago() != null ? selected.getVlr_pago() : BigDecimal.ZERO;
+        BigDecimal adicional = valorAdicional != null ? valorAdicional : BigDecimal.ZERO;
+
+        BigDecimal saldoDevedor = total.subtract(pago).subtract(adicional);
+        selected.setSaldo_devedor(saldoDevedor);
+    }
 
     public void onCupomSelect() {
         VendaEntity venda = null;
@@ -194,9 +230,9 @@ public class PagamentoController implements Serializable {
             // Persistir o pagamento no banco de dados
             ejbFacade.createReturn(pagamento);
 
-        // Exibir mensagem de sucesso
-        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
-        addSuccessMessage("Registro incluído com sucesso!");
+            // Exibir mensagem de sucesso
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+            addSuccessMessage("Registro incluído com sucesso!");
 
             // Limpar o objeto pagamento para limpar os campos da tela
             pagamento = new PagamentoEntity();

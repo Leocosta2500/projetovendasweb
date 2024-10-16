@@ -103,25 +103,33 @@
                         <!-- Saldo Devedor -->
                         <div class="field col-12 md:col-6">
                             <p:outputLabel value="Saldo Devedor:" for="iptSaldoDevedor" />
-                            <p:inputText id="iptSaldoDevedor" value="#{pagamentoController.selected.saldo_devedor}" 
-                                         requiredMessage="O valor total do pagamento é obrigatório" readonly="true">
+                            <p:inputText id="iptSaldoDevedor" value="#{pagamentoController.selected.saldo_devedor}" readonly="true">
                                 <f:convertNumber pattern="#,##0.00" />
                             </p:inputText>
                         </div>
 
+                        <!-- Painel de Valor Adicional -->
+                        <p:outputPanel id="adicionalValorPanel" style="margin-top: 10px;">
+                            <h:panelGrid columns="2" rendered="#{not empty pagamentoController.valorAdicional}">
+                                <p:outputLabel value="Valor adicional:" for="iptValorAdicional" />
+                                <p:inputText id="iptValorAdicional" size="20" value="#{pagamentoController.valorAdicional}" required="true" requiredMessage="O valor adicional é obrigatório">
+                                    <f:convertNumber pattern="#,##0.00" />
+                                    <p:ajax event="keyup" process="@this" update="iptSaldoDevedor" listener="#{pagamentoController.calcularSaldoDevedorComAdicional}" />
+                                </p:inputText>
+                            </h:panelGrid>
+                        </p:outputPanel>
+
                     </div>
 
                     <!-- Botão de Salvar -->
-                    <p:commandButton id="btnSalvarEdicao" value="Salvar" update="@form, :frmList" 
+                    <p:commandButton id="btnSalvarEdicao" value="Salvar" update="@form" 
                                      action="#{pagamentoController.editarItem()}" icon="pi pi-save" />
 
                     <!-- Botão de Adicionar -->
                     <p:commandButton value="Adicionar" icon="pi pi-plus" 
-                                     onclick="PF('dlgAdicionarPagamento').show()" 
-                                     process="@this" update=":formAdicionarPagamento" />
-
+                                     update="adicionalValorPanel"
+                                     actionListener="#{pagamentoController.mostrarCampoAdicional}" />
                 </p:panel>
-
             </h:panelGroup>
         </h:form>
     </ui:define>
