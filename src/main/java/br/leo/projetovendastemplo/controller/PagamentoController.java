@@ -184,11 +184,31 @@ public class PagamentoController implements Serializable {
     }
 
     public void adicionarItem() {
-        //buscando a datahoraatual do sistema.
-        Date dta_hor_pag = new Timestamp(System.currentTimeMillis());
-        pagamento.setDta_hor_pag(dta_hor_pag);
-        persist(PagamentoController.PersistAction.CREATE,
-                "Registro incluído com sucesso!");
+        try {
+            // Definir a data e hora do pagamento
+            Date dta_hor_pag = new Timestamp(System.currentTimeMillis());
+            pagamento.setDta_hor_pag(dta_hor_pag);
+
+            // Persistir o pagamento no banco de dados
+            ejbFacade.createReturn(pagamento);
+
+            // Exibir mensagem de sucesso
+            addSuccessMessage("Registro incluído com sucesso!");
+
+            // Limpar o objeto pagamento para limpar os campos da tela
+            pagamento = new PagamentoEntity();
+
+            // Limpar a lista de itens do cupom
+            itensVendaController.setItensVendaList(null);
+
+            // Redirecionar para a página pagamentos.xhtml
+            FacesContext.getCurrentInstance().getExternalContext().redirect("pagamento.xhtml");
+
+        } catch (IOException e) {
+            addErrorMessage("Erro ao redirecionar: " + e.getMessage());
+        } catch (Exception e) {
+            addErrorMessage("Erro ao incluir pagamento: " + e.getMessage());
+        }
     }
 
     public void editarItem() {

@@ -35,7 +35,8 @@
                                 </div>
 
                                 <!-- Itens do Cupom Selecionado -->
-                                <p:panel header="Itens do Cupom" style="margin-top:20px; width: 100%;" rendered="#{not empty itensVendaController.itensVendaList}">
+                                <p:panel header="Itens do Cupom" style="margin-top:20px; width: 100%;" 
+                                         rendered="#{not empty pagamentoController.pagamento.num_cupom}">
                                     <p:dataTable id="itensCupomList" value="#{itensVendaController.itensVendaList}" var="item" 
                                                  emptyMessage="Nenhum item encontrado para o cupom.">
                                         <p:column headerText="Código Item">
@@ -59,6 +60,7 @@
                                         </p:column>
                                     </p:dataTable>
                                 </p:panel>
+
 
 
                                 <!-- Valor Total do Pagamento -->
@@ -134,8 +136,13 @@
                             </div>
 
                             <!-- Botão de Cadastro -->
-                            <p:commandButton id="btnCadastrar" value="Cadastrar" update=":frmPagamento" 
-                                             action="#{pagamentoController.adicionarItem()}" icon="pi pi-save" />
+                            <p:commandButton id="btnCadastrar" 
+                                             value="Cadastrar" 
+                                             action="#{pagamentoController.adicionarItem()}" 
+                                             update=":frmPagamento:growl, :frmPagamento" 
+                                             icon="pi pi-save" />
+
+
                         </p:panel>
                     </p:tab>
                 </p:tabView>
