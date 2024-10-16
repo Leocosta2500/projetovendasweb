@@ -113,6 +113,8 @@ public class PagamentoController implements Serializable {
             }
         }
     }
+    
+    
 
     public void onCupomSelect() {
         VendaEntity venda = null;
@@ -192,8 +194,9 @@ public class PagamentoController implements Serializable {
             // Persistir o pagamento no banco de dados
             ejbFacade.createReturn(pagamento);
 
-            // Exibir mensagem de sucesso
-            addSuccessMessage("Registro incluído com sucesso!");
+        // Exibir mensagem de sucesso
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+        addSuccessMessage("Registro incluído com sucesso!");
 
             // Limpar o objeto pagamento para limpar os campos da tela
             pagamento = new PagamentoEntity();
