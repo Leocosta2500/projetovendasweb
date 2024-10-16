@@ -1,4 +1,3 @@
-
 package br.leo.projetovendastemplo.controller;
 
 import br.leo.projetovendastemplo.entity.PagamentoEntity;
@@ -13,6 +12,7 @@ import jakarta.faces.convert.Converter;
 import jakarta.faces.convert.FacesConverter;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -24,20 +24,18 @@ import java.util.List;
  *
  * @author leona
  */
-
 @Named(value = "pagamentoController")
 @SessionScoped
 public class PagamentoController implements Serializable {
-    
-    
-        @EJB
+
+    @EJB
     private br.leo.projetovendastemplo.facade.VendaFacade vendaFacade;
 
     @EJB
     private br.leo.projetovendastemplo.facade.PagamentoFacade ejbFacade;
-    
-        @Inject
-    private ItensVendaController itensVendaController; 
+
+    @Inject
+    private ItensVendaController itensVendaController;
 
     private PagamentoEntity pagamento = new PagamentoEntity();
     private List<PagamentoEntity> pagamentoList = new ArrayList<>();
@@ -74,9 +72,7 @@ public class PagamentoController implements Serializable {
     public PagamentoEntity getPagamento(java.lang.Integer num_pag) {
         return ejbFacade.find(num_pag);
     }
-    
-    
-    
+
     @FacesConverter(forClass = PagamentoEntity.class)
     public static class PagamentoControllerConverter implements Converter {
 
@@ -117,51 +113,48 @@ public class PagamentoController implements Serializable {
             }
         }
     }
-    
-    
-public void onCupomSelect() {
-    VendaEntity venda = null;
-    if (pagamento.getNum_cupom() != null) {
-        venda = vendaFacade.findByNumCupom(pagamento.getNum_cupom().getNum_cupom());
-    } else if (selected != null && selected.getNum_cupom() != null) {
-        venda = vendaFacade.findByNumCupom(selected.getNum_cupom().getNum_cupom());
-    }
 
-    if (venda != null) {
+    public void onCupomSelect() {
+        VendaEntity venda = null;
         if (pagamento.getNum_cupom() != null) {
-            pagamento.setVlr_total_pag(venda.getVlr_total_vda());
-            if (venda.getCod_usuario() != null) {
-                pagamento.setCod_usuario_pag(venda.getCod_usuario().getCod_usuario());
-            }
+            venda = vendaFacade.findByNumCupom(pagamento.getNum_cupom().getNum_cupom());
         } else if (selected != null && selected.getNum_cupom() != null) {
-            selected.setVlr_total_pag(venda.getVlr_total_vda());
-            if (venda.getCod_usuario() != null) {
-                selected.setCod_usuario_pag(venda.getCod_usuario().getCod_usuario());
-            }
+            venda = vendaFacade.findByNumCupom(selected.getNum_cupom().getNum_cupom());
         }
-                itensVendaController.setItensVendaList(itensVendaController.findByNumCupom(pagamento.getNum_cupom().getNum_cupom()));
 
+        if (venda != null) {
+            if (pagamento.getNum_cupom() != null) {
+                pagamento.setVlr_total_pag(venda.getVlr_total_vda());
+                if (venda.getCod_usuario() != null) {
+                    pagamento.setCod_usuario_pag(venda.getCod_usuario().getCod_usuario());
+                }
+            } else if (selected != null && selected.getNum_cupom() != null) {
+                selected.setVlr_total_pag(venda.getVlr_total_vda());
+                if (venda.getCod_usuario() != null) {
+                    selected.setCod_usuario_pag(venda.getCod_usuario().getCod_usuario());
+                }
+            }
+            itensVendaController.setItensVendaList(itensVendaController.findByNumCupom(pagamento.getNum_cupom().getNum_cupom()));
+
+        }
     }
-}
 
-
-public void calcularSaldoDevedor() {
-    BigDecimal total = (pagamento != null && pagamento.getVlr_total_pag() != null) ? pagamento.getVlr_total_pag() : BigDecimal.ZERO;
-    BigDecimal pago = (pagamento != null && pagamento.getVlr_pago() != null) ? pagamento.getVlr_pago() : BigDecimal.ZERO;
-    BigDecimal saldoDevedor = total.subtract(pago);
-    if (pagamento != null) {
-        pagamento.setSaldo_devedor(saldoDevedor);
+    public void calcularSaldoDevedor() {
+        BigDecimal total = (pagamento != null && pagamento.getVlr_total_pag() != null) ? pagamento.getVlr_total_pag() : BigDecimal.ZERO;
+        BigDecimal pago = (pagamento != null && pagamento.getVlr_pago() != null) ? pagamento.getVlr_pago() : BigDecimal.ZERO;
+        BigDecimal saldoDevedor = total.subtract(pago);
+        if (pagamento != null) {
+            pagamento.setSaldo_devedor(saldoDevedor);
+        }
+        if (selected != null) {
+            BigDecimal totalSelected = (selected.getVlr_total_pag() != null) ? selected.getVlr_total_pag() : BigDecimal.ZERO;
+            BigDecimal pagoSelected = (selected.getVlr_pago() != null) ? selected.getVlr_pago() : BigDecimal.ZERO;
+            BigDecimal saldoDevedorSelected = totalSelected.subtract(pagoSelected);
+            selected.setSaldo_devedor(saldoDevedorSelected);
+        }
     }
-    if (selected != null) {
-        BigDecimal totalSelected = (selected.getVlr_total_pag() != null) ? selected.getVlr_total_pag() : BigDecimal.ZERO;
-        BigDecimal pagoSelected = (selected.getVlr_pago() != null) ? selected.getVlr_pago() : BigDecimal.ZERO;
-        BigDecimal saldoDevedorSelected = totalSelected.subtract(pagoSelected);
-        selected.setSaldo_devedor(saldoDevedorSelected);
-    }
-}
 
-
-      private BigDecimal valorAdicional;
+    private BigDecimal valorAdicional;
 
     public BigDecimal getValorAdicional() {
         return valorAdicional;
@@ -179,13 +172,14 @@ public void calcularSaldoDevedor() {
         }
     }
 
-    
-    
-    
-    
-    
-     public PagamentoEntity prepareAdicionar() {
-        pagamento = new PagamentoEntity();
+    public PagamentoEntity prepareAdicionar() {
+        pagamento = new PagamentoEntity(); // Inicializa uma nova entidade de pagamento
+        try {
+            // Redireciona para a página pagamentos.xhtml
+            FacesContext.getCurrentInstance().getExternalContext().redirect("pagamentos.xhtml");
+        } catch (IOException e) {
+            e.printStackTrace(); // Exibe qualquer erro de redirecionamento
+        }
         return pagamento;
     }
 
@@ -193,7 +187,7 @@ public void calcularSaldoDevedor() {
         //buscando a datahoraatual do sistema.
         Date dta_hor_pag = new Timestamp(System.currentTimeMillis());
         pagamento.setDta_hor_pag(dta_hor_pag);
-        persist(PagamentoController.PersistAction.CREATE, 
+        persist(PagamentoController.PersistAction.CREATE,
                 "Registro incluído com sucesso!");
     }
 
@@ -206,9 +200,8 @@ public void calcularSaldoDevedor() {
         persist(PagamentoController.PersistAction.DELETE,
                 "Registro excluído com sucesso!");
     }
-    
-    
-     public static void addErrorMessage(String msg) {
+
+    public static void addErrorMessage(String msg) {
         FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
                 msg, msg);
         FacesContext.getCurrentInstance().addMessage(null, facesMsg);
@@ -262,6 +255,4 @@ public void calcularSaldoDevedor() {
         }
     }
 
-
 }
-
