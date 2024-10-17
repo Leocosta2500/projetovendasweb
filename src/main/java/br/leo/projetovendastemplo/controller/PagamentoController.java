@@ -151,6 +151,15 @@ public class PagamentoController implements Serializable {
         BigDecimal saldoDevedor = total.subtract(pago).subtract(adicional);
         selected.setSaldo_devedor(saldoDevedor);
     }
+    
+    public void somarValorAdicional() {
+    if (selected != null && selected.getVlr_pago() != null && valorAdicional != null) {
+        // Soma o valor adicional ao valor pago
+        BigDecimal novoValorPago = selected.getVlr_pago().add(valorAdicional);
+        selected.setVlr_pago(novoValorPago);
+    }
+}
+
 
     public void onCupomSelect() {
         VendaEntity venda = null;

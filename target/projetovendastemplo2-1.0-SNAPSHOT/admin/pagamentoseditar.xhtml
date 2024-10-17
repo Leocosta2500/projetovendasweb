@@ -115,6 +115,9 @@
                                 <p:inputText id="iptValorAdicional" size="20" value="#{pagamentoController.valorAdicional}" required="true" requiredMessage="O valor adicional é obrigatório">
                                     <f:convertNumber pattern="#,##0.00" />
                                     <p:ajax event="keyup" process="@this" update="iptSaldoDevedor" listener="#{pagamentoController.calcularSaldoDevedorComAdicional}" />
+                                            <p:ajax event="blur" update="iptVlrPago" listener="#{pagamentoController.somarValorAdicional}" />
+
+                                
                                 </p:inputText>
                             </h:panelGrid>
                         </p:outputPanel>
