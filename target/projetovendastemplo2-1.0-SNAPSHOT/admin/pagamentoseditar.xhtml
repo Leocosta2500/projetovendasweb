@@ -14,7 +14,8 @@
     <ui:define name="content">
         <h:form id="frmEditPagamento">
             <h:panelGroup id="pngEditPagamento">
-                <p:growl id="growl" showDetail="true" />
+                <p:growl id="growl" showDetail="true" life="3000" />
+
 
                 <p:panel header="Editar Pagamento" style="margin-top:20px; width: 100%;">
                     <div class="grid p-fluid">
@@ -115,9 +116,9 @@
                                 <p:inputText id="iptValorAdicional" size="20" value="#{pagamentoController.valorAdicional}" required="true" requiredMessage="O valor adicional é obrigatório">
                                     <f:convertNumber pattern="#,##0.00" />
                                     <p:ajax event="keyup" process="@this" update="iptSaldoDevedor" listener="#{pagamentoController.calcularSaldoDevedorComAdicional}" />
-                                            <p:ajax event="blur" update="iptVlrPago" listener="#{pagamentoController.somarValorAdicional}" />
+                                    <p:ajax event="blur" update="iptVlrPago" listener="#{pagamentoController.somarValorAdicional}" />
 
-                                
+
                                 </p:inputText>
                             </h:panelGrid>
                         </p:outputPanel>
@@ -125,8 +126,13 @@
                     </div>
 
                     <!-- Botão de Salvar -->
-                    <p:commandButton id="btnSalvarEdicao" value="Salvar" update="@form" 
-                                     action="#{pagamentoController.editarItem()}" icon="pi pi-save" />
+                    <p:commandButton id="btnSalvarEdicao"
+                                     value="Salvar"
+                                     action="#{pagamentoController.editarItem}"
+                                     update=":frmEditPagamento:growl"
+                                     icon="pi pi-save"
+                                     oncomplete="if (!args.validationFailed) {window.location.href='pagamento.xhtml'}" />
+
 
                     <!-- Botão de Adicionar -->
                     <p:commandButton value="Adicionar" icon="pi pi-plus" 

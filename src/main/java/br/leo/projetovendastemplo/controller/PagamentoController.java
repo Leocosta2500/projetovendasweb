@@ -118,7 +118,7 @@ public class PagamentoController implements Serializable {
     public void prepararEdicao() {
         if (selected != null) {
             try {
-                
+
                 // Redireciona para a página de edição com os dados do pagamento selecionado
                 FacesContext.getCurrentInstance().getExternalContext().getFlash().put("pagamento", selected);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("pagamentoseditar.xhtml");
@@ -151,15 +151,14 @@ public class PagamentoController implements Serializable {
         BigDecimal saldoDevedor = total.subtract(pago).subtract(adicional);
         selected.setSaldo_devedor(saldoDevedor);
     }
-    
-    public void somarValorAdicional() {
-    if (selected != null && selected.getVlr_pago() != null && valorAdicional != null) {
-        // Soma o valor adicional ao valor pago
-        BigDecimal novoValorPago = selected.getVlr_pago().add(valorAdicional);
-        selected.setVlr_pago(novoValorPago);
-    }
-}
 
+    public void somarValorAdicional() {
+        if (selected != null && selected.getVlr_pago() != null && valorAdicional != null) {
+            // Soma o valor adicional ao valor pago
+            BigDecimal novoValorPago = selected.getVlr_pago().add(valorAdicional);
+            selected.setVlr_pago(novoValorPago);
+        }
+    }
 
     public void onCupomSelect() {
         VendaEntity venda = null;
@@ -260,8 +259,22 @@ public class PagamentoController implements Serializable {
     }
 
     public void editarItem() {
-        persist(PagamentoController.PersistAction.UPDATE,
-                "Registro alterado com sucesso!");
+        try {
+            // Atualiza o item no banco de dados
+            ejbFacade.edit(selected);
+
+            // Exibe mensagem de sucesso
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+            addSuccessMessage("Registro alterado com sucesso!");
+
+            // Redirecionar para a página pagamentos.xhtml
+            FacesContext.getCurrentInstance().getExternalContext().redirect("pagamento.xhtml");
+
+        } catch (IOException e) {
+            addErrorMessage("Erro ao redirecionar: " + e.getMessage());
+        } catch (Exception e) {
+            addErrorMessage("Erro ao atualizar o pagamento: " + e.getMessage());
+        }
     }
 
     public void deletarItem() {
