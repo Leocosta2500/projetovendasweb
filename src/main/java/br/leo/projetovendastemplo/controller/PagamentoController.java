@@ -232,6 +232,17 @@ public class PagamentoController implements Serializable {
     }
 
     public void adicionarItem() {
+
+        if ("Pago".equals(pagamento.getStatus_pag())) {
+            BigDecimal valorTotal = pagamento.getVlr_total_pag() != null ? pagamento.getVlr_total_pag() : BigDecimal.ZERO;
+            BigDecimal valorPago = pagamento.getVlr_pago() != null ? pagamento.getVlr_pago() : BigDecimal.ZERO;
+
+            // Validação para garantir que o valor pago seja igual ao valor total quando o status for "Pago"
+            if (valorPago.compareTo(valorTotal) != 0) {
+                addErrorMessage("Para status 'Pago', o valor pago deve ser igual ao valor total.");
+                return;
+            }
+        }
         try {
             // Definir a data e hora do pagamento
             Date dta_hor_pag = new Timestamp(System.currentTimeMillis());
@@ -282,6 +293,18 @@ public class PagamentoController implements Serializable {
     public void deletarItem() {
         persist(PagamentoController.PersistAction.DELETE,
                 "Registro excluído com sucesso!");
+    }
+
+    public void validarValorPago() {
+        if ("Pago".equals(pagamento.getStatus_pag())) {
+            BigDecimal valorTotal = pagamento.getVlr_total_pag() != null ? pagamento.getVlr_total_pag() : BigDecimal.ZERO;
+            BigDecimal valorPago = pagamento.getVlr_pago() != null ? pagamento.getVlr_pago() : BigDecimal.ZERO;
+
+            // Verifica se o valor pago é igual ao valor total
+            if (valorPago.compareTo(valorTotal) != 0) {
+                pagamento.setVlr_pago(valorTotal);
+            }
+        }
     }
 
     public static void addErrorMessage(String msg) {

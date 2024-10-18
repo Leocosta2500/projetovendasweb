@@ -58,16 +58,17 @@ public class ItensVendaController implements Serializable {
 //        vendaController.calcularValorTotalVenda(itensVenda.getNum_cupom().getNum_cupom());
 //    }
 //}
-    
     public List<ItensVendaEntity> findByNumCupom(Integer numCupom) {
-    return ejbFacade.findByNumCupom(numCupom);
-}
+        List<ItensVendaEntity> result = ejbFacade.findByNumCupom(numCupom);
+        return result != null ? result : new ArrayList<>();
+    }
 
-    
     public int getTotalQuantidadeVendida() {
         int total = 0;
-        for (ItensVendaEntity item : itensVendaList) {
-            total += item.getQtd_venda();
+        if (itensVendaList != null) {
+            for (ItensVendaEntity item : itensVendaList) {
+                total += item.getQtd_venda();
+            }
         }
         return total;
     }
@@ -113,7 +114,7 @@ public class ItensVendaController implements Serializable {
     }
 
     public void setItensVendaList(List<ItensVendaEntity> itensVendaList) {
-        this.itensVendaList = itensVendaList;
+        this.itensVendaList = itensVendaList != null ? itensVendaList : new ArrayList<>();
     }
 
     public ItensVendaEntity getSelected() {
@@ -295,11 +296,11 @@ public class ItensVendaController implements Serializable {
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Venda concluída com sucesso!", null));
 
-            try {
-        FacesContext.getCurrentInstance().getExternalContext().redirect("venda.xhtml");
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("venda.xhtml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //     vendaController.calcularValorTotalVendaAtual();
         itensVendaList.clear();
         itensVenda = new ItensVendaEntity();

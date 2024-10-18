@@ -94,6 +94,8 @@
                                 </div>
 
                                 <!-- Status do Pagamento -->
+                                <!-- Status do Pagamento -->
+
                                 <div class="field col-12 md:col-6">
                                     <p:outputLabel value="Status do Pagamento:" for="iptStatusPag" />
                                     <p:selectOneMenu id="iptStatusPag" value="#{pagamentoController.pagamento.status_pag}" 
@@ -101,8 +103,12 @@
                                         <f:selectItem itemLabel="Selecione um Status..." itemValue="" />
                                         <f:selectItem itemLabel="Pago" itemValue="Pago" />
                                         <f:selectItem itemLabel="Parcelado" itemValue="Parcelado" />
+                                        <p:ajax event="change" listener="#{pagamentoController.validarValorPago}" update=":frmPagamento:growl, iptVlrPago" />
+
                                     </p:selectOneMenu>
                                 </div>
+
+
 
                                 <!-- Data e Hora do Pagamento -->
                                 <div class="field col-12 md:col-6">
