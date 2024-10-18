@@ -110,18 +110,20 @@
                         </div>
 
                         <!-- Painel de Valor Adicional -->
-                        <p:outputPanel id="adicionalValorPanel" style="margin-top: 10px;">
-                            <h:panelGrid columns="2" rendered="#{not empty pagamentoController.valorAdicional}">
+                        <p:outputPanel id="adicionalValorPanel" style="margin-top: 10px;"
+                                       rendered="#{not empty pagamentoController.valorAdicional}">
+                            <h:panelGrid columns="2">
                                 <p:outputLabel value="Valor adicional:" for="iptValorAdicional" />
-                                <p:inputText id="iptValorAdicional" size="20" value="#{pagamentoController.valorAdicional}" required="true" requiredMessage="O valor adicional é obrigatório">
+                                <p:inputText id="iptValorAdicional" size="20" value="#{pagamentoController.valorAdicional}" required="true"
+                                             requiredMessage="O valor adicional é obrigatório">
                                     <f:convertNumber pattern="#,##0.00" />
                                     <p:ajax event="keyup" process="@this" update="iptSaldoDevedor" listener="#{pagamentoController.calcularSaldoDevedorComAdicional}" />
                                     <p:ajax event="blur" update="iptVlrPago" listener="#{pagamentoController.somarValorAdicional}" />
-
-
                                 </p:inputText>
                             </h:panelGrid>
                         </p:outputPanel>
+
+
 
                     </div>
 
@@ -135,9 +137,14 @@
 
 
                     <!-- Botão de Adicionar -->
-                    <p:commandButton value="Adicionar" icon="pi pi-plus" 
+                    <!-- Botão de Adicionar -->
+
+                    <p:commandButton value="Adicionar Pagamento" icon="pi pi-plus"
                                      update="adicionalValorPanel"
-                                     actionListener="#{pagamentoController.mostrarCampoAdicional}" />
+                                     actionListener="#{pagamentoController.mostrarCampoAdicional}"
+                                     oncomplete="window.location.reload();" />
+
+
                 </p:panel>
             </h:panelGroup>
         </h:form>

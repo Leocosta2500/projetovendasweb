@@ -118,6 +118,8 @@ public class PagamentoController implements Serializable {
     public void prepararEdicao() {
         if (selected != null) {
             try {
+                // Oculta o campo de valor adicional ao preparar a edição
+                this.valorAdicional = null; // ou BigDecimal.ZERO se for melhor para seu caso
 
                 // Redireciona para a página de edição com os dados do pagamento selecionado
                 FacesContext.getCurrentInstance().getExternalContext().getFlash().put("pagamento", selected);
@@ -140,7 +142,7 @@ public class PagamentoController implements Serializable {
     }
 
     public void mostrarCampoAdicional() {
-        this.valorAdicional = BigDecimal.ZERO; // ou qualquer valor inicial que faça sentido
+        this.valorAdicional = BigDecimal.ZERO; // Define um valor inicial para exibir o campo
     }
 
     public void calcularSaldoDevedorComAdicional() {
