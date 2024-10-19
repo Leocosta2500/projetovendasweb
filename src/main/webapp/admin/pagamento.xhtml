@@ -24,8 +24,9 @@
                                  emptyMessage="Nenhuma usario cadastrado..."
                                  >
 
-                        <p:ajax event="rowSelect"   update="btnEdit btnDelete btnView"/>
-                        <p:ajax event="rowUnselect" update="btnEdit btnDelete btnView"/>
+                        <p:ajax event="rowSelect" update="btnEdit btnDelete btnViewPagamento"/>
+                        <p:ajax event="rowUnselect" update="btnEdit btnDelete btnViewPagamento"/>
+
 
 
                         <p:column width="4" sortBy="#{item.num_pag}" filterBy="#{item.num_pag}">
@@ -145,9 +146,14 @@
 
 
                             <!--Botão utilizado para abrir a modal de visualização -->
-                            <p:commandButton id="btnView" icon="pi pi-user-edit"  value="Detalhes da pagamento" 
-                                             update="formView" oncomplete="PF('dlgView').show()" 
-                                             disabled="#{empty pagamentoController.selected}"/>
+                            <p:commandButton id="btnViewPagamento" value="Detalhes do Pagamento" icon="pi pi-list"
+                                             actionListener="#{pagamentoController.prepareDetalhesPagamento()}"
+                                             update=":formViewPagamento"
+                                             oncomplete="PF('dlgViewPagamento').show()"
+                                             disabled="#{empty pagamentoController.selected}"
+                                             style="margin-left: 5px;" />
+
+
 
                         </f:facet>
 
@@ -381,51 +387,80 @@
 
 
 
-        <p:dialog header="Visualizar Detalhes da Pagamento" widgetVar="dlgView"  height="250" 
-                  width="500" showEffect="fade" modal="true">
-            <h:form id="formView">
-                <h:panelGrid id="pngView" columns="2">   
-                    <p:outputLabel value="Número do Pagamento:" />
-                    <p:outputLabel value="#{pagamentoController.selected.num_pag}" />
+        <p:dialog header="Detalhes do Pagamento" widgetVar="dlgViewPagamento" height="600" width="1300" showEffect="fade" modal="true">
+            <h:form id="formViewPagamento">
+                <p:dataTable id="detalhesPagamentoList" value="#{pagamentoController.detalhesPagamentoList}" var="detalhe"
+                             emptyMessage="Nenhum detalhe encontrado para este pagamento.">
 
-                    <p:outputLabel value="Data e Hora do Pagamento:" />
-                    <p:outputLabel value="#{pagamentoController.selected.dta_hor_pag}">
-                        <f:convertDateTime pattern="dd/MM/yy HH:mm"  />
-                    </p:outputLabel>
+                    <p:column width="4%" sortBy="#{detalhe.num_pag}">
+                        <f:facet name="header">
+                            <h:outputText value="Número do Pagamento"/>
+                        </f:facet>
+                        <h:outputText value="#{detalhe.num_pag}"/>
+                    </p:column>
 
-                    <p:outputLabel value="Tipo de Pagamento:" />
-                    <p:outputLabel value="#{pagamentoController.selected.tipo_pag}" />
+                    <p:column width="6%" sortBy="#{detalhe.dta_hor_pag}">
+                        <f:facet name="header">
+                            <h:outputText value="Data e Hora do Pagamento"/>
+                        </f:facet>
+                        <h:outputText value="#{detalhe.dta_hor_pag}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo"/>
+                        </h:outputText>
+                    </p:column>
 
-                    <p:outputLabel value="Valor Total do Pagamento:" />
-                    <p:outputLabel value="#{pagamentoController.selected.vlr_total_pag}">
-                        <f:convertNumber pattern="#,##0.00" />
-                    </p:outputLabel>
+                    <p:column width="6%" sortBy="#{detalhe.tipo_pag}">
+                        <f:facet name="header">
+                            <h:outputText value="Tipo de Pagamento"/>
+                        </f:facet>
+                        <h:outputText value="#{detalhe.tipo_pag}"/>
+                    </p:column>
 
-                    <p:outputLabel value="Código do Usuário Pagamento:" />
-                    <p:outputLabel value="#{pagamentoController.selected.cod_usuario_pag}" />
+                    <p:column width="6%" sortBy="#{detalhe.vlr_total_pag}">
+                        <f:facet name="header">
+                            <h:outputText value="Valor Total"/>
+                        </f:facet>
+                        <h:outputText value="#{detalhe.vlr_total_pag}"/>
+                    </p:column>
 
-                    <p:outputLabel value="Status do Pagamento:" />
-                    <p:outputLabel value="#{pagamentoController.selected.status_pag}" />
+                    <p:column width="6%" sortBy="#{detalhe.cod_usuario_pag}">
+                        <f:facet name="header">
+                            <h:outputText value="Código Usuário"/>
+                        </f:facet>
+                        <h:outputText value="#{detalhe.cod_usuario_pag}"/>
+                    </p:column>
 
-                    <p:outputLabel value="Número do Cupom:" />
-                    <p:outputLabel value="#{pagamentoController.selected.num_cupom}" />
+                    <p:column width="6%" sortBy="#{detalhe.status_pag}">
+                        <f:facet name="header">
+                            <h:outputText value="Status"/>
+                        </f:facet>
+                        <h:outputText value="#{detalhe.status_pag}"/>
+                    </p:column>
 
-                    <p:outputLabel value="Valor Pago:" />
-                    <p:outputLabel value="#{pagamentoController.selected.vlr_pago}">
-                        <f:convertNumber pattern="#,##0.00" />
-                    </p:outputLabel>
+                    <p:column width="6%" sortBy="#{detalhe.num_cupom}">
+                        <f:facet name="header">
+                            <h:outputText value="Número do Cupom"/>
+                        </f:facet>
+                        <h:outputText value="#{detalhe.num_cupom}"/>
+                    </p:column>
 
-                    <p:outputLabel value="Valor a Pagar:" />
-                    <p:outputLabel value="#{pagamentoController.selected.saldo_devedor}">
-                        <f:convertNumber pattern="#,##0.00" />
-                    </p:outputLabel>
+                    <p:column width="6%" sortBy="#{detalhe.vlr_pago}">
+                        <f:facet name="header">
+                            <h:outputText value="Valor Pago"/>
+                        </f:facet>
+                        <h:outputText value="#{detalhe.vlr_pago}"/>
+                    </p:column>
 
+                    <p:column width="6%" sortBy="#{detalhe.saldo_devedor}">
+                        <f:facet name="header">
+                            <h:outputText value="Saldo Devedor"/>
+                        </f:facet>
+                        <h:outputText value="#{detalhe.saldo_devedor}"/>
+                    </p:column>
 
-                </h:panelGrid>   
-
-
+                </p:dataTable>
             </h:form>
         </p:dialog>
+
     </ui:define>
 
 </ui:composition>

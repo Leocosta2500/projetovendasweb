@@ -42,6 +42,25 @@ public class PagamentoController implements Serializable {
     private List<PagamentoEntity> pagamentoList = new ArrayList<>();
     private PagamentoEntity selected;
 
+    private List<PagamentoEntity> detalhesPagamentoList = new ArrayList<>();
+
+    public List<PagamentoEntity> getDetalhesPagamentoList() {
+        return detalhesPagamentoList;
+    }
+
+    public void setDetalhesPagamentoList(List<PagamentoEntity> detalhesPagamentoList) {
+        this.detalhesPagamentoList = detalhesPagamentoList;
+    }
+
+    public void prepareDetalhesPagamento() {
+        if (selected != null) {
+            detalhesPagamentoList = new ArrayList<>();
+            detalhesPagamentoList.add(selected);
+        } else {
+            detalhesPagamentoList = new ArrayList<>();
+        }
+    }
+
     public List<PagamentoEntity> pagamentoAll() {
         return ejbFacade.buscarTodos();
     }
