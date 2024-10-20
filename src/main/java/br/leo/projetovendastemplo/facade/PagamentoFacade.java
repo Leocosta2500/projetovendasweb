@@ -1,4 +1,3 @@
-
 package br.leo.projetovendastemplo.facade;
 
 import br.leo.projetovendastemplo.entity.PagamentoEntity;
@@ -42,4 +41,18 @@ public class PagamentoFacade extends AbstractFacade<PagamentoEntity> {
         }
         return entityList;
     }
+
+    public List<PagamentoEntity> buscarHistoricoPorPagamento() {
+        entityList = new ArrayList<>();
+        try {
+            Query query = getEntityManager().createQuery("SELECT p FROM PagamentoEntity p ORDER BY p.num_pag");
+            if (!query.getResultList().isEmpty()) {
+                entityList = (List<PagamentoEntity>) query.getResultList();
+            }
+        } catch (Exception e) {
+            System.out.println("Erro: " + e);
+        }
+        return entityList;
+    }
+
 }

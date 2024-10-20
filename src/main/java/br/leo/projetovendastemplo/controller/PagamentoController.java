@@ -44,6 +44,29 @@ public class PagamentoController implements Serializable {
 
     private List<PagamentoEntity> detalhesPagamentoList = new ArrayList<>();
 
+    private List<PagamentoEntity> historicoPagamentoList = new ArrayList<>();
+
+    public List<PagamentoEntity> getHistoricoPagamentoList() {
+        return historicoPagamentoList;
+    }
+
+    public void setHistoricoPagamentoList(List<PagamentoEntity> historicoPagamentoList) {
+        this.historicoPagamentoList = historicoPagamentoList;
+    }
+
+    public void prepareHistorico() {
+        try {
+            // Carrega todos os registros de pagamentos
+            historicoPagamentoList = ejbFacade.buscarHistoricoPorPagamento();
+
+            if (historicoPagamentoList == null || historicoPagamentoList.isEmpty()) {
+                addErrorMessage("Nenhum histórico de pagamentos encontrado.");
+            }
+        } catch (Exception e) {
+            addErrorMessage("Erro ao carregar o histórico de pagamentos: " + e.getMessage());
+        }
+    }
+
     public List<PagamentoEntity> getDetalhesPagamentoList() {
         return detalhesPagamentoList;
     }

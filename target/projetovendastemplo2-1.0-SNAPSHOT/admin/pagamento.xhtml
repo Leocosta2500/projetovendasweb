@@ -154,6 +154,15 @@
                                              style="margin-left: 5px;" />
 
 
+                            <p:commandButton id="btnHistorico" value="Histórico de Pagamento" icon="pi pi-clock"
+                                             actionListener="#{pagamentoController.prepareHistorico()}"
+                                             update=":formHistorico"
+                                             oncomplete="PF('dlgHistoricoPagamento').show()"
+                                             style="margin-left: 5px;" />
+
+
+
+
 
                         </f:facet>
 
@@ -460,6 +469,49 @@
                 </p:dataTable>
             </h:form>
         </p:dialog>
+
+
+
+
+        <p:dialog header="Histórico de Pagamento" widgetVar="dlgHistoricoPagamento" modal="true" resizable="false" appendTo="@(body)" height="600" width="1300">
+            <h:form id="formHistorico">
+                <p:dataTable id="historicoPagamentoList" value="#{pagamentoController.historicoPagamentoList}" var="historico"
+                             emptyMessage="Nenhum histórico encontrado para este pagamento.">
+                    <p:column headerText="Data e Hora">
+                        <h:outputText value="#{historico.dta_hor_pag}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Valor Pago">
+                        <h:outputText value="#{historico.vlr_pago}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </h:outputText>
+                    </p:column>
+
+
+                    <p:column headerText="Tipo de Pagamento">
+                        <h:outputText value="#{historico.tipo_pag}"/>
+                    </p:column>
+
+
+                    <p:column width="6%" sortBy="#{historico.saldo_devedor}">
+                        <f:facet name="header">
+                            <h:outputText value="Saldo Devedor"/>
+                        </f:facet>
+                        <h:outputText value="#{historico.saldo_devedor}"/>
+                    </p:column>
+
+
+                    <p:column headerText="Status">
+                        <h:outputText value="#{historico.status_pag}"/>
+                    </p:column>
+
+
+                </p:dataTable>
+            </h:form>
+        </p:dialog>
+
 
     </ui:define>
 
