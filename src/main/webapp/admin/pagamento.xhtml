@@ -401,12 +401,6 @@
                 <p:dataTable id="detalhesPagamentoList" value="#{pagamentoController.detalhesPagamentoList}" var="detalhe"
                              emptyMessage="Nenhum detalhe encontrado para este pagamento.">
 
-                    <p:column width="4%" sortBy="#{detalhe.num_pag}">
-                        <f:facet name="header">
-                            <h:outputText value="Número do Pagamento"/>
-                        </f:facet>
-                        <h:outputText value="#{detalhe.num_pag}"/>
-                    </p:column>
 
                     <p:column width="6%" sortBy="#{detalhe.dta_hor_pag}">
                         <f:facet name="header">
@@ -424,34 +418,6 @@
                         <h:outputText value="#{detalhe.tipo_pag}"/>
                     </p:column>
 
-                    <p:column width="6%" sortBy="#{detalhe.vlr_total_pag}">
-                        <f:facet name="header">
-                            <h:outputText value="Valor Total"/>
-                        </f:facet>
-                        <h:outputText value="#{detalhe.vlr_total_pag}"/>
-                    </p:column>
-
-                    <p:column width="6%" sortBy="#{detalhe.cod_usuario_pag}">
-                        <f:facet name="header">
-                            <h:outputText value="Código Usuário"/>
-                        </f:facet>
-                        <h:outputText value="#{detalhe.cod_usuario_pag}"/>
-                    </p:column>
-
-                    <p:column width="6%" sortBy="#{detalhe.status_pag}">
-                        <f:facet name="header">
-                            <h:outputText value="Status"/>
-                        </f:facet>
-                        <h:outputText value="#{detalhe.status_pag}"/>
-                    </p:column>
-
-                    <p:column width="6%" sortBy="#{detalhe.num_cupom}">
-                        <f:facet name="header">
-                            <h:outputText value="Número do Cupom"/>
-                        </f:facet>
-                        <h:outputText value="#{detalhe.num_cupom}"/>
-                    </p:column>
-
                     <p:column width="6%" sortBy="#{detalhe.vlr_pago}">
                         <f:facet name="header">
                             <h:outputText value="Valor Pago"/>
@@ -466,6 +432,23 @@
                         <h:outputText value="#{detalhe.saldo_devedor}"/>
                     </p:column>
 
+                    <p:column width="6%" sortBy="#{detalhe.vlr_total_pag}">
+                        <f:facet name="header">
+                            <h:outputText value="Valor Total"/>
+                        </f:facet>
+                        <h:outputText value="#{detalhe.vlr_total_pag}"/>
+                    </p:column>
+
+                    <p:column width="6%" sortBy="#{detalhe.status_pag}">
+                        <f:facet name="header">
+                            <h:outputText value="Status"/>
+                        </f:facet>
+                        <h:outputText value="#{detalhe.status_pag}"/>
+                    </p:column>
+
+
+
+
                 </p:dataTable>
             </h:form>
         </p:dialog>
@@ -478,29 +461,47 @@
                 <p:dataTable id="historicoPagamentoList" value="#{pagamentoController.historicoPagamentoList}" var="historico"
                              emptyMessage="Nenhum histórico encontrado para este pagamento.">
 
-                    <p:column headerText="Número Cupom">
+
+
+                    <p:column width="6%" sortBy="#{historico.num_cupom.num_cupom}">
+                        <f:facet name="header">
+                            <h:outputText value="Número Cupom"/>
+                        </f:facet>
                         <h:outputText value="#{historico.num_cupom.num_cupom}"/>
                     </p:column>
 
-                    <p:column headerText="Des Cliente">
+
+
+                    <p:column width="6%" sortBy="#{historico.des_cliente}">
+                        <f:facet name="header">
+                            <h:outputText value="Nome Cliente"/>
+                        </f:facet>
                         <h:outputText value="#{historico.des_cliente}"/>
                     </p:column>
 
 
-                    <p:column headerText="Data e Hora">
+                    <p:column width="6%" sortBy="#{historico.dta_hor_pag}">
+                        <f:facet name="header">
+                            <h:outputText value="Data e Hora"/>
+                        </f:facet>
                         <h:outputText value="#{historico.dta_hor_pag}">
                             <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo"/>
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="Valor Pago">
+                    <p:column width="6%" sortBy="#{historico.vlr_pago}">
+                        <f:facet name="header">
+                            <h:outputText value="Valor Pago"/>
+                        </f:facet>
                         <h:outputText value="#{historico.vlr_pago}">
                             <f:convertNumber pattern="#,##0.00"/>
                         </h:outputText>
                     </p:column>
 
-
-                    <p:column headerText="Tipo de Pagamento">
+                    <p:column width="6%" sortBy="#{historico.tipo_pag}">
+                        <f:facet name="header">
+                            <h:outputText value="Tipo de Pagamento"/>
+                        </f:facet>
                         <h:outputText value="#{historico.tipo_pag}"/>
                     </p:column>
 
@@ -513,7 +514,10 @@
                     </p:column>
 
 
-                    <p:column headerText="Status">
+                    <p:column width="6%" sortBy="#{historico.status_pag}">
+                        <f:facet name="header">
+                            <h:outputText value="Status"/>
+                        </f:facet>
                         <h:outputText value="#{historico.status_pag}"/>
                     </p:column>
 
