@@ -477,6 +477,16 @@
             <h:form id="formHistorico">
                 <p:dataTable id="historicoPagamentoList" value="#{pagamentoController.historicoPagamentoList}" var="historico"
                              emptyMessage="Nenhum histórico encontrado para este pagamento.">
+
+                    <p:column headerText="Número Cupom">
+                        <h:outputText value="#{historico.num_cupom.num_cupom}"/>
+                    </p:column>
+
+                    <p:column headerText="Des Cliente">
+                        <h:outputText value="#{historico.des_cliente}"/>
+                    </p:column>
+
+
                     <p:column headerText="Data e Hora">
                         <h:outputText value="#{historico.dta_hor_pag}">
                             <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Sao_Paulo"/>

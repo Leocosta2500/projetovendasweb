@@ -1,4 +1,3 @@
-
 package br.leo.projetovendastemplo.entity;
 
 import jakarta.persistence.Basic;
@@ -12,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
@@ -25,20 +25,18 @@ import java.util.Objects;
  *
  * @author leona
  */
-
 @Entity
 @Table(name = "pagamento")
-public class PagamentoEntity implements Serializable{
-    
+public class PagamentoEntity implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "num_pag")
     private Integer num_pag;
-    
+
     @Basic(optional = false)
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
@@ -50,15 +48,13 @@ public class PagamentoEntity implements Serializable{
     @Size(min = 1, max = 50)
     @Column(name = "tipo_pag")
     private String tipo_pag;
-    
-    
+
     @Basic(optional = false)
     @DecimalMin("0.00")
     @DecimalMax("99999.99")
     @Column(name = "saldo_devedor", precision = 7, scale = 2)
     private BigDecimal saldo_devedor;
-    
-    
+
     @Basic(optional = false)
     @DecimalMin("0.00")
     @DecimalMax("99999.99")
@@ -72,7 +68,6 @@ public class PagamentoEntity implements Serializable{
     @Column(name = "vlr_total_pag", precision = 7, scale = 2)
     private BigDecimal vlr_total_pag;
 
-
     @Basic(optional = false)
     @NotNull
     @Column(name = "cod_usuario_pag")
@@ -84,13 +79,11 @@ public class PagamentoEntity implements Serializable{
     @Column(name = "status_pag")
     private String status_pag;
 
-    
     @JoinColumn(name = "num_cupom", referencedColumnName = "num_cupom")
     @ManyToOne(optional = false)
     private VendaEntity num_cupom;
-    
-    
-        public Integer getNum_pag() {
+
+    public Integer getNum_pag() {
         return num_pag;
     }
 
@@ -145,8 +138,7 @@ public class PagamentoEntity implements Serializable{
     public void setNum_cupom(VendaEntity num_cupom) {
         this.num_cupom = num_cupom;
     }
-    
-    
+
     @Override
     public int hashCode() {
         int hash = 5;
@@ -190,9 +182,15 @@ public class PagamentoEntity implements Serializable{
         this.vlr_pago = vlr_pago;
     }
 
+    @Transient
+    private String des_cliente;
 
-    
-    
-        
-  
+    public String getDes_cliente() {
+        return des_cliente;
+    }
+
+    public void setDes_cliente(String des_cliente) {
+        this.des_cliente = des_cliente;
+    }
+
 }

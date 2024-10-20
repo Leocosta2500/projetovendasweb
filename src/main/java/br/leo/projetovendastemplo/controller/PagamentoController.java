@@ -56,7 +56,7 @@ public class PagamentoController implements Serializable {
 
     public void prepareHistorico() {
         try {
-            // Carrega todos os registros de pagamentos
+            // Carrega todos os registros de pagamentos usando o método buscarHistoricoPorPagamento
             historicoPagamentoList = ejbFacade.buscarHistoricoPorPagamento();
 
             if (historicoPagamentoList == null || historicoPagamentoList.isEmpty()) {
