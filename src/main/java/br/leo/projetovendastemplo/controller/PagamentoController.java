@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.primefaces.PrimeFaces;
 
 /**
  *
@@ -208,24 +209,28 @@ public class PagamentoController implements Serializable {
         VendaEntity venda = null;
         if (pagamento.getNum_cupom() != null) {
             venda = vendaFacade.findByNumCupom(pagamento.getNum_cupom().getNum_cupom());
-        } else if (selected != null && selected.getNum_cupom() != null) {
-            venda = vendaFacade.findByNumCupom(selected.getNum_cupom().getNum_cupom());
         }
 
+        // Verificar se já existe um pagamento para o cupom selecionado
+        
+        if (venda != null && ejbFacade.existsPaymentForCupom(venda.getNum_cupom())) {
+            addErrorMessage("Este cupom já possui um pagamento registrado.");
+            
+            // Limpar o campo do cupom para evitar um novo pagamento
+            pagamento.setNum_cupom(null);
+            
+            // Atualizar a interface com a mensagem de erro
+            PrimeFaces.current().ajax().update("frmPagamento:growl", "frmPagamento:num_cupom");
+            return;
+        }
+
+        // Segue o restante da lógica de atribuição do valor total e itens do cupom
         if (venda != null) {
-            if (pagamento.getNum_cupom() != null) {
-                pagamento.setVlr_total_pag(venda.getVlr_total_vda());
-                if (venda.getCod_usuario() != null) {
-                    pagamento.setCod_usuario_pag(venda.getCod_usuario().getCod_usuario());
-                }
-            } else if (selected != null && selected.getNum_cupom() != null) {
-                selected.setVlr_total_pag(venda.getVlr_total_vda());
-                if (venda.getCod_usuario() != null) {
-                    selected.setCod_usuario_pag(venda.getCod_usuario().getCod_usuario());
-                }
+            pagamento.setVlr_total_pag(venda.getVlr_total_vda());
+            if (venda.getCod_usuario() != null) {
+                pagamento.setCod_usuario_pag(venda.getCod_usuario().getCod_usuario());
             }
             itensVendaController.setItensVendaList(itensVendaController.findByNumCupom(pagamento.getNum_cupom().getNum_cupom()));
-
         }
     }
 

@@ -79,5 +79,20 @@ public class PagamentoFacade extends AbstractFacade<PagamentoEntity> {
         }
         return entityList;
     }
+    
+    
+    public boolean existsPaymentForCupom(Integer numCupom) {
+    try {
+        String query = "SELECT COUNT(p) FROM PagamentoEntity p WHERE p.num_cupom.num_cupom = :numCupom";
+        Long count = (Long) em.createQuery(query)
+                              .setParameter("numCupom", numCupom)
+                              .getSingleResult();
+        return count > 0;
+    } catch (Exception e) {
+        System.out.println("Erro ao verificar existência de pagamento para o cupom: " + e);
+        return false;
+    }
+}
+
 
 }
