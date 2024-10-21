@@ -50,6 +50,16 @@ public class VendaController implements Serializable {
         return itensVendaList;
     }
 
+    private boolean itensVendaTabDisabled = true;
+
+    public boolean isItensVendaTabDisabled() {
+        return itensVendaTabDisabled;
+    }
+
+    public void setItensVendaTabDisabled(boolean itensVendaTabDisabled) {
+        this.itensVendaTabDisabled = itensVendaTabDisabled;
+    }
+
     private boolean mostrarIncluirVenda = false;
 
     private int activeTabIndex = 0;  // Índice da aba inicial
@@ -170,7 +180,8 @@ public class VendaController implements Serializable {
     public VendaEntity prepareAdicionar() {
         venda = new VendaEntity();
         setUsuarioLogado(); // Definir o usuário logado
-         this.activeTabIndex = 0;
+        this.activeTabIndex = 0;
+        this.itensVendaTabDisabled = true;
         try {
             // Redirecionando para a página vendasitens.xhtml
             FacesContext.getCurrentInstance().getExternalContext().redirect("vendasitens.xhtml");
@@ -195,6 +206,9 @@ public class VendaController implements Serializable {
         //      } catch (IOException e) {
         //          e.printStackTrace();
         //      }
+        setItensVendaTabDisabled(false);
+        this.itensVendaTabDisabled = false;
+        activeTabIndex = 1;
         vendaList.add(venda);
     }
 

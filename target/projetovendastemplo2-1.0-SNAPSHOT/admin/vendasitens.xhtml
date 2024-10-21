@@ -119,7 +119,7 @@
                             <p:commandButton actionListener="#{vendaController.adicionarVenda()}" 
                                              icon="pi pi-save" 
                                              value="Cadastrar" 
-                                             update=":frmList"  
+                                             update=":frmList:tabView"  
                                              process="@this"    
                                              oncomplete="if (!args.validationFailed) { PF('tabViewWidget').select(1); window.location.reload(); }"  
                                              partialSubmit="true"
@@ -133,8 +133,7 @@
 
 
                     <!-- Aba Itens de Venda -->
-                    <p:tab title="Itens Venda" id="itensVendaTab">
-
+                    <p:tab title="Itens Venda" id="itensVendaTab" disabled="#{vendaController.itensVendaTabDisabled}">
 
                         <p:panel header="Novo Itens(V)" style="margin-top:20px; width: 100%;">
                             <div class="grid p-fluid">
