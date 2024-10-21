@@ -13,7 +13,7 @@
     <!-- Conteúdo principal da página -->
     <ui:define name="content">
         <h:form id="frmList">
-            
+
             <h:panelGroup id="pngList">
 
                 <!-- Componente de feedback para mensagens (sucesso, erro, etc.) -->
@@ -21,8 +21,8 @@
 
 
 
-<p:tabView id="tabView" orientation="top" style="margin-top:20px; width: 100%;" 
-           activeIndex="#{vendaController.activeTabIndex}" widgetVar="tabViewWidget">
+                <p:tabView id="tabView" orientation="top" style="margin-top:20px; width: 100%;" 
+                           activeIndex="#{vendaController.activeTabIndex}" widgetVar="tabViewWidget">
 
 
                     <!-- Adiciona o evento tabChange ao p:tabView -->
@@ -116,14 +116,14 @@
                                 </div> 
                             </div>
 
-<p:commandButton actionListener="#{vendaController.adicionarVenda()}" 
-                 icon="pi pi-save" 
-                 value="Cadastrar" 
-                 update=":frmList"  
-                 process="@this"    
-                 oncomplete="if (!args.validationFailed) { PF('tabViewWidget').select(1); window.location.reload(); }"  
-                 partialSubmit="true"
-                 ajax="true" />
+                            <p:commandButton actionListener="#{vendaController.adicionarVenda()}" 
+                                             icon="pi pi-save" 
+                                             value="Cadastrar" 
+                                             update=":frmList"  
+                                             process="@this"    
+                                             oncomplete="if (!args.validationFailed) { PF('tabViewWidget').select(1); window.location.reload(); }"  
+                                             partialSubmit="true"
+                                             ajax="true" />
 
 
                             <!-- Botão para incluir itens -->
@@ -134,7 +134,7 @@
 
                     <!-- Aba Itens de Venda -->
                     <p:tab title="Itens Venda" id="itensVendaTab">
-                        
+
 
                         <p:panel header="Novo Itens(V)" style="margin-top:20px; width: 100%;">
                             <div class="grid p-fluid">

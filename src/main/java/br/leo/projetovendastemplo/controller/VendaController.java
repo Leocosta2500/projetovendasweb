@@ -170,6 +170,7 @@ public class VendaController implements Serializable {
     public VendaEntity prepareAdicionar() {
         venda = new VendaEntity();
         setUsuarioLogado(); // Definir o usuário logado
+         this.activeTabIndex = 0;
         try {
             // Redirecionando para a página vendasitens.xhtml
             FacesContext.getCurrentInstance().getExternalContext().redirect("vendasitens.xhtml");
