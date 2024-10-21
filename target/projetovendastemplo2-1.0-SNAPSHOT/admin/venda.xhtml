@@ -430,22 +430,15 @@
                         <h:outputText value="#{item.id_item}"/>
                     </p:column>
 
-                    <!-- Coluna para o botão de exclusão (lixeira) -->
-                    <p:column width="5%">
+
+                    <p:column width="3%" sortBy="#{item.id_item.desc_item}">
                         <f:facet name="header">
-                            <h:outputText value="Ação"/>
+                            <h:outputText value="Descrição Item"/>
                         </f:facet>
 
-                        <p:commandButton icon="pi pi-trash" title="Excluir Item"
-                                         actionListener="#{itensVendaController.deletarItensVenda(item)}"
-                                         update="frmItensVenda"
-                                         process="@this">
-                            <p:confirm header="Confirmar Exclusão" message="Você confirma exclusão do item?" icon="ui-icon-alert"/>
-                        </p:commandButton>
-
-
-
+                        <h:outputText value="#{item.id_item.desc_item}" />
                     </p:column>
+
 
                 </p:dataTable>
             </h:form>
