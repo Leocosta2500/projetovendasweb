@@ -21,8 +21,9 @@
 
 
 
-                <p:tabView id="tabView" orientation="top" style="margin-top:20px; width: 100%;" 
-                           activeIndex="#{vendaController.activeTabIndex}">
+<p:tabView id="tabView" orientation="top" style="margin-top:20px; width: 100%;" 
+           activeIndex="#{vendaController.activeTabIndex}" widgetVar="tabViewWidget">
+
 
                     <!-- Adiciona o evento tabChange ao p:tabView -->
                     <p:ajax event="tabChange" listener="#{itensVendaController.prepareAdicionar()}" update=":frmList:tabView:num_cupomItem"/>
@@ -115,14 +116,15 @@
                                 </div> 
                             </div>
 
-                            <p:commandButton actionListener="#{vendaController.adicionarVenda()}" 
-                                             icon="pi pi-save" 
-                                             value="Cadastrar" 
-                                             update=":frmList"  
-                                             process="@this"    
-                                             oncomplete="if (!args.validationFailed) { window.location.reload(); }"  
-                                             partialSubmit="true"
-                                             ajax="true" />
+<p:commandButton actionListener="#{vendaController.adicionarVenda()}" 
+                 icon="pi pi-save" 
+                 value="Cadastrar" 
+                 update=":frmList"  
+                 process="@this"    
+                 oncomplete="if (!args.validationFailed) { PF('tabViewWidget').select(1); window.location.reload(); }"  
+                 partialSubmit="true"
+                 ajax="true" />
+
 
                             <!-- Botão para incluir itens -->
                         </p:panel>

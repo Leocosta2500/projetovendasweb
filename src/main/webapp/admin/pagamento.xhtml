@@ -129,10 +129,15 @@
 
 
                             <!--Botão utilizado para abrir a modal de edição -->
-                            <p:commandButton id="btnEdit" icon="pi pi-user-edit" value="Novo pagamento" 
-                                             action="#{pagamentoController.prepararEdicao()}" 
-                                             update="@form" 
-                                             disabled="#{empty pagamentoController.selected}"/>
+<p:commandButton 
+    id="btnEdit" 
+    icon="pi pi-user-edit" 
+    value="Novo pagamento" 
+    action="#{pagamentoController.prepararEdicao()}" 
+    update="@form" 
+    disabled="#{empty pagamentoController.selected or pagamentoController.selected.vlr_pago eq pagamentoController.selected.vlr_total_pag}" />
+
+
 
 
                             <!--Botão utilizado para excluir o registro selecionado-->                            
