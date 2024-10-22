@@ -69,14 +69,14 @@
                                     <p:outputLabel value="Descrição do Cliente:" for="iptdesCliente" />
                                     <p:inputText id="iptdesCliente" size="50" label="desCliente" required="true"
                                                  style="width: 100%;" requiredMessage="O atributo Descrição do Cliente é obrigatório!"
-                                                 value="#{vendaController.venda.des_cliente}" />
+                                                 value="#{vendaController.venda.des_cliente}" readonly="true" />
                                 </div>
 
                                 <div class="field col-12 md:col-6">
                                     <p:outputLabel value="UF:" for="iptdesUfCli" />
                                     <p:inputText id="iptdesUfCli" size="50" label="desUfCli" required="true"
                                                  style="width: 100%;" requiredMessage="O atributo UF é obrigatório!"
-                                                 value="#{vendaController.venda.des_uf_cli}" />
+                                                 value="#{vendaController.venda.des_uf_cli}" readonly="true"/>
                                 </div>
 
                                 <div class="field col-12 md:col-6">
@@ -99,7 +99,7 @@
 
                                 <div class="field col-12 md:col-2">
                                     <p:outputLabel value="Operação:" for="iptcodOperacao" />
-                                    <p:inputNumber id="iptcodOperacao" value="#{vendaController.venda.cod_operacao}" minValue="1" decimalPlaces="0" style="width: 100%;" />
+                                    <p:inputNumber id="iptcodOperacao" value="#{vendaController.venda.cod_operacao}" readonly="true" minValue="1" decimalPlaces="0" style="width: 100%;" />
                                 </div>
 
                                 <!-- Quarta linha - Quantidade de itens e Valor total venda -->
@@ -139,10 +139,10 @@
                             <div class="grid p-fluid">
                                 <!-- Primeira linha - Cupom e Item -->
                                 <div class="field col-12 md:col-6">
-                                    <p:outputLabel value="Cupom: " for="num_cupomItem" />
+                                    <p:outputLabel value="Cupom: " for="num_cupomItem" style="display: block;" />
                                     <p:selectOneMenu id="num_cupomItem" value="#{itensVendaController.itensVenda.num_cupom}" 
-                                                     required="true" requiredMessage="O Cupom é obrigatório!"
-                                                     style="width: 100%;" panelStyle="width:300px;" filter="true" filterMatchMode="contains">
+                                                     required="true" requiredMessage="O Cupom é obrigatório!" disabled="true"
+                                                     style="width: 60%;" panelStyle="width:300px;" filter="true" filterMatchMode="contains">
                                         <f:selectItem itemLabel="Selecione um Cupom..." noSelectionOption="true"/>                        
                                         <f:selectItems value="#{vendaController.vendaAll()}"
                                                        var="codCupomItem"
@@ -152,9 +152,9 @@
                                 </div>
 
                                 <div class="field col-12 md:col-6">
-                                    <p:outputLabel value="Item:" for="id_itemItem" />
+                                    <p:outputLabel value="Item:" for="id_itemItem" style="display: block;" />
                                     <p:selectOneMenu id="id_itemItem" value="#{itensVendaController.itensVenda.id_item}" 
-                                                     required="false" style="width: 100%;" panelStyle="width:300px;" filter="true" filterMatchMode="contains">
+                                                     required="false" style="width: 60%;" panelStyle="width:300px;" filter="true" filterMatchMode="contains">
                                         <f:selectItem itemLabel="Selecione um Item..."/>                        
                                         <f:selectItems value="#{itemController.itemAll()}"
                                                        var="codIdItem"
@@ -165,12 +165,12 @@
                                 </div>
 
                                 <div class="field col-12 md:col-6">
-                                    <p:outputLabel value="Descrição do Cliente:" for="iptDesClienteItem" />
+                                    <p:outputLabel value="Descrição do Cliente:" for="iptDesClienteItem" style="display: block;" />
                                     <p:inputText id="iptDesClienteItem" size="40" 
                                                  required="#{not empty itensVendaController.itensVenda.id_item}"
                                                  requiredMessage="A Descrição do Cliente é obrigatória!"
-                                                 style="width: 100%;"
-                                                 value="#{itensVendaController.itensVenda.des_cliente_vda}" rendered="#{not empty itensVendaController.itensVenda.id_item}" /> 
+                                                 style="width: 60%;"
+                                                 value="#{itensVendaController.itensVenda.des_cliente_vda}" readonly="true" rendered="#{not empty itensVendaController.itensVenda.id_item}" /> 
                                 </div>
                                 <!-- Segunda linha - Código Cliente e Descrição do Cliente -->
                                 <div class="field col-12 md:col-2">
@@ -191,23 +191,23 @@
                                 </div>
 
                                 <div class="field col-12 md:col-6">
-                                    <p:outputLabel value="Valor Venda: " for="iptVlrVendaItem" />
+                                    <p:outputLabel value="Valor Venda: " for="iptVlrVendaItem" style="display: block;" />
                                     <p:inputText id="iptVlrVendaItem" size="40" 
                                                  required="#{not empty itensVendaController.itensVenda.id_item}"
                                                  requiredMessage="O Valor da Venda é obrigatório!"
-                                                 style="width: 100%;"
-                                                 value="#{itensVendaController.itensVenda.vlr_venda}" rendered="#{not empty itensVendaController.itensVenda.id_item}"> 
+                                                 style="width: 60%;"
+                                                 value="#{itensVendaController.itensVenda.vlr_venda}" readonly="true" rendered="#{not empty itensVendaController.itensVenda.id_item}"> 
                                         <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
                                         <p:ajax event="change" update="iptVlrTotalItem" listener="#{itensVendaController.calcularValorTotal}"/>
                                     </p:inputText>
                                 </div>
 
                                 <div class="field col-12 md:col-6">
-                                    <p:outputLabel value="Valor Total:" for="iptVlrTotalItem" />
+                                    <p:outputLabel value="Valor Total:" for="iptVlrTotalItem" style="display: block;" />
                                     <p:inputText id="iptVlrTotalItem" size="40" 
                                                  required="#{not empty itensVendaController.itensVenda.id_item}"
                                                  requiredMessage="O Valor Total é obrigatório!"
-                                                 style="width: 100%;"
+                                                 style="width: 60%;"
                                                  value="#{itensVendaController.itensVenda.vlr_total}" readonly="true" rendered="#{not empty itensVendaController.itensVenda.id_item}"> 
                                         <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
                                     </p:inputText>
@@ -215,16 +215,16 @@
 
                                 <!-- Quarta linha - Data/Hora Venda e Data de Lançamento -->
                                 <div class="field col-12 md:col-6">
-                                    <p:outputLabel value="Data/Hora Venda:" for="ipmdtaHorVdaItem" />
-                                    <p:inputText id="ipmdtaHorVdaItem" value="#{itensVendaController.itensVenda.dta_hor_vda}" disabled="true" style="width: 100%;">
+                                    <p:outputLabel value="Data/Hora Venda:" for="ipmdtaHorVdaItem" style="display: block;" />
+                                    <p:inputText id="ipmdtaHorVdaItem" value="#{itensVendaController.itensVenda.dta_hor_vda}" disabled="true" style="width: 60%;">
                                         <f:convertDateTime pattern="dd/MM/yy HH:mm" timeZone="America/Sao_Paulo" />
                                     </p:inputText>
                                 </div>
 
                                 <div class="field col-12 md:col-6">
-                                    <p:outputLabel value="Data de Lançamento:" for="ipmdtaLancamentoItem" />
+                                    <p:outputLabel value="Data de Lançamento:" for="ipmdtaLancamentoItem" style="display: block;" />
                                     <p:inputMask id="ipmdtaLancamentoItem" value="#{itensVendaController.itensVenda.dta_lancamento}" 
-                                                 mask="99/99/9999" readonly="true" style="width: 100%;">
+                                                 mask="99/99/9999" readonly="true" style="width: 60%;">
                                         <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
                                     </p:inputMask>
                                 </div>

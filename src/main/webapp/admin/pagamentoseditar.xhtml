@@ -22,16 +22,17 @@
 
                         <!-- Campo ID -->
                         <div class="field col-12 md:col-6">
-                            <p:outputLabel value="ID:" for="iptId" />
-                            <p:inputText id="iptId" size="10" value="#{pagamentoController.selected.num_pag}" disabled="true" />
+                            <p:outputLabel value="ID:" for="iptId" style="display: block;" />
+                            <p:inputText id="iptId" size="10" value="#{pagamentoController.selected.num_pag}" 
+                                         disabled="true" style="width: 50%;" />
                         </div>
 
                         <!-- Campo Cupom -->
                         <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Cupom: " for="num_cupomEdit" />
+                            <p:outputLabel value="Cupom: " for="num_cupomEdit" style="display: block;" />
                             <p:selectOneMenu id="num_cupomEdit" value="#{pagamentoController.selected.num_cupom}" 
                                              required="true" requiredMessage="O cupom é obrigatório!" disabled="true"
-                                             panelStyle="width:180px" filter="true" filterMatchMode="contains">
+                                             style="width: 50%;" filter="true" filterMatchMode="contains">
                                 <f:selectItem itemLabel="Selecione um Cupom..." itemValue="" />
                                 <f:selectItems value="#{vendaController.vendaAll()}" var="codCupomItem"
                                                itemValue="#{codCupomItem}" itemLabel="#{codCupomItem.num_cupom}" />
@@ -41,29 +42,32 @@
 
                         <!-- Valor Total do Pagamento -->
                         <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Valor Total do Pagamento:" for="iptVlrTotalPag" />
-                            <p:inputText id="iptVlrTotalPag" value="#{pagamentoController.selected.vlr_total_pag}" 
+                            <p:outputLabel value="Valor Total do Pagamento:" for="iptVlrTotalPag" style="display: block;" />
+                            <p:inputText id="iptVlrTotalPag" size="40"
+                                         value="#{pagamentoController.selected.vlr_total_pag}" 
                                          required="true" requiredMessage="O valor total do pagamento é obrigatório"
-                                         readonly="true">
+                                         readonly="true" style="width: 50%;">
                                 <f:convertNumber pattern="#,##0.00" />
                             </p:inputText>
                         </div>
 
                         <!-- Código do Usuário Pagamento -->
                         <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Código do Usuário Pagamento:" for="iptCodUsuarioPag" />
-                            <p:inputText id="iptCodUsuarioPag" value="#{pagamentoController.selected.cod_usuario_pag}" 
+                            <p:outputLabel value="Código do Usuário Pagamento:" for="iptCodUsuarioPag" style="display: block;" />
+                            <p:inputText id="iptCodUsuarioPag" size="40"
+                                         value="#{pagamentoController.selected.cod_usuario_pag}" 
                                          required="true" requiredMessage="O código do usuário do pagamento é obrigatório"
-                                         readonly="true">
+                                         readonly="true" style="width: 50%;">
                                 <f:convertNumber />
                             </p:inputText>
                         </div>
 
                         <!-- Tipo de Pagamento -->
                         <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Tipo de Pagamento:" for="tipo_pagamento" />
+                            <p:outputLabel value="Tipo de Pagamento:" for="tipo_pagamento" style="display: block;" />
                             <p:selectOneMenu id="tipo_pagamento" value="#{pagamentoController.selected.tipo_pag}" 
-                                             required="true" requiredMessage="O tipo de pagamento é obrigatório!">
+                                             required="true" requiredMessage="O tipo de pagamento é obrigatório!"
+                                             style="width: 50%;">
                                 <f:selectItem itemLabel="Selecione um tipo de pagamento..." itemValue="" />
                                 <f:selectItem itemLabel="Pix" itemValue="Pix" />
                                 <f:selectItem itemLabel="Cartão Débito" itemValue="Cartão Débito" />
@@ -73,10 +77,10 @@
 
                         <!-- Status do Pagamento -->
                         <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Status do Pagamento:" for="iptStatusPagEdit" />
+                            <p:outputLabel value="Status do Pagamento:" for="iptStatusPagEdit" style="display: block;" />
                             <p:selectOneMenu id="iptStatusPagEdit" value="#{pagamentoController.selected.status_pag}" 
                                              required="true" requiredMessage="O status do pagamento é obrigatório"
-                                             disabled="true">
+                                             disabled="true" style="width: 50%;">
                                 <f:selectItem itemLabel="Selecione um Status..." itemValue="" />
                                 <f:selectItem itemLabel="Pago" itemValue="Pago" />
                                 <f:selectItem itemLabel="Parcelado" itemValue="Parcelado" />
@@ -85,43 +89,52 @@
 
                         <!-- Data e Hora do Pagamento -->
                         <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Data e Hora do Pagamento:" for="iptDtaHorPag" />
-                            <p:inputText id="iptDtaHorPag" value="#{pagamentoController.selected.dta_hor_pag}" 
-                                         disabled="true">
+                            <p:outputLabel value="Data e Hora do Pagamento:" for="iptDtaHorPag" style="display: block;" />
+                            <p:inputText id="iptDtaHorPag" size="40"
+                                         value="#{pagamentoController.selected.dta_hor_pag}" 
+                                         disabled="true" style="width: 50%;">
                                 <f:convertDateTime pattern="dd/MM/yy HH:mm" timeZone="America/Sao_Paulo" />
                             </p:inputText>
                         </div>
 
                         <!-- Valor Pago -->
                         <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Valor Pago:" for="iptVlrPago" />
-                            <p:inputText id="iptVlrPago" value="#{pagamentoController.selected.vlr_pago}" 
-                                         required="true" readonly="true">
+                            <p:outputLabel value="Valor Pago:" for="iptVlrPago" style="display: block;" />
+                            <p:inputText id="iptVlrPago" size="40"
+                                         value="#{pagamentoController.selected.vlr_pago}" 
+                                         required="true" readonly="true" style="width: 50%;">
                                 <f:convertNumber pattern="#,##0.00" />
                             </p:inputText>
                         </div>
 
                         <!-- Saldo Devedor -->
                         <div class="field col-12 md:col-6">
-                            <p:outputLabel value="Saldo Devedor:" for="iptSaldoDevedor" />
-                            <p:inputText id="iptSaldoDevedor" value="#{pagamentoController.selected.saldo_devedor}" readonly="true">
+                            <p:outputLabel value="Saldo Devedor:" for="iptSaldoDevedor" style="display: block;" />
+                            <p:inputText id="iptSaldoDevedor" size="40"
+                                         value="#{pagamentoController.selected.saldo_devedor}" 
+                                         readonly="true" style="width: 50%;">
                                 <f:convertNumber pattern="#,##0.00" />
                             </p:inputText>
                         </div>
 
+
                         <!-- Painel de Valor Adicional -->
-                        <p:outputPanel id="adicionalValorPanel" style="margin-top: 10px;"
+                        <p:outputPanel id="adicionalValorPanel" style="margin-top: 1px; width: 45%;"
                                        rendered="#{not empty pagamentoController.valorAdicional}">
-                            <h:panelGrid columns="2">
-                                <p:outputLabel value="Valor adicional:" for="iptValorAdicional" />
-                                <p:inputText id="iptValorAdicional" size="20" value="#{pagamentoController.valorAdicional}" required="true"
+                            <div class="field col-12 md:col-6">
+                                <p:outputLabel value="Valor adicional:" for="iptValorAdicional" style="display: block;" />
+                                <p:inputText id="iptValorAdicional" size="20" style="width: 115%;"
+                                             value="#{pagamentoController.valorAdicional}" required="true"
                                              requiredMessage="O valor adicional é obrigatório">
                                     <f:convertNumber pattern="#,##0.00" />
-                                    <p:ajax event="keyup" process="@this" update="iptSaldoDevedor" listener="#{pagamentoController.calcularSaldoDevedorComAdicional}" />
+                                    <p:ajax event="keyup" process="@this" update="iptSaldoDevedor" 
+                                            listener="#{pagamentoController.calcularSaldoDevedorComAdicional}" />
                                     <p:ajax event="blur" update="iptVlrPago" listener="#{pagamentoController.somarValorAdicional}" />
                                 </p:inputText>
-                            </h:panelGrid>
+                            </div>
                         </p:outputPanel>
+
+
 
 
 

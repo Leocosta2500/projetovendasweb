@@ -23,10 +23,10 @@
 
                                 <!-- Campo Cupom -->
                                 <div class="field col-12 md:col-6">
-                                    <p:outputLabel value="Cupom: " for="num_cupom" />
+                                    <p:outputLabel value="Cupom: " for="num_cupom" style="display: block;" />
                                     <p:selectOneMenu id="num_cupom" value="#{pagamentoController.pagamento.num_cupom}" 
                                                      required="true" requiredMessage="O cupom é obrigatório!"
-                                                     panelStyle="width:180px" filter="true" filterMatchMode="contains">
+                                                     style="width: 50%;" filter="true" filterMatchMode="contains">
                                         <f:selectItem itemLabel="Selecione um Cupom..." itemValue="" />
                                         <f:selectItems value="#{vendaController.vendaAll()}" var="codCupomItem"
                                                        itemValue="#{codCupomItem}" itemLabel="#{codCupomItem.num_cupom}" />
@@ -65,27 +65,32 @@
 
                                 <!-- Valor Total do Pagamento -->
                                 <div class="field col-12 md:col-6">
-                                    <p:outputLabel value="Valor Total do Pagamento:" for="iptVlrTotalPag" />
-                                    <p:inputText id="iptVlrTotalPag" value="#{pagamentoController.pagamento.vlr_total_pag}" 
-                                                 required="true" requiredMessage="O valor total do pagamento é obrigatório">
-                                        <f:convertNumber pattern="#,##0.00" />
+                                    <p:outputLabel value="Valor Total do Pagamento:" for="iptVlrTotalPag" style="display: block;" />
+                                    <p:inputText id="iptVlrTotalPag" size="40"
+                                                 required="true" requiredMessage="O valor total do pagamento é obrigatório"
+                                                 style="width: 50%;"
+                                                 value="#{pagamentoController.pagamento.vlr_total_pag}" readonly="true">
+                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
                                     </p:inputText>
                                 </div>
 
                                 <!-- Código do Usuário Pagamento -->
                                 <div class="field col-12 md:col-6">
-                                    <p:outputLabel value="Código do Usuário Pagamento:" for="iptCodUsuarioPag" />
-                                    <p:inputText id="iptCodUsuarioPag" value="#{pagamentoController.pagamento.cod_usuario_pag}" 
-                                                 required="true" requiredMessage="O código do usuário do pagamento é obrigatório">
+                                    <p:outputLabel value="Código do Usuário Pagamento:" for="iptCodUsuarioPag" style="display: block;" />
+                                    <p:inputText id="iptCodUsuarioPag" size="40"
+                                                 required="true" requiredMessage="O código do usuário do pagamento é obrigatório"
+                                                 style="width: 50%;"
+                                                 value="#{pagamentoController.pagamento.cod_usuario_pag}" readonly="true">
                                         <f:convertNumber />
                                     </p:inputText>
                                 </div>
 
                                 <!-- Tipo de Pagamento -->
                                 <div class="field col-12 md:col-6">
-                                    <p:outputLabel value="Tipo de Pagamento:" for="tipo_pagamento" />
+                                    <p:outputLabel value="Tipo de Pagamento:" for="tipo_pagamento" style="display: block;" />
                                     <p:selectOneMenu id="tipo_pagamento" value="#{pagamentoController.pagamento.tipo_pag}" 
-                                                     required="true" requiredMessage="O tipo de pagamento é obrigatório!">
+                                                     required="true" requiredMessage="O tipo de pagamento é obrigatório!"
+                                                     style="width: 50%;">
                                         <f:selectItem itemLabel="Selecione um tipo de pagamento..." itemValue="" />
                                         <f:selectItem itemLabel="Pix" itemValue="Pix" />
                                         <f:selectItem itemLabel="Cartão Débito" itemValue="Cartão Débito" />
@@ -94,37 +99,38 @@
                                 </div>
 
                                 <!-- Status do Pagamento -->
-                                <!-- Status do Pagamento -->
-
                                 <div class="field col-12 md:col-6">
-                                    <p:outputLabel value="Status do Pagamento:" for="iptStatusPag" />
+                                    <p:outputLabel value="Status do Pagamento:" for="iptStatusPag" style="display: block;" />
                                     <p:selectOneMenu id="iptStatusPag" value="#{pagamentoController.pagamento.status_pag}" 
-                                                     required="true" requiredMessage="O status do pagamento é obrigatório">
+                                                     required="true" requiredMessage="O status do pagamento é obrigatório"
+                                                     style="width: 50%;">
                                         <f:selectItem itemLabel="Selecione um Status..." itemValue="" />
                                         <f:selectItem itemLabel="Pago" itemValue="Pago" />
                                         <f:selectItem itemLabel="Parcelado" itemValue="Parcelado" />
-                                        <p:ajax event="change" listener="#{pagamentoController.validarValorPago}" update=":frmPagamento:growl, iptVlrPago" />
-
+                                        <p:ajax event="change" listener="#{pagamentoController.validarValorPago}" 
+                                                update=":frmPagamento:growl, iptVlrPago" />
                                     </p:selectOneMenu>
                                 </div>
 
-
-
                                 <!-- Data e Hora do Pagamento -->
                                 <div class="field col-12 md:col-6">
-                                    <p:outputLabel value="Data e Hora do Pagamento:" for="iptDtaHorPag" />
-                                    <p:inputText id="iptDtaHorPag" value="#{pagamentoController.pagamento.dta_hor_pag}" 
-                                                 disabled="true" requiredMessage="A data e hora do pagamento são obrigatórias">
+                                    <p:outputLabel value="Data e Hora do Pagamento:" for="iptDtaHorPag" style="display: block;" />
+                                    <p:inputText id="iptDtaHorPag" size="40"
+                                                 disabled="true" requiredMessage="A data e hora do pagamento são obrigatórias"
+                                                 style="width: 50%;"
+                                                 value="#{pagamentoController.pagamento.dta_hor_pag}">
                                         <f:convertDateTime pattern="dd/MM/yy HH:mm" timeZone="America/Sao_Paulo" />
                                     </p:inputText>
                                 </div>
 
                                 <!-- Valor Pago -->
                                 <div class="field col-12 md:col-6">
-                                    <p:outputLabel value="Valor Pago:" for="iptVlrPago" />
-                                    <p:inputText id="iptVlrPago" value="#{pagamentoController.pagamento.vlr_pago}" 
-                                                 required="true" requiredMessage="O valor total do pagamento é obrigatório">
-                                        <f:convertNumber pattern="#,##0.00" />
+                                    <p:outputLabel value="Valor Pago:" for="iptVlrPago" style="display: block;" />
+                                    <p:inputText id="iptVlrPago" size="40"
+                                                 required="true" requiredMessage="O valor total do pagamento é obrigatório"
+                                                 style="width: 50%;"
+                                                 value="#{pagamentoController.pagamento.vlr_pago}">
+                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
                                         <p:ajax event="blur" update="iptVlrPago iptSaldoDevedor" 
                                                 listener="#{pagamentoController.calcularSaldoDevedor}" />
                                     </p:inputText>
@@ -132,13 +138,14 @@
 
                                 <!-- Saldo Devedor -->
                                 <div class="field col-12 md:col-6">
-                                    <p:outputLabel value="Saldo Devedor:" for="iptSaldoDevedor" />
-                                    <p:inputText id="iptSaldoDevedor" value="#{pagamentoController.pagamento.saldo_devedor}" 
-                                                 requiredMessage="O valor total do pagamento é obrigatório">
-                                        <f:convertNumber pattern="#,##0.00" />
+                                    <p:outputLabel value="Saldo Devedor:" for="iptSaldoDevedor" style="display: block;" />
+                                    <p:inputText id="iptSaldoDevedor" size="40"
+                                                 requiredMessage="O valor total do pagamento é obrigatório"
+                                                 style="width: 50%;"
+                                                 value="#{pagamentoController.pagamento.saldo_devedor}" readonly="true">
+                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2" />
                                     </p:inputText>
                                 </div>
-
                             </div>
 
                             <!-- Botão de Cadastro -->
@@ -146,9 +153,7 @@
                                              value="Cadastrar" 
                                              action="#{pagamentoController.adicionarItem()}" 
                                              update=":frmPagamento:growl, :frmPagamento" 
-                                             icon="pi pi-save" />
-
-
+                                             icon="pi pi-save" style="margin-top: 20px;" />
                         </p:panel>
                     </p:tab>
                 </p:tabView>
