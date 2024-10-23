@@ -158,6 +158,33 @@ public class UsuarioController implements Serializable {
         return usuario;
     }
 
+    public boolean emailJaCadastrado(String email) {
+        try {
+            UsuarioEntity usuarioExistente = ejbFacade.buscarPorEmail(email);
+            return usuarioExistente != null; // Retorna true se o e-mail já existir
+        } catch (Exception e) {
+            addErrorMessage("Erro ao verificar e-mail: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private boolean emailDisponivel = true;
+
+    public boolean isEmailDisponivel() {
+        return emailDisponivel;
+    }
+
+    public void verificarEmail() {
+        if (ejbFacade.emailExiste(usuario.getEmail_user())) {
+            emailDisponivel = false;
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "E-mail já cadastrado", "Este e-mail já está em uso.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            emailDisponivel = true;
+        }
+    }
+
     public void adicionarUsuario() {
         //buscando a datahoraatual do sistema.
         Date datahoraAtual = new Timestamp(System.currentTimeMillis());

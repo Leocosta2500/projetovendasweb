@@ -24,8 +24,8 @@
                                  emptyMessage="Nenhuma usario cadastrado..."
                                  >
 
-                        <p:ajax event="rowSelect"   update="btnEdit btnDelete btnView btnAlterarSenha"/>
-                        <p:ajax event="rowUnselect" update="btnEdit btnDelete btnView btnAlterarSenha"/>
+                        <p:ajax event="rowSelect"   update="btnEdit btnDelete btnAlterarSenha"/>
+                        <p:ajax event="rowUnselect" update="btnEdit btnDelete btnAlterarSenha"/>
 
 
                         <p:column width="4" sortBy="#{item.cod_usuario}" filterBy="#{item.cod_usuario}">
@@ -95,19 +95,14 @@
                                            icon="ui-icon-alert"  />
                             </p:commandButton>
 
-
-
-                            <!--Botão utilizado para abrir a modal de visualização -->
-                            <p:commandButton id="btnView" icon="pi pi-user-edit"  value="Detalhes da Usuario" 
-                                             update="formView" oncomplete="PF('dlgView').show()" 
-                                             disabled="#{empty usuarioController.selected}"/>
-
+                            <!-- Adicionando um espaço entre os botões -->
+                            <p:spacer width="1" />
 
 
                             <p:commandButton id="btnAlterarSenha" value="Alterar Senha" icon="pi pi-key"
                                              onclick="PF('dlgAlterarSenha').show()" 
                                              update="formAlterarSenha" 
-                                             disabled="#{empty usuarioController.selected}" />
+                                             disabled="#{empty usuarioController.selected}"/>
 
 
 
@@ -135,7 +130,7 @@
 
 
 
-        <p:dialog header="Novo Usuario" widgetVar="dlgCreate" height="400" width="600" showEffect="fade" modal="true">
+        <p:dialog header="Novo Usuario" widgetVar="dlgCreate" height="400" width="800" showEffect="fade" modal="true">
             <h:form id="CreateForm">
                 <p:growl id="growl" showDetail="true" />
                 <h:panelGrid id="pngCadastro" columns="2">
@@ -149,21 +144,26 @@
                                  requiredMessage="O atributo email é obrigatório" validatorMessage="Campo email é inválido"
                                  value="#{usuarioController.usuario.email_user}" maxlength="50" >
                         <f:validateRegex pattern="[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})"  />
+                        <p:ajax event="blur" listener="#{usuarioController.verificarEmail}" update="growl, iptSenha, somTipUsuario, btnCadastrar" />                    
                     </p:inputText>
 
                     <p:outputLabel id="oplSenha" value="Senha:" for="iptSenha"/>
-                    <p:inputText id="iptSenha" size="40" label="Senha" required="true" 
-                                 requiredMessage="O atributo senha é obrigatório"
-                                 value="#{usuarioController.usuario.des_senha}" />
+                    <p:password id="iptSenha" size="40" label="Senha" required="true" 
+                                requiredMessage="O atributo senha é obrigatório"
+                                value="#{usuarioController.usuario.des_senha}" 
+                                disabled="#{!usuarioController.isEmailDisponivel()}"
+                                toggleMask="true" />
 
 
-                    <p:outputLabel id="oplTipUsuario" value="Tipo Usuario: " for="somTipUsuario"/>
-                    <p:selectOneMenu id="somTipUsuario" value="#{usuarioController.usuario.tip_usuario}"  required="true"
-                                     requiredMessage="O atributo nome é obrigatório">
-                        <f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+                    <p:outputLabel id="oplTipUsuario" value="Tipo de Usuário:" for="somTipUsuario"/>
+                    <p:selectOneMenu id="somTipUsuario" value="#{usuarioController.usuario.tip_usuario}" required="true"
+                                     requiredMessage="O tipo de usuário é obrigatório" style="width:100%;"
+                                     disabled="#{!usuarioController.isEmailDisponivel()}">
+                        <f:selectItem itemLabel="Selecione uma opção" itemValue="" noSelectionOption="true"/>
                         <f:selectItem itemLabel="Administrador" itemValue="Administrador"/>
                         <f:selectItem itemLabel="Operador" itemValue="Operador"/>
                     </p:selectOneMenu>
+
 
 
                     <!-- <p:outputLabel id="oplData" for="ipmData" value="Registro"  />
@@ -174,7 +174,8 @@
                 </h:panelGrid>
 
                 <p:commandButton id="btnCadastrar" value="Cadastrar" update="@form, frmList" icon="pi pi-save" 
-                                 action="#{usuarioController.adicionarUsuario()}" onclick="dlgCreate.hide()"/>
+                                 action="#{usuarioController.adicionarUsuario()}" onclick="dlgCreate.hide()"
+                                 disabled="#{!usuarioController.isEmailDisponivel()}" />
 
 
 
@@ -241,13 +242,15 @@
                 <h:panelGrid columns="2" cellpadding="5">
                     <p:outputLabel value="Nova Senha:" for="novaSenha" />
                     <p:password id="novaSenha" value="#{usuarioController.novaSenha}" required="true"
-                                label="Nova Senha" requiredMessage="A nova senha é obrigatória">
+                                label="Nova Senha" requiredMessage="A nova senha é obrigatória"
+                                toggleMask="true" redisplay="true">
                         <f:validateLength minimum="4" />
                     </p:password>
 
                     <p:outputLabel value="Confirmar Senha:" for="confirmarSenha" />
                     <p:password id="confirmarSenha" value="#{usuarioController.confirmarSenha}" required="true"
-                                label="Confirmar Senha" requiredMessage="A confirmação da senha é obrigatória">
+                                label="Confirmar Senha" requiredMessage="A confirmação da senha é obrigatória"
+                                toggleMask="true" redisplay="true">
                         <f:validateLength minimum="4" />
                     </p:password>
                 </h:panelGrid>
@@ -262,33 +265,6 @@
 
 
 
-
-        <p:dialog header="Visualizar Detalhes do usuario" widgetVar="dlgView"  height="250" 
-                  width="500" showEffect="fade" modal="true">
-            <h:form id="formView">
-                <h:panelGrid id="pngView" columns="2">   
-                    <p:outputLabel value="ID:" />
-                    <p:outputLabel value="#{usuarioController.selected.cod_usuario}"  />
-
-                    <p:outputLabel value="Nome: " />
-                    <p:outputLabel value="#{usuarioController.selected.nome_user}" />
-
-                    <p:outputLabel value="Email: " />                    
-                    <p:outputLabel value="#{usuarioController.selected.email_user}" />
-
-                    <p:outputLabel value="Tipo Usuario: "/>
-                    <p:outputLabel value="#{usuarioController.selected.tip_usuario}" />
-
-                    <p:outputLabel value="Registro: "  />
-                    <p:outputLabel value="#{usuarioController.selected.datahorareg}" >
-                        <f:convertDateTime pattern="dd/MM/yy HH:mm"  />
-                    </p:outputLabel>
-
-
-
-                </h:panelGrid>   
-            </h:form>
-        </p:dialog>
 
 
 
