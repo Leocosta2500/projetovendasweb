@@ -196,6 +196,15 @@ public class VendaController implements Serializable {
     }
 
     public void adicionarVenda() {
+
+        if (venda.getCod_cliente() == null || venda.getDes_cliente() == null || venda.getDes_cliente().isEmpty()
+                || venda.getDes_uf_cli() == null || venda.getDes_uf_cli().isEmpty()
+                || venda.getTip_venda() == null) {
+
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Todos os campos obrigatórios devem ser preenchidos.", null));
+            return;
+        }
         Date dta_hor_mov = new Timestamp(System.currentTimeMillis());
         venda.setDta_hor_mov(dta_hor_mov);
         persist(VendaController.PersistAction.CREATE, "Registro incluído com sucesso!");

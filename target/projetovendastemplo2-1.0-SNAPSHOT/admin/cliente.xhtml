@@ -122,7 +122,7 @@
 
 
                             <!--Botão utilizado para abrir a modal de edição -->
-                            <p:commandButton id="btnEdit" icon="pi pi-user-edit"  value="Editar Pessoa" 
+                            <p:commandButton id="btnEdit" icon="pi pi-user-edit"  value="Editar Cliente" 
                                              update="formEdit" oncomplete="PF('dlgEdit').show()" 
                                              disabled="#{empty clienteController.selected}"/>
 
@@ -135,7 +135,7 @@
                             </p:commandButton>
 
                             <!--Botão utilizado para abrir a modal de visualização -->
-                            <p:commandButton id="btnView" icon="pi pi-user-edit"  value="Detalhes da Pessoa" 
+                            <p:commandButton id="btnView" icon="pi pi-user-edit"  value="Detalhes do cliente" 
                                              update="formView" oncomplete="PF('dlgView').show()" 
                                              disabled="#{empty clienteController.selected}"/>
 
@@ -161,7 +161,7 @@
 
 
 
-        <p:dialog header="Novo Usuario" widgetVar="dlgCreate" height="400" width="600" showEffect="fade" modal="true">
+        <p:dialog header="Novo Cliente" widgetVar="dlgCreate" height="400" width="600" showEffect="fade" modal="true">
             <h:form id="CreateForm">
                 <p:growl id="growl" showDetail="true" />
                 <h:panelGrid columns="2">
@@ -229,58 +229,58 @@
                 <p:growl id="growl" showDetail="true" />
                 <h:panelGrid id="pngEdicao" columns="2" rendered="#{clienteController.selected != null}">   
                     <p:outputLabel id="oplId" value="ID:" for="iptId"/>
-                         <p:inputText id="iptId" size="10" label="Código Cliente" disabled="true"
-                                      value="#{clienteController.selected.cod_cliente}"  />
+                    <p:inputText id="iptId" size="10" label="Código Cliente" disabled="true"
+                                 value="#{clienteController.selected.cod_cliente}"  />
 
-                       <p:outputLabel id="oplNome" value="Nome:" for="iptNome"/>
-                  <p:inputText id="iptNome" size="40" label="Nome" required="true" 
-                               requiredMessage="O atributo nome é obrigatório"
-                               value="#{clienteController.selected.nome}" maxlength="50" />
+                    <p:outputLabel id="oplNome" value="Nome:" for="iptNome"/>
+                    <p:inputText id="iptNome" size="40" label="Nome" required="true" 
+                                 requiredMessage="O atributo nome é obrigatório"
+                                 value="#{clienteController.selected.nome}" maxlength="50" />
 
-                  <p:outputLabel id="oplDataNascimento" for="ipmDataNascimento" value="Data de Nascimento"  />
-                  <p:inputMask id="ipmDataNascimento" value="#{clienteController.selected.dta_nasc}" 
-                               mask="99/99/9999" required="true" requiredMessage="O atributo data de nascimento é obrigatório">
-                      <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
-                  </p:inputMask>
+                    <p:outputLabel id="oplDataNascimento" for="ipmDataNascimento" value="Data de Nascimento"  />
+                    <p:inputMask id="ipmDataNascimento" value="#{clienteController.selected.dta_nasc}" 
+                                 mask="99/99/9999" required="true" requiredMessage="O atributo data de nascimento é obrigatório">
+                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                    </p:inputMask>
 
-                  <p:outputLabel id="oplFone" value="Telefone:" for="iptFone" />
-                  <p:inputMask id="iptFone" mask="(99) 99999-9999" size="40" label="Fone" required="true" 
-                               requiredMessage="O atributo telefone é obrigatório"
-                               value="#{clienteController.selected.telefone}" />
+                    <p:outputLabel id="oplFone" value="Telefone:" for="iptFone" />
+                    <p:inputMask id="iptFone" mask="(99) 99999-9999" size="40" label="Fone" required="true" 
+                                 requiredMessage="O atributo telefone é obrigatório"
+                                 value="#{clienteController.selected.telefone}" />
 
-                  <p:outputLabel id="oplEmail" value="Email:" for="iptEmail"/>
-                  <p:inputText id="iptEmail" size="40" label="Nome" required="true" 
-                               requiredMessage="O atributo email é obrigatório" validatorMessage="Campo email é inválido"
-                               value="#{clienteController.selected.email}" maxlength="50" >
-                      <f:validateRegex pattern="[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})"  />
-                  </p:inputText>
+                    <p:outputLabel id="oplEmail" value="Email:" for="iptEmail"/>
+                    <p:inputText id="iptEmail" size="40" label="Nome" required="true" 
+                                 requiredMessage="O atributo email é obrigatório" validatorMessage="Campo email é inválido"
+                                 value="#{clienteController.selected.email}" maxlength="50" >
+                        <f:validateRegex pattern="[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})"  />
+                    </p:inputText>
 
-                  <p:outputLabel id="oplEndereco" value="Endereço:" for="iptEndereco"/>
-                  <p:inputText id="iptEndereco" size="40" label="Endereço" required="true" 
-                               requiredMessage="O atributo Endereço é obrigatório"
-                               value="#{clienteController.selected.endereco}" maxlength="50" />  
+                    <p:outputLabel id="oplEndereco" value="Endereço:" for="iptEndereco"/>
+                    <p:inputText id="iptEndereco" size="40" label="Endereço" required="true" 
+                                 requiredMessage="O atributo Endereço é obrigatório"
+                                 value="#{clienteController.selected.endereco}" maxlength="50" />  
 
-                  <p:outputLabel id="oplCidade" value="Cidade:" for="iptCidade"/>
-                  <p:inputText id="iptCidade" size="40" label="Cidade" required="true" 
-                               requiredMessage="O atributo Cidade é obrigatório"
-                               value="#{clienteController.selected.cidade}" maxlength="50" />   
+                    <p:outputLabel id="oplCidade" value="Cidade:" for="iptCidade"/>
+                    <p:inputText id="iptCidade" size="40" label="Cidade" required="true" 
+                                 requiredMessage="O atributo Cidade é obrigatório"
+                                 value="#{clienteController.selected.cidade}" maxlength="50" />   
 
-                  <p:outputLabel id="oplCompl" value="Complemento:" for="iptCompl"/>
-                  <p:inputText id="iptCompl" size="40" label="Complemento" required="true" 
-                               value="#{clienteController.selected.complemento}" maxlength="50" />  
+                    <p:outputLabel id="oplCompl" value="Complemento:" for="iptCompl"/>
+                    <p:inputText id="iptCompl" size="40" label="Complemento" required="true" 
+                                 value="#{clienteController.selected.complemento}" maxlength="50" />  
 
-                  <p:outputLabel id="oplUf" value="UF:" for="iptUf"/>
-                  <p:selectOneMenu id="iptUf" value="#{clienteController.selected.uf}" required="true" requiredMessage="O atributo UF é obrigatório">
-                      <f:selectItem itemLabel="Selecione uma UF..." itemValue="" />
-                      <f:selectItems value="#{ufController.UFs}" />
-                  </p:selectOneMenu> 
+                    <p:outputLabel id="oplUf" value="UF:" for="iptUf"/>
+                    <p:selectOneMenu id="iptUf" value="#{clienteController.selected.uf}" required="true" requiredMessage="O atributo UF é obrigatório">
+                        <f:selectItem itemLabel="Selecione uma UF..." itemValue="" />
+                        <f:selectItems value="#{ufController.UFs}" />
+                    </p:selectOneMenu> 
 
-                  <p:outputLabel id="oplCep" value="CEP:" for="iptCep"/>
-                  <p:inputMask id="iptCep" mask="99999-999" size="40" label="CEP" required="true" 
-                               requiredMessage="O atributo CEP é obrigatório"
-                               value="#{clienteController.selected.cep}" />
-              </h:panelGrid>
-                
+                    <p:outputLabel id="oplCep" value="CEP:" for="iptCep"/>
+                    <p:inputMask id="iptCep" mask="99999-999" size="40" label="CEP" required="true" 
+                                 requiredMessage="O atributo CEP é obrigatório"
+                                 value="#{clienteController.selected.cep}" />
+                </h:panelGrid>
+
                 <p:commandButton id="btnSalvarEdicao" value="Salvar" update="@form, :frmList" 
                                  onclick="dlgEdit.hide()" icon="pi pi-save"
                                  action="#{clienteController.editarCliente()}" />
@@ -291,38 +291,38 @@
         <p:dialog header="Visualizar Detalhes da Pessoa" widgetVar="dlgView"  height="250" 
                   width="500" showEffect="fade" modal="true">
             <h:form id="formView">
-                    <h:panelGrid id="pngView" columns="2">   
-                         <p:outputLabel value="Codido Cliente" />
-                         <p:outputLabel value="#{clienteController.selected.cod_cliente}"  />
+                <h:panelGrid id="pngView" columns="2">   
+                    <p:outputLabel value="Codido Cliente" />
+                    <p:outputLabel value="#{clienteController.selected.cod_cliente}"  />
 
-                         <p:outputLabel value="Nome: " />
-                         <p:outputLabel value="#{clienteController.selected.nome}" />
+                    <p:outputLabel value="Nome: " />
+                    <p:outputLabel value="#{clienteController.selected.nome}" />
 
-                         <p:outputLabel value="Data de Nascimento: "  />
-                         <p:outputLabel value="#{clienteController.selected.dta_nasc}" >
-                             <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
-                         </p:outputLabel>
+                    <p:outputLabel value="Data de Nascimento: "  />
+                    <p:outputLabel value="#{clienteController.selected.dta_nasc}" >
+                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
+                    </p:outputLabel>
 
-                         <p:outputLabel value="Telefone: "/>
-                         <p:outputLabel value="#{clienteController.selected.telefone}" />
-                         
-                         <p:outputLabel value="Email: " />                    
-                         <p:outputLabel value="#{clienteController.selected.email}" />
-                         
-                         <p:outputLabel value="Endereco: " />                    
-                         <p:outputLabel value="#{clienteController.selected.endereco}" />
+                    <p:outputLabel value="Telefone: "/>
+                    <p:outputLabel value="#{clienteController.selected.telefone}" />
 
-                         <p:outputLabel value="Cidade: " />                    
-                         <p:outputLabel value="#{clienteController.selected.cidade}" />
+                    <p:outputLabel value="Email: " />                    
+                    <p:outputLabel value="#{clienteController.selected.email}" />
 
-                         <p:outputLabel value="Complemento: " />                    
-                         <p:outputLabel value="#{clienteController.selected.complemento}" />
+                    <p:outputLabel value="Endereco: " />                    
+                    <p:outputLabel value="#{clienteController.selected.endereco}" />
 
-                         <p:outputLabel value="UF: " />                    
-                         <p:outputLabel value="#{clienteController.selected.uf}" />
+                    <p:outputLabel value="Cidade: " />                    
+                    <p:outputLabel value="#{clienteController.selected.cidade}" />
 
-                         <p:outputLabel value="CEP: " />                    
-                         <p:outputLabel value="#{clienteController.selected.cep}" />
+                    <p:outputLabel value="Complemento: " />                    
+                    <p:outputLabel value="#{clienteController.selected.complemento}" />
+
+                    <p:outputLabel value="UF: " />                    
+                    <p:outputLabel value="#{clienteController.selected.uf}" />
+
+                    <p:outputLabel value="CEP: " />                    
+                    <p:outputLabel value="#{clienteController.selected.cep}" />
 
                 </h:panelGrid>   
             </h:form>

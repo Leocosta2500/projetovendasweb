@@ -84,7 +84,7 @@
 
 
                             <!--Botão utilizado para abrir a modal de criação -->
-                            <p:commandButton id="btnCreate" value="Incluir Item"  icon="pi pi-file" 
+                            <p:commandButton id="btnCreate" value="Incluir Produto"  icon="pi pi-file" 
                                              actionListener="#{itemController.prepareAdicionar()}"
                                              update=":CreateForm"
                                              oncomplete="PF('dlgCreate').show()"/>  
@@ -94,12 +94,12 @@
 
 
                             <!--Botão utilizado para abrir a modal de edição -->
-                            <p:commandButton id="btnEdit" icon="pi pi-user-edit"  value="Editar Item" 
+                            <p:commandButton id="btnEdit" icon="pi pi-user-edit"  value="Editar Produto" 
                                              update="formEdit" oncomplete="PF('dlgEdit').show()" 
                                              disabled="#{empty itemController.selected}"/>
 
                             <!--Botão utilizado para excluir o registro selecionado-->                            
-                            <p:commandButton id="btnDelete" icon="pi pi-trash"  value="Excluir Item" 
+                            <p:commandButton id="btnDelete" icon="pi pi-trash"  value="Excluir Produto" 
                                              actionListener="#{itemController.deletarItem()}" update="frmList" 
                                              disabled="#{empty itemController.selected}">
                                 <p:confirm header="Confirmar Exclusão" message="Você confirma exclusão do registro?" 
@@ -107,7 +107,7 @@
                             </p:commandButton>
 
                             <!--Botão utilizado para abrir a modal de visualização -->
-                            <p:commandButton id="btnView" icon="pi pi-user-edit"  value="Detalhes da Item" 
+                            <p:commandButton id="btnView" icon="pi pi-user-edit"  value="Detalhes do Produto" 
                                              update="formView" oncomplete="PF('dlgView').show()" 
                                              disabled="#{empty itemController.selected}"/>
 
@@ -133,7 +133,7 @@
 
 
 
-        <p:dialog header="Novo Item" widgetVar="dlgCreate" height="400" width="600" showEffect="fade" modal="true">
+        <p:dialog header="Novo Produto" widgetVar="dlgCreate" height="400" width="600" showEffect="fade" modal="true">
             <h:form id="CreateForm">
                 <p:growl id="growl" showDetail="true" />    
                 <h:panelGrid columns="2" rendered="#{itemController.item != null}"> 
@@ -193,7 +193,7 @@
         <!--Editar usuario -->             
 
 
-        <p:dialog widgetVar="dlgEdit" modal="true" resizable="false" appendTo="@(body)" header="Editar Cliente">
+        <p:dialog widgetVar="dlgEdit" modal="true" resizable="false" appendTo="@(body)" header="Editar Produto">
             <h:form id="formEdit">
                 <p:growl id="growl" showDetail="true" />
                 <h:panelGrid id="pngEdicao" columns="2" rendered="#{itemController.selected != null}">   
@@ -246,7 +246,7 @@
         </p:dialog>
 
 
-        <p:dialog header="Visualizar Detalhes da Item" widgetVar="dlgView"  height="250" 
+        <p:dialog header="Visualizar Detalhes Produto" widgetVar="dlgView"  height="250" 
                   width="500" showEffect="fade" modal="true">
             <h:form id="formView">
                 <h:panelGrid id="pngView" columns="2">   

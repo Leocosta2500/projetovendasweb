@@ -1,4 +1,3 @@
-
 package br.leo.projetovendastemplo.controller;
 
 import br.leo.projetovendastemplo.entity.UsuarioEntity;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  *
  * @author leona
@@ -26,23 +24,58 @@ import java.util.List;
 @SessionScoped
 public class UsuarioController implements Serializable {
 
-    
-   @EJB
+    @EJB
     private br.leo.projetovendastemplo.facade.UsuarioFacade ejbFacade;
-   
+
     /**
      * Creates a new instance of UsuarioController
      */
     public UsuarioController() {
     }
-    
-   
-    private UsuarioEntity usuario = new UsuarioEntity();
-    private List<UsuarioEntity> usuarioList = new ArrayList<>(); 
-    private UsuarioEntity selected;
 
-    
-    
+    private UsuarioEntity usuario = new UsuarioEntity();
+    private List<UsuarioEntity> usuarioList = new ArrayList<>();
+    private UsuarioEntity selected;
+    private String novaSenha;
+    private String confirmarSenha;
+
+    public String getNovaSenha() {
+        return novaSenha;
+    }
+
+    public void setNovaSenha(String novaSenha) {
+        this.novaSenha = novaSenha;
+    }
+
+    public String getConfirmarSenha() {
+        return confirmarSenha;
+    }
+
+    public void setConfirmarSenha(String confirmarSenha) {
+        this.confirmarSenha = confirmarSenha;
+    }
+
+    public void alterarSenha() {
+        // Verifica se as senhas foram preenchidas e são iguais
+        if (novaSenha == null || confirmarSenha == null || !novaSenha.equals(confirmarSenha)) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "As senhas não coincidem!", null));
+            return;
+        }
+
+        try {
+            // Atualiza a senha do usuário selecionado
+            selected.setDes_senha(novaSenha);
+            persist(PersistAction.UPDATE, "Senha alterada com sucesso!");
+
+            // Limpa os campos de senha após salvar
+            novaSenha = null;
+            confirmarSenha = null;
+        } catch (Exception e) {
+            addErrorMessage("Erro ao alterar senha: " + e.getMessage());
+        }
+    }
+
     public List<UsuarioEntity> usuarioAll() {
         return ejbFacade.buscarTodos();
     }
@@ -50,17 +83,14 @@ public class UsuarioController implements Serializable {
     public List<UsuarioEntity> getUsuarioList() {
         return usuarioList;
     }
-    
-    
+
 //    public List<UsuarioEntity> getUsuarioList() {
 //        return ejbFacade.buscarTodos();
 //    }
-
     public void setUsuarioList(List<UsuarioEntity> usuarioList) {
         this.usuarioList = usuarioList;
     }
-    
-    
+
     public UsuarioEntity getSelected() {
         return selected;
     }
@@ -69,7 +99,6 @@ public class UsuarioController implements Serializable {
         this.selected = selected;
     }
 
-
     public UsuarioEntity getUsuario() {
         return usuario;
     }
@@ -77,13 +106,12 @@ public class UsuarioController implements Serializable {
     public void setUsuario(UsuarioEntity usuario) {
         this.usuario = usuario;
     }
-    
 
     public UsuarioEntity getUsuario(java.lang.Integer cod_usuario) {
         return ejbFacade.find(cod_usuario);
     }
-    
-      @FacesConverter(forClass = UsuarioEntity.class)
+
+    @FacesConverter(forClass = UsuarioEntity.class)
     public static class UsuarioControllerConverter implements Converter {
 
         @Override
@@ -124,38 +152,30 @@ public class UsuarioController implements Serializable {
             }
         }
     }
-   
-    
-    
+
     public UsuarioEntity prepareAdicionar() {
         usuario = new UsuarioEntity();
         return usuario;
     }
 
-    
-        public void adicionarUsuario() {
+    public void adicionarUsuario() {
         //buscando a datahoraatual do sistema.
         Date datahoraAtual = new Timestamp(System.currentTimeMillis());
         usuario.setDatahorareg(datahoraAtual);
-        persist(UsuarioController.PersistAction.CREATE, 
+        persist(UsuarioController.PersistAction.CREATE,
                 "Registro incluído com sucesso!");
     }
 
-    
-        public void editarUsuario() {
-        persist(UsuarioController.PersistAction.UPDATE, 
+    public void editarUsuario() {
+        persist(UsuarioController.PersistAction.UPDATE,
                 "Registro alterado com sucesso!");
     }
 
-    
-    
     public void deletarUsuario() {
-        persist(UsuarioController.PersistAction.DELETE, 
+        persist(UsuarioController.PersistAction.DELETE,
                 "Registro excluído com sucesso!");
     }
-   
 
-    
     public static void addErrorMessage(String msg) {
         FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg);
         FacesContext.getCurrentInstance().addMessage(null, facesMsg);

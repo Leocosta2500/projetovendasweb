@@ -24,8 +24,8 @@
                                  emptyMessage="Nenhuma usario cadastrado..."
                                  >
 
-                        <p:ajax event="rowSelect"   update="btnEdit btnDelete btnView"/>
-                        <p:ajax event="rowUnselect" update="btnEdit btnDelete btnView"/>
+                        <p:ajax event="rowSelect"   update="btnEdit btnDelete btnView btnAlterarSenha"/>
+                        <p:ajax event="rowUnselect" update="btnEdit btnDelete btnView btnAlterarSenha"/>
 
 
                         <p:column width="4" sortBy="#{item.cod_usuario}" filterBy="#{item.cod_usuario}">
@@ -71,22 +71,22 @@
 
                         <f:facet name="footer">
 
-                            
-                            
+
+
                             <!--Botão utilizado para abrir a modal de criação -->
                             <p:commandButton id="btnCreate" value="Incluir Usuario"  icon="pi pi-file" 
                                              onclick="PF('dlgCreate').show()"/>
-                            
 
-                            
-                            
+
+
+
                             <!--Botão utilizado para abrir a modal de edição -->
                             <p:commandButton id="btnEdit" icon="pi pi-user-edit"  value="Editar Usuario" 
                                              update="formEdit" oncomplete="PF('dlgEdit').show()" 
                                              disabled="#{empty usuarioController.selected}"/>
 
-                            
-                            
+
+
                             <!--Botão utilizado para excluir o registro selecionado-->                            
                             <p:commandButton id="btnDelete" icon="pi pi-trash"  value="Excluir Usuario" 
                                              actionListener="#{usuarioController.deletarUsuario()}" update="frmList" 
@@ -95,20 +95,30 @@
                                            icon="ui-icon-alert"  />
                             </p:commandButton>
 
-                            
-                            
+
+
                             <!--Botão utilizado para abrir a modal de visualização -->
                             <p:commandButton id="btnView" icon="pi pi-user-edit"  value="Detalhes da Usuario" 
                                              update="formView" oncomplete="PF('dlgView').show()" 
                                              disabled="#{empty usuarioController.selected}"/>
 
 
+
+                            <p:commandButton id="btnAlterarSenha" value="Alterar Senha" icon="pi pi-key"
+                                             onclick="PF('dlgAlterarSenha').show()" 
+                                             update="formAlterarSenha" 
+                                             disabled="#{empty usuarioController.selected}" />
+
+
+
+
+
                         </f:facet>
 
                     </p:dataTable>
                 </p:fieldset>
-                
-                
+
+
                 <!--Diálogo para confirmação da exclusão -->
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                     <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
@@ -116,138 +126,169 @@
                 </p:confirmDialog>
 
 
-                        
+
             </h:panelGroup>
         </h:form>
 
-        
-      <!--Criar novo usuario -->
-      
-      
-      
-      <p:dialog header="Novo Usuario" widgetVar="dlgCreate" height="400" width="600" showEffect="fade" modal="true">
-          <h:form id="CreateForm">
-              <p:growl id="growl" showDetail="true" />
-              <h:panelGrid id="pngCadastro" columns="2">
-                  <p:outputLabel id="oplNome" value="Nome:" for="iptNome"/>
-                  <p:inputText id="iptNome" size="40" label="Nome" required="true" 
-                               requiredMessage="O atributo nome é obrigatório"
-                               value="#{usuarioController.usuario.nome_user}" maxlength="50" />
 
-                  <p:outputLabel id="oplEmail" value="Email:" for="iptEmail"/>
-                  <p:inputText id="iptEmail" size="40" label="Nome" required="true" 
-                               requiredMessage="O atributo email é obrigatório" validatorMessage="Campo email é inválido"
-                               value="#{usuarioController.usuario.email_user}" maxlength="50" >
-                      <f:validateRegex pattern="[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})"  />
-                  </p:inputText>
-                  
-                  <p:outputLabel id="oplSenha" value="Senha:" for="iptSenha"/>
-                  <p:inputText id="iptSenha" size="40" label="Senha" required="true" 
-                               requiredMessage="O atributo senha é obrigatório"
-                               value="#{usuarioController.usuario.des_senha}" />
-
-
-                  <p:outputLabel id="oplTipUsuario" value="Tipo Usuario: " for="somTipUsuario"/>
-                  <p:selectOneMenu id="somTipUsuario" value="#{usuarioController.usuario.tip_usuario}"  required="true"
-                                   requiredMessage="O atributo nome é obrigatório">
-                      <f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
-                      <f:selectItem itemLabel="Administrador" itemValue="Administrador"/>
-                      <f:selectItem itemLabel="Operador" itemValue="Operador"/>
-                  </p:selectOneMenu>
-                                     
-
-                 <!-- <p:outputLabel id="oplData" for="ipmData" value="Registro"  />
-                  <p:inputText id="ipmData" value="#{usuarioController.selected.datahorareg}"  disabled="true">
-                      <f:convertDateTime pattern="dd/MM/yy HH:mm" timeZone="America/Sao_Paulo" />
-                  </p:inputText> -->
-
-              </h:panelGrid>
-              
-              <p:commandButton id="btnCadastrar" value="Cadastrar" update="@form, frmList" icon="pi pi-save" 
-                                   action="#{usuarioController.adicionarUsuario()}" onclick="dlgCreate.hide()"/>
-              
-          </h:form>
-          </p:dialog>
-          
-             <!--Editar usuario -->             
-                    
-                    
-                 
-             <p:dialog header="Editar Usuario" widgetVar="dlgEdit"  height="400" width="600" showEffect="fade" modal="true">
-                 <h:form id="formEdit">
-                     <p:growl id="growl" showDetail="true" />
-                     <h:panelGrid id="pngEdicao" columns="2">   
-                         <p:outputLabel id="oplId" value="ID:" for="iptId"/>
-                         <p:inputText id="iptId" size="10" label="Codido Usuario" disabled="true"
-                                      value="#{usuarioController.selected.cod_usuario}"  />
-
-                         <p:outputLabel id="oplNome" value="Nome:" for="iptNome"/>
-                         <p:inputText id="iptNome" size="40" label="Nome" required="true" 
-                                      requiredMessage="O atributo nome é obrigatório"
-                                      value="#{usuarioController.selected.nome_user}" maxlength="50" />
-
-                         <p:outputLabel id="oplEmail" value="Email:" for="iptEmail"/>
-                         <p:inputText id="iptEmail" size="40" label="Nome" required="true" 
-                                      requiredMessage="O atributo email é obrigatório" validatorMessage="Campo email é inválido"
-                                      value="#{usuarioController.selected.email_user}" maxlength="50" >
-                             <f:validateRegex pattern="[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})"  />
-                         </p:inputText>
-                         
-                         <p:outputLabel id="oplSenha" value="Senha:" for="iptSenha"/>
-                         <p:inputText id="iptSenha" size="40" label="Senha" required="true" 
-                                      requiredMessage="O atributo senha é obrigatório"
-                                      value="#{usuarioController.selected.des_senha}" />
-
-
-                         <p:outputLabel id="oplTipUsuario" value="Tipo Usuario: " for="somTipUsuario"/>
-                         <p:selectOneMenu id="somTipUsuario" value="#{usuarioController.selected.tip_usuario}" required="true"
-                                          requiredMessage="O atributo nome é obrigatório">
-                             <f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
-                             <f:selectItem itemLabel="Administrador" itemValue="Administrador"/>
-                             <f:selectItem itemLabel="Operador" itemValue="Operador"/>
-                         </p:selectOneMenu>
-                                                       
-                      <!--   <p:outputLabel id="oplData" for="ipmData" value="Registro"  />
-                         <p:inputText id="ipmData" value="#{usuarioController.selected.datahorareg}"  disabled="true">
-                             <f:convertDateTime pattern="dd/MM/yy HH:mm" timeZone="America/Sao_Paulo" />
-                         </p:inputText> -->
-
-                     </h:panelGrid> 
-                     
-                     <p:commandButton id="btnSalvarEdicao" value="Salvar" update="@form, frmList" 
-                                      onclick="dlgEdit.hide()" icon="pi pi-save"
-                                      action="#{usuarioController.editarUsuario()}" />
-                 </h:form>
-             </p:dialog>
-             
-             
-             
-             <p:dialog header="Visualizar Detalhes do usuario" widgetVar="dlgView"  height="250" 
-                       width="500" showEffect="fade" modal="true">
-                 <h:form id="formView">
-                     <h:panelGrid id="pngView" columns="2">   
-                         <p:outputLabel value="ID:" />
-                         <p:outputLabel value="#{usuarioController.selected.cod_usuario}"  />
-
-                         <p:outputLabel value="Nome: " />
-                         <p:outputLabel value="#{usuarioController.selected.nome_user}" />
-
-                         <p:outputLabel value="Email: " />                    
-                         <p:outputLabel value="#{usuarioController.selected.email_user}" />
-
-                         <p:outputLabel value="Tipo Usuario: "/>
-                         <p:outputLabel value="#{usuarioController.selected.tip_usuario}" />
-
-                         <p:outputLabel value="Registro: "  />
-                         <p:outputLabel value="#{usuarioController.selected.datahorareg}" >
-                             <f:convertDateTime pattern="dd/MM/yy HH:mm"  />
-                         </p:outputLabel>
+        <!--Criar novo usuario -->
 
 
 
-                     </h:panelGrid>   
-                 </h:form>
-             </p:dialog>
+        <p:dialog header="Novo Usuario" widgetVar="dlgCreate" height="400" width="600" showEffect="fade" modal="true">
+            <h:form id="CreateForm">
+                <p:growl id="growl" showDetail="true" />
+                <h:panelGrid id="pngCadastro" columns="2">
+                    <p:outputLabel id="oplNome" value="Nome:" for="iptNome"/>
+                    <p:inputText id="iptNome" size="40" label="Nome" required="true" 
+                                 requiredMessage="O atributo nome é obrigatório"
+                                 value="#{usuarioController.usuario.nome_user}" maxlength="50" />
+
+                    <p:outputLabel id="oplEmail" value="Email:" for="iptEmail"/>
+                    <p:inputText id="iptEmail" size="40" label="Nome" required="true" 
+                                 requiredMessage="O atributo email é obrigatório" validatorMessage="Campo email é inválido"
+                                 value="#{usuarioController.usuario.email_user}" maxlength="50" >
+                        <f:validateRegex pattern="[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})"  />
+                    </p:inputText>
+
+                    <p:outputLabel id="oplSenha" value="Senha:" for="iptSenha"/>
+                    <p:inputText id="iptSenha" size="40" label="Senha" required="true" 
+                                 requiredMessage="O atributo senha é obrigatório"
+                                 value="#{usuarioController.usuario.des_senha}" />
+
+
+                    <p:outputLabel id="oplTipUsuario" value="Tipo Usuario: " for="somTipUsuario"/>
+                    <p:selectOneMenu id="somTipUsuario" value="#{usuarioController.usuario.tip_usuario}"  required="true"
+                                     requiredMessage="O atributo nome é obrigatório">
+                        <f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+                        <f:selectItem itemLabel="Administrador" itemValue="Administrador"/>
+                        <f:selectItem itemLabel="Operador" itemValue="Operador"/>
+                    </p:selectOneMenu>
+
+
+                    <!-- <p:outputLabel id="oplData" for="ipmData" value="Registro"  />
+                     <p:inputText id="ipmData" value="#{usuarioController.selected.datahorareg}"  disabled="true">
+                         <f:convertDateTime pattern="dd/MM/yy HH:mm" timeZone="America/Sao_Paulo" />
+                     </p:inputText> -->
+
+                </h:panelGrid>
+
+                <p:commandButton id="btnCadastrar" value="Cadastrar" update="@form, frmList" icon="pi pi-save" 
+                                 action="#{usuarioController.adicionarUsuario()}" onclick="dlgCreate.hide()"/>
+
+
+
+
+            </h:form>
+        </p:dialog>
+
+        <!--Editar usuario -->             
+
+
+
+        <p:dialog header="Editar Usuario" widgetVar="dlgEdit"  height="400" width="600" showEffect="fade" modal="true">
+            <h:form id="formEdit">
+                <p:growl id="growl" showDetail="true" />
+                <h:panelGrid id="pngEdicao" columns="2">   
+                    <p:outputLabel id="oplId" value="ID:" for="iptId"/>
+                    <p:inputText id="iptId" size="10" label="Codido Usuario" disabled="true"
+                                 value="#{usuarioController.selected.cod_usuario}"  />
+
+                    <p:outputLabel id="oplNome" value="Nome:" for="iptNome"/>
+                    <p:inputText id="iptNome" size="40" label="Nome" required="true" 
+                                 requiredMessage="O atributo nome é obrigatório"
+                                 value="#{usuarioController.selected.nome_user}" maxlength="50" />
+
+                    <p:outputLabel id="oplEmail" value="Email:" for="iptEmail"/>
+                    <p:inputText id="iptEmail" size="40" label="Nome" required="true" 
+                                 requiredMessage="O atributo email é obrigatório" validatorMessage="Campo email é inválido"
+                                 value="#{usuarioController.selected.email_user}" maxlength="50" >
+                        <f:validateRegex pattern="[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})"  />
+                    </p:inputText>
+
+                    <p:outputLabel id="oplSenha" value="Senha:" for="iptSenha"/>
+                    <p:inputText id="iptSenha" size="40" label="Senha" required="true" 
+                                 requiredMessage="O atributo senha é obrigatório"
+                                 value="#{usuarioController.selected.des_senha}" />
+
+
+                    <p:outputLabel id="oplTipUsuario" value="Tipo Usuario: " for="somTipUsuario"/>
+                    <p:selectOneMenu id="somTipUsuario" value="#{usuarioController.selected.tip_usuario}" required="true"
+                                     requiredMessage="O atributo nome é obrigatório">
+                        <f:selectItem itemLabel="Selecione uma opção" itemValue=""/>
+                        <f:selectItem itemLabel="Administrador" itemValue="Administrador"/>
+                        <f:selectItem itemLabel="Operador" itemValue="Operador"/>
+                    </p:selectOneMenu>
+
+                    <!--   <p:outputLabel id="oplData" for="ipmData" value="Registro"  />
+                       <p:inputText id="ipmData" value="#{usuarioController.selected.datahorareg}"  disabled="true">
+                           <f:convertDateTime pattern="dd/MM/yy HH:mm" timeZone="America/Sao_Paulo" />
+                       </p:inputText> -->
+
+                </h:panelGrid> 
+
+                <p:commandButton id="btnSalvarEdicao" value="Salvar" update="@form, frmList" 
+                                 onclick="dlgEdit.hide()" icon="pi pi-save"
+                                 action="#{usuarioController.editarUsuario()}" />
+            </h:form>
+        </p:dialog>
+
+
+        <p:dialog header="Alterar Senha" widgetVar="dlgAlterarSenha" modal="true" height="250" width="400" showEffect="fade">
+            <h:form id="formAlterarSenha">
+                <p:growl id="growlAlterarSenha" showDetail="true" />
+
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel value="Nova Senha:" for="novaSenha" />
+                    <p:password id="novaSenha" value="#{usuarioController.novaSenha}" required="true"
+                                label="Nova Senha" requiredMessage="A nova senha é obrigatória">
+                        <f:validateLength minimum="4" />
+                    </p:password>
+
+                    <p:outputLabel value="Confirmar Senha:" for="confirmarSenha" />
+                    <p:password id="confirmarSenha" value="#{usuarioController.confirmarSenha}" required="true"
+                                label="Confirmar Senha" requiredMessage="A confirmação da senha é obrigatória">
+                        <f:validateLength minimum="4" />
+                    </p:password>
+                </h:panelGrid>
+
+                <p:commandButton value="Salvar" icon="pi pi-save" 
+                                 actionListener="#{usuarioController.alterarSenha()}" 
+                                 update="growlAlterarSenha, :frmList:datalist" 
+                                 oncomplete="if (!args.validationFailed) { PF('dlgAlterarSenha').hide(); }" 
+                                 process="@form" />
+            </h:form>
+        </p:dialog>
+
+
+
+
+        <p:dialog header="Visualizar Detalhes do usuario" widgetVar="dlgView"  height="250" 
+                  width="500" showEffect="fade" modal="true">
+            <h:form id="formView">
+                <h:panelGrid id="pngView" columns="2">   
+                    <p:outputLabel value="ID:" />
+                    <p:outputLabel value="#{usuarioController.selected.cod_usuario}"  />
+
+                    <p:outputLabel value="Nome: " />
+                    <p:outputLabel value="#{usuarioController.selected.nome_user}" />
+
+                    <p:outputLabel value="Email: " />                    
+                    <p:outputLabel value="#{usuarioController.selected.email_user}" />
+
+                    <p:outputLabel value="Tipo Usuario: "/>
+                    <p:outputLabel value="#{usuarioController.selected.tip_usuario}" />
+
+                    <p:outputLabel value="Registro: "  />
+                    <p:outputLabel value="#{usuarioController.selected.datahorareg}" >
+                        <f:convertDateTime pattern="dd/MM/yy HH:mm"  />
+                    </p:outputLabel>
+
+
+
+                </h:panelGrid>   
+            </h:form>
+        </p:dialog>
 
 
 

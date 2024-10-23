@@ -120,10 +120,11 @@
                                              icon="pi pi-save" 
                                              value="Cadastrar" 
                                              update=":frmList:tabView"  
-                                             process="@this"    
+                                             process="@form"    
                                              oncomplete="if (!args.validationFailed) { PF('tabViewWidget').select(1); window.location.reload(); }"  
                                              partialSubmit="true"
                                              ajax="true" />
+
 
 
                             <!-- Botão para incluir itens -->
