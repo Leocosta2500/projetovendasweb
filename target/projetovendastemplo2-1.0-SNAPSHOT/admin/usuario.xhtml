@@ -74,8 +74,10 @@
 
 
                             <!--Botão utilizado para abrir a modal de criação -->
-                            <p:commandButton id="btnCreate" value="Incluir Usuario"  icon="pi pi-file" 
-                                             onclick="PF('dlgCreate').show()"/>
+                            <p:commandButton id="btnCreate" value="Incluir Usuario" icon="pi pi-file"
+                                             actionListener="#{usuarioController.limparFormulario()}"
+                                             onclick="PF('dlgCreate').show()" update="CreateForm"/>
+
 
 
 
@@ -152,7 +154,10 @@
                                 requiredMessage="O atributo senha é obrigatório"
                                 value="#{usuarioController.usuario.des_senha}" 
                                 disabled="#{!usuarioController.isEmailDisponivel()}"
-                                toggleMask="true" />
+                                toggleMask="true">
+                        <f:validateLength minimum="4" />
+
+                    </p:password>
 
 
                     <p:outputLabel id="oplTipUsuario" value="Tipo de Usuário:" for="somTipUsuario"/>
@@ -174,9 +179,9 @@
                 </h:panelGrid>
 
                 <p:commandButton id="btnCadastrar" value="Cadastrar" update="@form, frmList" icon="pi pi-save" 
-                                 action="#{usuarioController.adicionarUsuario()}" onclick="dlgCreate.hide()"
+                                 action="#{usuarioController.adicionarUsuario()}" process="@form"
+                                 oncomplete="if (!args.validationFailed) { PF('dlgCreate').hide(); window.location.reload(); }"
                                  disabled="#{!usuarioController.isEmailDisponivel()}" />
-
 
 
 
@@ -211,6 +216,9 @@
                     <p:inputText id="iptSenha" size="40" label="Senha" required="true" 
                                  requiredMessage="O atributo senha é obrigatório"
                                  value="#{usuarioController.selected.des_senha}" />
+
+
+
 
 
                     <p:outputLabel id="oplTipUsuario" value="Tipo Usuario: " for="somTipUsuario"/>

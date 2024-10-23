@@ -261,4 +261,8 @@ public class UsuarioController implements Serializable {
         }
     }
 
+    public void limparFormulario() {
+        usuario = new UsuarioEntity(); // Cria uma nova instância para limpar os campos
+    }
+
 }
