@@ -208,14 +208,21 @@
                     <p:outputLabel id="oplEmail" value="Email:" for="iptEmail"/>
                     <p:inputText id="iptEmail" size="40" label="Nome" required="true" 
                                  requiredMessage="O atributo email é obrigatório" validatorMessage="Campo email é inválido"
-                                 value="#{usuarioController.selected.email_user}" maxlength="50" >
+                                 value="#{usuarioController.selected.email_user}" maxlength="50">
                         <f:validateRegex pattern="[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})"  />
+                        <p:ajax event="blur" listener="#{usuarioController.verificarEmailEdicao}" update="growl, btnSalvarEdicao" />
                     </p:inputText>
 
+
                     <p:outputLabel id="oplSenha" value="Senha:" for="iptSenha"/>
-                    <p:inputText id="iptSenha" size="40" label="Senha" required="true" 
-                                 requiredMessage="O atributo senha é obrigatório"
-                                 value="#{usuarioController.selected.des_senha}" />
+                    <p:password id="iptSenha" size="40" label="Senha" required="true" 
+                                requiredMessage="O atributo senha é obrigatório"
+                                value="#{usuarioController.selected.des_senha}"
+                                toggleMask="true"
+                                redisplay="true">
+                        <f:validateLength minimum="4" />
+                    </p:password>
+
 
 
 
@@ -236,9 +243,11 @@
 
                 </h:panelGrid> 
 
-                <p:commandButton id="btnSalvarEdicao" value="Salvar" update="@form, frmList" 
-                                 onclick="dlgEdit.hide()" icon="pi pi-save"
-                                 action="#{usuarioController.editarUsuario()}" />
+                <p:commandButton id="btnSalvarEdicao" value="Salvar" update="@form, frmList"
+                                 oncomplete="PF('dlgEdit').hide()" icon="pi pi-save"
+                                 action="#{usuarioController.editarUsuario()}" 
+                                 disabled="#{!usuarioController.isEmailDisponivel()}"/>
+
             </h:form>
         </p:dialog>
 

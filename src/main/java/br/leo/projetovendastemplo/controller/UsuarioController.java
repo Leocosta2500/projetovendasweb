@@ -265,4 +265,15 @@ public class UsuarioController implements Serializable {
         usuario = new UsuarioEntity(); // Cria uma nova instância para limpar os campos
     }
 
+    public void verificarEmailEdicao() {
+        if (selected != null && ejbFacade.emailExiste(selected.getEmail_user(), selected.getCod_usuario())) {
+            emailDisponivel = false;
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "E-mail já cadastrado", "Este e-mail já está em uso por outro usuário.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            emailDisponivel = true;
+        }
+    }
+
 }

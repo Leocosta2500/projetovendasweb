@@ -92,4 +92,14 @@ public class UsuarioFacade extends AbstractFacade<UsuarioEntity> {
         return count > 0;
     }
 
+    public boolean emailExiste(String email, Integer codUsuario) {
+        Query query = em.createQuery(
+                "SELECT COUNT(u) FROM UsuarioEntity u WHERE u.email_user = :email AND u.cod_usuario <> :codUsuario"
+        );
+        query.setParameter("email", email);
+        query.setParameter("codUsuario", codUsuario);
+        Long count = (Long) query.getSingleResult();
+        return count > 0;
+    }
+
 }
