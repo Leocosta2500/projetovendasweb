@@ -24,8 +24,8 @@
                                  emptyMessage="Nenhuma usario cadastrado..."
                                  >
 
-                        <p:ajax event="rowSelect"   update="btnEdit btnDelete btnView"/>
-                        <p:ajax event="rowUnselect" update="btnEdit btnDelete btnView"/>
+                        <p:ajax event="rowSelect"   update="btnEdit btnDelete"/>
+                        <p:ajax event="rowUnselect" update="btnEdit btnDelete"/>
 
 
                         <p:column width="4" sortBy="#{item.id_item}" filterBy="#{item.id_item}">
@@ -46,7 +46,7 @@
 
                         <p:column width="4" sortBy="#{item.vlr_item}" filterBy="#{item.vlr_item}">
                             <f:facet name="header">
-                                <h:outputText value="Valor Item"/>
+                                <h:outputText value="Valor Produto"/>
                             </f:facet>
                             <h:outputText value="#{item.vlr_item}">
                                 <f:convertNumber pattern="#,##0.00"/>
@@ -62,7 +62,7 @@
 
                         <p:column width="4" sortBy="#{item.cod_item}" filterBy="#{item.cod_item}">
                             <f:facet name="header">
-                                <h:outputText value="Codigo do item"/>
+                                <h:outputText value="Codigo do Produto"/>
                             </f:facet>
                             <h:outputText value="#{item.cod_item}"/> 
                         </p:column> 
@@ -106,10 +106,7 @@
                                            icon="ui-icon-alert"  />
                             </p:commandButton>
 
-                            <!--Botão utilizado para abrir a modal de visualização -->
-                            <p:commandButton id="btnView" icon="pi pi-user-edit"  value="Detalhes do Produto" 
-                                             update="formView" oncomplete="PF('dlgView').show()" 
-                                             disabled="#{empty itemController.selected}"/>
+
 
                         </f:facet>
 
@@ -246,34 +243,6 @@
         </p:dialog>
 
 
-        <p:dialog header="Visualizar Detalhes Produto" widgetVar="dlgView"  height="250" 
-                  width="500" showEffect="fade" modal="true">
-            <h:form id="formView">
-                <h:panelGrid id="pngView" columns="2">   
-                    <p:outputLabel value="ID do Item:" />
-                    <p:outputLabel value="#{itemController.selected.id_item}" />
-
-                    <p:outputLabel value="Descrição do Item:" />
-                    <p:outputLabel value="#{itemController.selected.desc_item}" />
-
-                    <p:outputLabel value="Valor do Item:" />
-                    <p:outputLabel value="#{itemController.selected.vlr_item}">
-                        <f:convertNumber pattern="#,##0.00" />
-                    </p:outputLabel>
-
-                    <p:outputLabel value="Status do Item:" />
-                    <p:outputLabel value="#{itemController.selected.id_status}" />
-
-                    <p:outputLabel value="Código do Item:" />
-                    <p:outputLabel value="#{itemController.selected.id_item}" />
-
-                    <p:outputLabel value="Código de Barras:" />
-                    <p:outputLabel value="#{itemController.selected.cod_barras}" />
-
-
-                </h:panelGrid>   
-            </h:form>
-        </p:dialog>
     </ui:define>
 
 </ui:composition>

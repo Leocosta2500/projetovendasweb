@@ -24,8 +24,8 @@
                                  emptyMessage="Nenhuma usario cadastrado..."
                                  >
 
-                        <p:ajax event="rowSelect"   update="btnEdit btnDelete btnView"/>
-                        <p:ajax event="rowUnselect" update="btnEdit btnDelete btnView"/>
+                        <p:ajax event="rowSelect"   update="btnEdit btnDelete"/>
+                        <p:ajax event="rowUnselect" update="btnEdit btnDelete"/>
 
 
                         <p:column width="4" sortBy="#{item.cod_cliente}" filterBy="#{item.cod_cliente}">
@@ -134,10 +134,7 @@
                                            icon="ui-icon-alert"  />
                             </p:commandButton>
 
-                            <!--Botão utilizado para abrir a modal de visualização -->
-                            <p:commandButton id="btnView" icon="pi pi-user-edit"  value="Detalhes do cliente" 
-                                             update="formView" oncomplete="PF('dlgView').show()" 
-                                             disabled="#{empty clienteController.selected}"/>
+
 
                         </f:facet>
 
@@ -288,45 +285,6 @@
         </p:dialog>
 
 
-        <p:dialog header="Visualizar Detalhes da Pessoa" widgetVar="dlgView"  height="250" 
-                  width="500" showEffect="fade" modal="true">
-            <h:form id="formView">
-                <h:panelGrid id="pngView" columns="2">   
-                    <p:outputLabel value="Codido Cliente" />
-                    <p:outputLabel value="#{clienteController.selected.cod_cliente}"  />
-
-                    <p:outputLabel value="Nome: " />
-                    <p:outputLabel value="#{clienteController.selected.nome}" />
-
-                    <p:outputLabel value="Data de Nascimento: "  />
-                    <p:outputLabel value="#{clienteController.selected.dta_nasc}" >
-                        <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo" />
-                    </p:outputLabel>
-
-                    <p:outputLabel value="Telefone: "/>
-                    <p:outputLabel value="#{clienteController.selected.telefone}" />
-
-                    <p:outputLabel value="Email: " />                    
-                    <p:outputLabel value="#{clienteController.selected.email}" />
-
-                    <p:outputLabel value="Endereco: " />                    
-                    <p:outputLabel value="#{clienteController.selected.endereco}" />
-
-                    <p:outputLabel value="Cidade: " />                    
-                    <p:outputLabel value="#{clienteController.selected.cidade}" />
-
-                    <p:outputLabel value="Complemento: " />                    
-                    <p:outputLabel value="#{clienteController.selected.complemento}" />
-
-                    <p:outputLabel value="UF: " />                    
-                    <p:outputLabel value="#{clienteController.selected.uf}" />
-
-                    <p:outputLabel value="CEP: " />                    
-                    <p:outputLabel value="#{clienteController.selected.cep}" />
-
-                </h:panelGrid>   
-            </h:form>
-        </p:dialog>
     </ui:define>
 
 </ui:composition>
