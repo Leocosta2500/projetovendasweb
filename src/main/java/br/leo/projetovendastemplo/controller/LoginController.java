@@ -8,6 +8,7 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -48,25 +49,24 @@ public class LoginController implements Serializable {
     }
 
     public String validarLogin() {
-
         FacesContext context = FacesContext.getCurrentInstance();
-
         HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
 
+        // Busca o usuário no banco de dados
         UsuarioEntity usuarioDB = ejbFacade.buscarPorEmail(usuario.getEmail_user(), usuario.getDes_senha());
-        if ((usuarioDB != null && usuarioDB.getNome_user() != null)) {
+        if (usuarioDB != null && usuarioDB.getNome_user() != null) {
+            // Define o usuário autenticado no atributo 'usuario' do controller
+            this.usuario = usuarioDB;
 
+            // Armazena o usuário na sessão para uso posterior
             session.setAttribute("pessoaLogada", usuarioDB);
 
-            //caso as credenciais foram válidas, então direciona para página index
-            return "/admin/usuario.xhtml?faces-redirect=true";
+            // Redireciona para a página inicial após login bem-sucedido
+            return "/admin/inicio.xhtml?faces-redirect=true";
         } else {
-            //senão, exibe uma mensagem de falha...
-            FacesMessage fm = new FacesMessage(
-                    FacesMessage.SEVERITY_ERROR,
-                    "Falha no Login!",
-                    "Email ou senha incorreto!");
-            FacesContext.getCurrentInstance().addMessage(null, fm);
+            // Exibe mensagem de erro caso o login falhe
+            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Falha no Login!", "Email ou senha incorreto!");
+            context.addMessage(null, fm);
             return null;
         }
     }
@@ -82,8 +82,8 @@ public class LoginController implements Serializable {
         return "/login.xhtml?faces-redirect=true";
 
     }
-    
-        public String getNomeUsuarioLogado() {
+
+    public String getNomeUsuarioLogado() {
         FacesContext context = FacesContext.getCurrentInstance();
         HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
         UsuarioEntity usuarioLogado = (UsuarioEntity) session.getAttribute("pessoaLogada");
@@ -92,6 +92,22 @@ public class LoginController implements Serializable {
         }
         return null;
     }
-    
+
+    public void verificarAcesso(String tipoRequerido) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+        UsuarioEntity usuarioLogado = (UsuarioEntity) session.getAttribute("pessoaLogada");
+
+        if (usuarioLogado == null || !usuarioLogado.getTip_usuario().equals(tipoRequerido)) {
+            // Exibe uma mensagem de acesso negado na própria página
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Acesso Negado", "Você não tem permissão para acessar esta página."));
+            try {
+                // Redireciona o usuário para a página de login ou uma página de acesso restrito
+                context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/inicio.xhtml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }
