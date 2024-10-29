@@ -16,7 +16,8 @@
         <div class="layout-menu-container">
             <h:form id="menuform">
                 <pm:menu widgetVar="ManhattanMenuWidget">
-                    <p:menuitem id="mnuPessoa" value="Usuario" icon="pi pi-fw pi-user" outcome="/admin/usuario.xhtml"/>
+                    <p:menuitem id="mnuPessoa" value="Usuario" icon="pi pi-fw pi-user" outcome="/admin/usuario.xhtml"
+                                rendered="#{loginController.usuario != null and loginController.usuario.tip_usuario eq 'Administrador'}"/>
                     <p:menuitem id="mnuCliente" value="Cliente" icon="pi pi-fw pi-users" outcome="/admin/cliente.xhtml"/> 
                     <p:menuitem id="mnuItem" value="Produto" icon="pi pi-fw pi-box" outcome="/admin/item.xhtml"
                                 rendered="#{loginController.usuario != null and loginController.usuario.tip_usuario eq 'Administrador'}"/>
