@@ -22,6 +22,25 @@ public class LoginController implements Serializable {
     @EJB
     private br.leo.projetovendastemplo.facade.UsuarioFacade ejbFacade;
 
+    private String novaSenha;
+    private String confirmarSenha;
+
+    public String getNovaSenha() {
+        return novaSenha;
+    }
+
+    public void setNovaSenha(String novaSenha) {
+        this.novaSenha = novaSenha;
+    }
+
+    public String getConfirmarSenha() {
+        return confirmarSenha;
+    }
+
+    public void setConfirmarSenha(String confirmarSenha) {
+        this.confirmarSenha = confirmarSenha;
+    }
+
     public LoginController() {
     }
 
@@ -107,6 +126,48 @@ public class LoginController implements Serializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public String irParaAlterarSenha() {
+        return "/admin/alterarSenha.xhtml?faces-redirect=true";
+    }
+
+    public String alterarSenhaLogin() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+
+        UsuarioEntity usuarioLogado = (UsuarioEntity) session.getAttribute("pessoaLogada");
+
+        if (usuarioLogado == null) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário não autenticado.", null));
+            return null;
+        }
+
+        // Verifica se as senhas coincidem
+        if (novaSenha == null || confirmarSenha == null || !novaSenha.equals(confirmarSenha)) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "As senhas não coincidem!", null));
+            return null;
+        }
+
+        try {
+            // Atualiza a senha do usuário logado
+            usuarioLogado.setDes_senha(novaSenha);
+            ejbFacade.edit(usuarioLogado);
+
+            // Usa Flash Scope para manter a mensagem na próxima página
+            context.getExternalContext().getFlash().setKeepMessages(true);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Senha alterada com sucesso!", null));
+
+            // Limpa os campos de senha
+            novaSenha = null;
+            confirmarSenha = null;
+
+            // Retorna para a página inicial após sucesso
+            return "/admin/inicio.xhtml?faces-redirect=true";
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao alterar a senha: " + e.getMessage(), null));
+            return null;
         }
     }
 

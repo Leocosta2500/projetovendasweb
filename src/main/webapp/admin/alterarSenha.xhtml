@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        <h:outputText value="Alterar Senha"></h:outputText>
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form id="formAlterarSenha">
+            <p:growl id="growlAlterarSenha" showDetail="true" />
+
+            <h:panelGrid columns="2" cellpadding="5">
+                <p:outputLabel value="Nova Senha:" for="novaSenha" />
+                <p:password id="novaSenha" value="#{loginController.novaSenha}" required="true"
+                            label="Nova Senha" requiredMessage="A nova senha é obrigatória"
+                            toggleMask="true" redisplay="true">
+                    <f:validateLength minimum="4" />
+                </p:password>
+
+                <p:outputLabel value="Confirmar Senha:" for="confirmarSenha" />
+                <p:password id="confirmarSenha" value="#{loginController.confirmarSenha}" required="true"
+                            label="Confirmar Senha" requiredMessage="A confirmação da senha é obrigatória"
+                            toggleMask="true" redisplay="true">
+                    <f:validateLength minimum="4" />
+                </p:password>
+            </h:panelGrid>
+
+            <p:commandButton value="Salvar" icon="pi pi-save" 
+                             action="#{loginController.alterarSenhaLogin}" 
+                             update="growlAlterarSenha" 
+                             process="@form" />
+
+        </h:form>
+    </ui:define>
+</ui:composition>
