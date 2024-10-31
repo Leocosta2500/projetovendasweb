@@ -164,6 +164,9 @@ public class PagamentoController implements Serializable {
                 // Oculta o campo de valor adicional ao preparar a edição
                 this.valorAdicional = null; // ou BigDecimal.ZERO se for melhor para seu caso
 
+                // Define o tipo de pagamento como null para exibir "Selecione um tipo de pagamento..."
+                selected.setTipo_pag(null);
+
                 // Redireciona para a página de edição com os dados do pagamento selecionado
                 FacesContext.getCurrentInstance().getExternalContext().getFlash().put("pagamento", selected);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("pagamentoseditar.xhtml");
@@ -212,13 +215,12 @@ public class PagamentoController implements Serializable {
         }
 
         // Verificar se já existe um pagamento para o cupom selecionado
-        
         if (venda != null && ejbFacade.existsPaymentForCupom(venda.getNum_cupom())) {
             addErrorMessage("Este cupom já possui um pagamento registrado.");
-            
+
             // Limpar o campo do cupom para evitar um novo pagamento
             pagamento.setNum_cupom(null);
-            
+
             // Atualizar a interface com a mensagem de erro
             PrimeFaces.current().ajax().update("frmPagamento:growl", "frmPagamento:num_cupom");
             return;

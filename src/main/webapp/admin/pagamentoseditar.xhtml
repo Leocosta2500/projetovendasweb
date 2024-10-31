@@ -63,15 +63,28 @@
                         </div>
 
                         <!-- Tipo de Pagamento -->
+                        <!--   <div class="field col-12 md:col-6">
+                          <p:outputLabel value="Tipo de Pagamento:" for="tipo_pagamento" style="display: block;" />
+                          <p:selectOneMenu id="tipo_pagamento" value="#{pagamentoController.selected.tipo_pag}" 
+                                           required="true" requiredMessage="O tipo de pagamento é obrigatório!"
+                                           style="width: 50%;">
+                              <f:selectItem itemLabel="Selecione um tipo de pagamento..." itemValue="" />
+                              <f:selectItem itemLabel="Pix" itemValue="Pix" />
+                              <f:selectItem itemLabel="Cartão Débito" itemValue="Cartão Débito" />
+                              <f:selectItem itemLabel="Cartão de Crédito" itemValue="Cartão de Crédito" />
+                          </p:selectOneMenu>
+                      </div> -->
+
+
+
                         <div class="field col-12 md:col-6">
                             <p:outputLabel value="Tipo de Pagamento:" for="tipo_pagamento" style="display: block;" />
                             <p:selectOneMenu id="tipo_pagamento" value="#{pagamentoController.selected.tipo_pag}" 
                                              required="true" requiredMessage="O tipo de pagamento é obrigatório!"
                                              style="width: 50%;">
                                 <f:selectItem itemLabel="Selecione um tipo de pagamento..." itemValue="" />
-                                <f:selectItem itemLabel="Pix" itemValue="Pix" />
-                                <f:selectItem itemLabel="Cartão Débito" itemValue="Cartão Débito" />
-                                <f:selectItem itemLabel="Cartão de Crédito" itemValue="Cartão de Crédito" />
+                                <f:selectItems value="#{tipController.tiposPagamento}" var="tipo"
+                                               itemLabel="#{tipo.label}" itemValue="#{tipo}" />
                             </p:selectOneMenu>
                         </div>
 

@@ -2,6 +2,7 @@ C:\Users\leona\Documents\NetBeansProjects\projetovendasweb\src\main\java\br\leo\
 C:\Users\leona\Documents\NetBeansProjects\projetovendasweb\src\main\java\br\leo\projetovendastemplo\entity\UsuarioEntity.java
 C:\Users\leona\Documents\NetBeansProjects\projetovendasweb\src\main\java\br\leo\projetovendastemplo\controller\UFController.java
 C:\Users\leona\Documents\NetBeansProjects\projetovendasweb\src\main\java\br\leo\projetovendastemplo\controller\ClienteController.java
+C:\Users\leona\Documents\NetBeansProjects\projetovendasweb\src\main\java\br\leo\projetovendastemplo\enumeration\TipoPagamentoEnum.java
 C:\Users\leona\Documents\NetBeansProjects\projetovendasweb\src\main\java\br\leo\projetovendastemplo\controller\ItemController.java
 C:\Users\leona\Documents\NetBeansProjects\projetovendasweb\src\main\java\br\leo\projetovendastemplo\enumeration\UFEnum.java
 C:\Users\leona\Documents\NetBeansProjects\projetovendasweb\src\main\java\br\leo\projetovendastemplo\facade\UsuarioFacade.java
@@ -16,6 +17,7 @@ C:\Users\leona\Documents\NetBeansProjects\projetovendasweb\src\main\java\br\leo\
 C:\Users\leona\Documents\NetBeansProjects\projetovendasweb\src\main\java\br\leo\projetovendastemplo\FiltroAdministrativo.java
 C:\Users\leona\Documents\NetBeansProjects\projetovendasweb\src\main\java\br\leo\projetovendastemplo\entity\ItemEntity.java
 C:\Users\leona\Documents\NetBeansProjects\projetovendasweb\src\main\java\br\leo\projetovendastemplo\JakartaRestConfiguration.java
+C:\Users\leona\Documents\NetBeansProjects\projetovendasweb\src\main\java\br\leo\projetovendastemplo\controller\TipController.java
 C:\Users\leona\Documents\NetBeansProjects\projetovendasweb\src\main\java\br\leo\projetovendastemplo\facade\ClienteFacede.java
 C:\Users\leona\Documents\NetBeansProjects\projetovendasweb\src\main\java\br\leo\projetovendastemplo\facade\PagamentoFacade.java
 C:\Users\leona\Documents\NetBeansProjects\projetovendasweb\src\main\java\br\leo\projetovendastemplo\controller\UsuarioController.java
