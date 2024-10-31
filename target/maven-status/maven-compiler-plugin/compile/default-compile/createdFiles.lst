@@ -1,3 +1,4 @@
+br\leo\projetovendastemplo\enumeration\TipoPagamentoEnum.class
 br\leo\projetovendastemplo\controller\VendaController$VendaControllerConverter.class
 br\leo\projetovendastemplo\facade\ClienteFacede.class
 br\leo\projetovendastemplo\controller\ClienteController$ClienteControllerConverter.class
@@ -13,6 +14,7 @@ br\leo\projetovendastemplo\entity\UsuarioEntity.class
 br\leo\projetovendastemplo\facade\VendaFacade.class
 br\leo\projetovendastemplo\FiltroAdministrativo.class
 br\leo\projetovendastemplo\controller\ItemController.class
+br\leo\projetovendastemplo\controller\TipController.class
 br\leo\projetovendastemplo\controller\ItemController$ItemControllerConverter.class
 br\leo\projetovendastemplo\controller\VendaController$PersistAction.class
 br\leo\projetovendastemplo\enumeration\UFEnum.class
