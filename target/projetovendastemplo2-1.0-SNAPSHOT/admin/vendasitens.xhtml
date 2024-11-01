@@ -14,6 +14,7 @@
     <ui:define name="content">
         <h:form id="frmList">
 
+
             <h:panelGroup id="pngList">
 
                 <!-- Componente de feedback para mensagens (sucesso, erro, etc.) -->
@@ -240,7 +241,7 @@
                             <p:commandButton actionListener="#{itensVendaController.adicionarItensVenda()}" 
                                              icon="pi pi-save" 
                                              value="Cadastrar" 
-                                             update="itensVendaList, :frmList" />
+                                             update="itensVendaList, :frmList:growl" />
                         </p:panel>
 
 

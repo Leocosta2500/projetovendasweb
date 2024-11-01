@@ -294,8 +294,10 @@ public class ItensVendaController implements Serializable {
 
         calcularQuantidadeTotalItens(itensVenda.getNum_cupom().getNum_cupom());
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Venda concluída com sucesso!", null));
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+        addSuccessMessage("Registro incluído com sucesso!");
 
+        //  FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Venda concluída com sucesso!", null));
         try {
             FacesContext.getCurrentInstance().getExternalContext().redirect("venda.xhtml");
         } catch (IOException e) {
