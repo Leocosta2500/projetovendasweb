@@ -38,7 +38,7 @@
 
                         <p:column width="4" sortBy="#{item.desc_item}" filterBy="#{item.desc_item}">
                             <f:facet name="header">
-                                <h:outputText value="Descrição Item"/>
+                                <h:outputText value="Descrição Produto"/>
                             </f:facet>
                             <h:outputText value="#{item.desc_item}"/> 
                         </p:column> 
@@ -55,7 +55,7 @@
 
                         <p:column width="8" sortBy="#{item.id_status}" filterBy="#{item.id_status}">
                             <f:facet name="header">
-                                <h:outputText value="Status"/>
+                                <h:outputText value="Status do Produto"/>
                             </f:facet>
                             <h:outputText value="#{item.id_status}"/> 
                         </p:column> 
@@ -137,8 +137,8 @@
 
 
 
-                    <p:outputLabel id="oplCodItem" value="Código do Item:" for="iptCodItem"/>
-                    <p:inputText id="iptCodItem" size="40" label="Código do Item" required="true" 
+                    <p:outputLabel id="oplCodItem" value="Código do Produto" for="iptCodItem"/>
+                    <p:inputText id="iptCodItem" size="40" label="Código do Produto" required="true" 
                                  requiredMessage="O código do item é obrigatório"
                                  value="#{itemController.item.cod_item}">
                         <f:convertNumber />
@@ -151,21 +151,21 @@
                                  value="#{itemController.item.cod_barras}" maxlength="50" />
 
 
-                    <p:outputLabel id="oplDescItem" value="Descrição do Item:" for="iptDescItem"/>
-                    <p:inputText id="iptDescItem" size="40" label="Descrição do Item" required="true" 
+                    <p:outputLabel id="oplDescItem" value="Descrição do Produto:" for="iptDescItem"/>
+                    <p:inputText id="iptDescItem" size="40" label="Descrição do Produto" required="true" 
                                  requiredMessage="A descrição do item é obrigatória"
                                  value="#{itemController.item.desc_item}" maxlength="50" />
 
 
-                    <p:outputLabel id="oplVlrItem" value="Valor do Item:" for="iptVlrItem"/>
-                    <p:inputText id="iptVlrItem" size="40" label="Valor do Item" required="true" 
+                    <p:outputLabel id="oplVlrItem" value="Valor do Produto:" for="iptVlrItem"/>
+                    <p:inputText id="iptVlrItem" size="40" label="Valor do Produto" required="true" 
                                  requiredMessage="O valor do item é obrigatório"
                                  value="#{itemController.item.vlr_item}">
                         <f:convertNumber pattern="#,##0.00" />
                     </p:inputText>
 
 
-                    <p:outputLabel id="oplIdStatus" value="Status do Item:" for="iptIdStatus"/>
+                    <p:outputLabel id="oplIdStatus" value="Status" for="iptIdStatus"/>
                     <p:selectOneMenu id="iptIdStatus" value="#{itemController.item.id_status}" required="true" requiredMessage="O status do item é obrigatório">
                         <f:selectItem itemLabel="Selecione um status..." itemValue="" />
                         <f:selectItem itemLabel="Ativo" itemValue="Ativo" />
@@ -195,11 +195,11 @@
                 <p:growl id="growl" showDetail="true" />
                 <h:panelGrid id="pngEdicao" columns="2" rendered="#{itemController.selected != null}">   
                     <p:outputLabel id="oplId" value="ID:" for="iptId"/>
-                    <p:inputText id="iptId" size="10" label="Código Item" disabled="true"
+                    <p:inputText id="iptId" size="10" label="Código Produto" disabled="true"
                                  value="#{itemController.selected.id_item}"  />
 
                     <p:outputLabel id="oplCodItem" value="Código do Item:" for="iptCodItem"/>
-                    <p:inputText id="iptCodItem" size="40" label="Código do Item" required="true" 
+                    <p:inputText id="iptCodItem" size="40" label="Código do Produto" required="true" 
                                  requiredMessage="O código do item é obrigatório"
                                  value="#{itemController.selected.cod_item}">
                         <f:convertNumber />
@@ -210,12 +210,12 @@
                                  value="#{itemController.selected.cod_barras}" maxlength="50" />
 
 
-                    <p:outputLabel id="oplDescItem" value="Descrição do Item:" for="iptDescItem"/>
+                    <p:outputLabel id="oplDescItem" value="Descrição do Produto" for="iptDescItem"/>
                     <p:inputText id="iptDescItem" size="40" label="Descrição do Item" required="true" 
                                  requiredMessage="A descrição do item é obrigatória"
                                  value="#{itemController.selected.desc_item}" maxlength="50" />
 
-                    <p:outputLabel id="oplVlrItem" value="Valor do Item:" for="iptVlrItem"/>
+                    <p:outputLabel id="oplVlrItem" value="Valor do Produto" for="iptVlrItem"/>
                     <p:inputText id="iptVlrItem" size="40" label="Valor do Item" required="true" 
                                  requiredMessage="O valor do item é obrigatório"
                                  value="#{itemController.selected.vlr_item}">
@@ -223,7 +223,7 @@
                     </p:inputText>
 
 
-                    <p:outputLabel id="oplIdStatus" value="Status do Item:" for="iptIdStatus"/>
+                    <p:outputLabel id="oplIdStatus" value="Status do Produto" for="iptIdStatus"/>
                     <p:selectOneMenu id="iptIdStatus" value="#{itemController.selected.id_status}" required="true" requiredMessage="O status do item é obrigatório">
                         <f:selectItem itemLabel="Selecione um status..." itemValue="" />
                         <f:selectItem itemLabel="Ativo" itemValue="Ativo" />
