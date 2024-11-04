@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import static org.primefaces.component.focus.FocusBase.PropertyKeys.context;
 
 /**
  *
@@ -56,10 +57,17 @@ public class UsuarioController implements Serializable {
     }
 
     public void alterarSenha() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
         // Verifica se as senhas foram preenchidas e são iguais
         if (novaSenha == null || confirmarSenha == null || !novaSenha.equals(confirmarSenha)) {
-            FacesContext.getCurrentInstance().addMessage(null,
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "As senhas não coincidem!", null));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "As senhas não coincidem!", null));
+            return;
+        }
+
+        // Verifica se a nova senha é igual à senha atual
+        if (novaSenha.equals(selected.getDes_senha())) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "A nova senha não pode ser igual à senha atual.", null));
             return;
         }
 
@@ -72,7 +80,7 @@ public class UsuarioController implements Serializable {
             novaSenha = null;
             confirmarSenha = null;
         } catch (Exception e) {
-            addErrorMessage("Erro ao alterar senha: " + e.getMessage());
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao alterar senha: " + e.getMessage(), null));
         }
     }
 

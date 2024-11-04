@@ -150,6 +150,12 @@ public class LoginController implements Serializable {
             return null;
         }
 
+        // Verifica se a nova senha é igual à senha atual
+        if (novaSenha.equals(usuarioLogado.getDes_senha())) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "A nova senha não pode ser igual à senha atual.", null));
+            return null;
+        }
+
         try {
             // Atualiza a senha do usuário logado
             usuarioLogado.setDes_senha(novaSenha);
