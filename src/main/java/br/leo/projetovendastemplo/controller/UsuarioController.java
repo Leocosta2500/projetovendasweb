@@ -207,8 +207,35 @@ public class UsuarioController implements Serializable {
     }
 
     public void deletarUsuario() {
-        persist(UsuarioController.PersistAction.DELETE,
-                "Registro excluído com sucesso!");
+        FacesContext context = FacesContext.getCurrentInstance();
+        UsuarioEntity usuarioLogado = (UsuarioEntity) context.getExternalContext().getSessionMap().get("pessoaLogada");
+
+        // Verificação para garantir que o usuário logado foi obtido corretamente
+        if (usuarioLogado == null) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao obter o usuário logado.", null));
+            return;
+        }
+
+        // Verificação para garantir que um usuário foi selecionado para exclusão
+        if (selected == null) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nenhum usuário foi selecionado para exclusão.", null));
+            return;
+        }
+
+        // Verifica se o usuário logado é o mesmo que está tentando excluir
+        Integer codUsuarioLogado = usuarioLogado.getCod_usuario();
+        Integer codUsuarioSelecionado = selected.getCod_usuario();
+
+        if (codUsuarioLogado != null && codUsuarioSelecionado != null && codUsuarioLogado.equals(codUsuarioSelecionado)) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Você não pode excluir o usuário logado.", null));
+            return;
+        }
+
+        try {
+            persist(PersistAction.DELETE, "Registro excluído com sucesso!");
+        } catch (Exception e) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao excluir usuário: " + e.getMessage(), null));
+        }
     }
 
     public static void addErrorMessage(String msg) {
