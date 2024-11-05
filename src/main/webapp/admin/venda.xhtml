@@ -345,12 +345,46 @@
                 <p:dataTable id="itensVendaList" value="#{vendaController.itensVendaList}" var="item"
                              emptyMessage="Nenhum item encontrado para esta venda.">
 
-                    <p:column width="4%" sortBy="#{item.id_item_vda}">
+
+                    <p:column width="4%" sortBy="#{item.num_cupom}">
+                        <f:facet name="header">
+                            <h:outputText value="Num Cupom"/>
+                        </f:facet>
+                        <h:outputText value="#{item.num_cupom}"/>
+                    </p:column>
+
+                    <p:column width="5%" sortBy="#{item.des_cliente_vda}">
+                        <f:facet name="header">
+                            <h:outputText value="Des Cliente"/>
+                        </f:facet>
+                        <h:outputText value="#{item.des_cliente_vda}"/>
+                    </p:column>
+
+
+                    <p:column width="3%" sortBy="#{item.id_item}">
+                        <f:facet name="header">
+                            <h:outputText value="ID Item"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id_item}"/>
+                    </p:column>
+
+
+                    <p:column width="3%" sortBy="#{item.id_item.desc_item}">
+                        <f:facet name="header">
+                            <h:outputText value="Descrição Item"/>
+                        </f:facet>
+
+                        <h:outputText value="#{item.id_item.desc_item}" />
+                    </p:column>
+
+
+
+               <!--     <p:column width="4%" sortBy="#{item.id_item_vda}">
                         <f:facet name="header">
                             <h:outputText value="Cod item vda"/>
                         </f:facet>
                         <h:outputText value="#{item.id_item_vda}"/>
-                    </p:column>
+                    </p:column> -->
 
                     <p:column width="3%" sortBy="#{item.qtd_venda}">
                         <f:facet name="header">
@@ -377,12 +411,22 @@
                         </h:outputText>
                     </p:column>
 
-                    <p:column width="5%" sortBy="#{item.cod_usuario_vda}">
+               <!--     <p:column width="5%" sortBy="#{item.cod_usuario_vda}">
                         <f:facet name="header">
                             <h:outputText value="Usuário"/>
                         </f:facet>
                         <h:outputText value="#{item.cod_usuario_vda}"/>
-                    </p:column>
+                    </p:column> -->
+
+
+           <!--         <p:column width="3%" sortBy="#{item.dta_lancamento}">
+                        <f:facet name="header">
+                            <h:outputText value="Data Lançamento"/>
+                        </f:facet>
+                        <h:outputText value="#{item.dta_lancamento}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </p:column> -->
 
                     <p:column width="6%" sortBy="#{item.dta_hor_vda}">
                         <f:facet name="header">
@@ -393,51 +437,16 @@
                         </h:outputText>
                     </p:column>
 
-                    <p:column width="5%" sortBy="#{item.des_cliente_vda}">
-                        <f:facet name="header">
-                            <h:outputText value="Des Cliente"/>
-                        </f:facet>
-                        <h:outputText value="#{item.des_cliente_vda}"/>
-                    </p:column>
 
-                    <p:column width="3%" sortBy="#{item.dta_lancamento}">
-                        <f:facet name="header">
-                            <h:outputText value="Data Lançamento"/>
-                        </f:facet>
-                        <h:outputText value="#{item.dta_lancamento}">
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </h:outputText>
-                    </p:column>
 
-                    <p:column width="5%" sortBy="#{item.cod_cliente_vda}">
+
+
+              <!--      <p:column width="5%" sortBy="#{item.cod_cliente_vda}">
                         <f:facet name="header">
                             <h:outputText value="Cod Cliente"/>
                         </f:facet>
                         <h:outputText value="#{item.cod_cliente_vda}"/>
-                    </p:column>
-
-                    <p:column width="4%" sortBy="#{item.num_cupom}">
-                        <f:facet name="header">
-                            <h:outputText value="Num Cupom"/>
-                        </f:facet>
-                        <h:outputText value="#{item.num_cupom}"/>
-                    </p:column>
-
-                    <p:column width="3%" sortBy="#{item.id_item}">
-                        <f:facet name="header">
-                            <h:outputText value="ID Item"/>
-                        </f:facet>
-                        <h:outputText value="#{item.id_item}"/>
-                    </p:column>
-
-
-                    <p:column width="3%" sortBy="#{item.id_item.desc_item}">
-                        <f:facet name="header">
-                            <h:outputText value="Descrição Item"/>
-                        </f:facet>
-
-                        <h:outputText value="#{item.id_item.desc_item}" />
-                    </p:column>
+                    </p:column> -->
 
 
                 </p:dataTable>

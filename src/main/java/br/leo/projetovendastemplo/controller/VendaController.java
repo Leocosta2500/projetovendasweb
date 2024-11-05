@@ -248,7 +248,7 @@ public class VendaController implements Serializable {
                 ejbFacade.remove(selected);
 
                 // Mensagem de sucesso
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Venda e itens removidos com sucesso!"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Venda excluída com sucesso!"));
 
                 // Limpar a seleção
                 selected = null;
@@ -256,7 +256,7 @@ public class VendaController implements Serializable {
 
             } catch (Exception e) {
                 // Tratar erro ao excluir a venda ou os itens
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro ao remover venda e itens: " + e.getMessage(), null));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom contem registro de pagamento " + e.getMessage(), null));
             }
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Nenhuma venda selecionada para exclusão.", null));
