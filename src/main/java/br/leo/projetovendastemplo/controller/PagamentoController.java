@@ -198,6 +198,16 @@ public class PagamentoController implements Serializable {
 
         BigDecimal saldoDevedor = total.subtract(pago).subtract(adicional);
         selected.setSaldo_devedor(saldoDevedor);
+
+        // Verifica se o valor adicional é maior que o saldo devedor
+        // Verifica se o valor adicional é maior que o saldo devedor
+        if (adicional.compareTo(total.subtract(pago)) > 0) {
+            addErrorMessage("Atenção: O valor adicional não pode ser maior que o saldo devedor.");
+
+            PrimeFaces.current().ajax().update("frmEditPagamento:growl");
+
+        }
+
     }
 
     public void somarValorAdicional() {
