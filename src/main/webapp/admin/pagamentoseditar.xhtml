@@ -131,22 +131,21 @@
                             </p:inputText>
                         </div>
 
-
                         <!-- Painel de Valor Adicional -->
-                        <p:outputPanel id="adicionalValorPanel" style="margin-top: 1px; width: 45%;"
-                                       rendered="#{not empty pagamentoController.valorAdicional}">
+                        <p:outputPanel id="adicionalValorPanel" style="margin-top: 1px; width: 45%;" rendered="#{not empty pagamentoController.valorAdicional}">
                             <div class="field col-12 md:col-6">
                                 <p:outputLabel value="Valor adicional:" for="iptValorAdicional" style="display: block;" />
                                 <p:inputText id="iptValorAdicional" size="20" style="width: 115%;"
                                              value="#{pagamentoController.valorAdicional}" required="true"
                                              requiredMessage="O valor adicional é obrigatório">
                                     <f:convertNumber pattern="#,##0.00" />
-                                    <p:ajax event="keyup" process="@this" update="iptSaldoDevedor" 
-                                            listener="#{pagamentoController.calcularSaldoDevedorComAdicional}" />
-                                    <p:ajax event="blur" update="iptVlrPago" listener="#{pagamentoController.somarValorAdicional}" />
+                                    <p:ajax event="blur" process="@this" listener="#{pagamentoController.calcularSaldoDevedorComAdicional}" 
+                                            update="iptSaldoDevedor iptVlrPago growl" />
                                 </p:inputText>
+
                             </div>
                         </p:outputPanel>
+
 
 
 

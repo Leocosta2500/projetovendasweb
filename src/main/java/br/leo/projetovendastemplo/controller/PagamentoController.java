@@ -192,22 +192,31 @@ public class PagamentoController implements Serializable {
     }
 
     public void calcularSaldoDevedorComAdicional() {
-        BigDecimal total = selected.getVlr_total_pag() != null ? selected.getVlr_total_pag() : BigDecimal.ZERO;
-        BigDecimal pago = selected.getVlr_pago() != null ? selected.getVlr_pago() : BigDecimal.ZERO;
-        BigDecimal adicional = valorAdicional != null ? valorAdicional : BigDecimal.ZERO;
+        if (selected != null) {
+            BigDecimal total = selected.getVlr_total_pag() != null ? selected.getVlr_total_pag() : BigDecimal.ZERO;
+            BigDecimal pago = selected.getVlr_pago() != null ? selected.getVlr_pago() : BigDecimal.ZERO;
+            BigDecimal adicional = valorAdicional != null ? valorAdicional : BigDecimal.ZERO;
+            BigDecimal saldoDevedor = total.subtract(pago);
 
-        BigDecimal saldoDevedor = total.subtract(pago).subtract(adicional);
-        selected.setSaldo_devedor(saldoDevedor);
+            // Verifica se o valor adicional é maior que o saldo devedor
+            if (adicional.compareTo(saldoDevedor) > 0) {
+                addErrorMessage("Atenção: O valor adicional não pode ser maior que o saldo devedor.");
+                // Define o valor adicional como nulo ou vazio para o usuário corrigir
+                valorAdicional = null;
+                // Atualiza somente a mensagem, sem alterar Valor Pago e Saldo Devedor
+                PrimeFaces.current().ajax().update("frmEditPagamento:growl", "frmEditPagamento:iptValorAdicional");
 
-        // Verifica se o valor adicional é maior que o saldo devedor
-        // Verifica se o valor adicional é maior que o saldo devedor
-        if (adicional.compareTo(total.subtract(pago)) > 0) {
-            addErrorMessage("Atenção: O valor adicional não pode ser maior que o saldo devedor.");
+                // Adiciona um script para recarregar a página após a mensagem
+                PrimeFaces.current().executeScript("setTimeout(function(){ location.reload(); }, 3000);"); // 3 segundos de delay
 
-            PrimeFaces.current().ajax().update("frmEditPagamento:growl");
-
+            } else {
+                // Atualiza o Saldo Devedor e Valor Pago se o valor adicional for válido
+                saldoDevedor = saldoDevedor.subtract(adicional);
+                selected.setSaldo_devedor(saldoDevedor);
+                selected.setVlr_pago(pago.add(adicional));
+                PrimeFaces.current().ajax().update("frmEditPagamento:iptSaldoDevedor", "frmEditPagamento:iptVlrPago");
+            }
         }
-
     }
 
     public void somarValorAdicional() {
