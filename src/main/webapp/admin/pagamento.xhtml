@@ -21,9 +21,9 @@
                                  paginator="true"
                                  rows="5"
                                  rowsPerPageTemplate="5,10,50,100"
-                                 emptyMessage="Nenhuma usario cadastrado..."
+                                 emptyMessage="Nenhuma Pagamento cadastrado..."
                                  >
-
+                        <p:ajax event="filter" update="datalist" />
                         <p:ajax event="rowSelect" update="btnEdit btnDelete btnViewPagamento"/>
                         <p:ajax event="rowUnselect" update="btnEdit btnDelete btnViewPagamento"/>
 
@@ -100,12 +100,12 @@
                         </p:column>
 
 
-                        <p:column width="4" sortBy="#{item.num_cupom}" filterBy="#{item.num_cupom}">
-                            <f:facet name="header">
-                                <h:outputText value="Número Cupom"/>
-                            </f:facet>
-                            <h:outputText value="#{item.num_cupom}"/> 
-                        </p:column>
+<p:column width="4" sortBy="#{item.num_cupom.num_cupom}" filterBy="#{item.num_cupom.num_cupom}" filterMatchMode="exact">
+    <f:facet name="header">
+        <h:outputText value="Número Cupom"/>
+    </f:facet>
+    <h:outputText value="#{item.num_cupom.num_cupom}"/> 
+</p:column>
 
 
 
