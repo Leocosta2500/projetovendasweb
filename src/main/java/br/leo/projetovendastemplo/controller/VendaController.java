@@ -238,28 +238,43 @@ public class VendaController implements Serializable {
         if (selected != null) {
             Integer numCupom = selected.getNum_cupom();
             try {
-                // Excluir todos os itens associados a essa venda
-                List<ItensVendaEntity> itensVendaList = itensVendaFacade.findByNumCupom(numCupom);
-                for (ItensVendaEntity item : itensVendaList) {
-                    itensVendaFacade.remove(item); // Remover o item do banco de dados
+                // Verificar se há pagamentos associados ao número do cupom
+                if (ejbFacade.hasPagamentoRegistrado(numCupom)) {
+                    FacesContext.getCurrentInstance().addMessage(null,
+                            new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                    "Cupom contém registro de pagamento. Exclusão não permitida.", null));
+                    return; // Impedir a execução da lógica de exclusão
                 }
 
-                // Agora excluir a própria venda
+                // Se não houver pagamentos registrados, prosseguir com a exclusão
+                List<ItensVendaEntity> itensVendaList = itensVendaFacade.findByNumCupom(numCupom);
+                if (itensVendaList != null && !itensVendaList.isEmpty()) {
+                    for (ItensVendaEntity item : itensVendaList) {
+                        itensVendaFacade.remove(item); // Remover o item do banco de dados
+                    }
+                }
+
+                // Excluir a venda
                 ejbFacade.remove(selected);
 
                 // Mensagem de sucesso
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Venda excluída com sucesso!"));
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage("Venda excluída com sucesso!"));
 
-                // Limpar a seleção
+                // Limpar a seleção e atualizar a lista de vendas
                 selected = null;
-                vendaList = null; // Atualizar a lista de vendas para refletir a remoção
+                vendaList = null;
 
             } catch (Exception e) {
-                // Tratar erro ao excluir a venda ou os itens
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cupom contem registro de pagamento " + e.getMessage(), null));
+                // Tratar erros durante a exclusão
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                                "Erro ao excluir a venda: " + e.getMessage(), null));
             }
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Nenhuma venda selecionada para exclusão.", null));
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN,
+                            "Nenhuma venda selecionada para exclusão.", null));
         }
     }
 

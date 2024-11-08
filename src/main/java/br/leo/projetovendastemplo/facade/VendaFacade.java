@@ -67,4 +67,19 @@ public class VendaFacade extends AbstractFacade<VendaEntity> {
         }
     }
 
+    public boolean hasPagamentoRegistrado(Integer numCupom) {
+        try {
+            // Verifica se há pagamentos associados ao número do cupom
+            Query query = em.createQuery("SELECT COUNT(p) FROM PagamentoEntity p WHERE p.num_cupom.num_cupom = :numCupom");
+            query.setParameter("numCupom", numCupom);
+            Long count = (Long) query.getSingleResult();
+
+            // Se houver pelo menos um pagamento, retorna true
+            return count > 0;
+        } catch (Exception e) {
+            System.out.println("Erro ao verificar pagamento registrado para numCupom " + numCupom + ": " + e.getMessage());
+            return false;
+        }
+    }
+
 }
