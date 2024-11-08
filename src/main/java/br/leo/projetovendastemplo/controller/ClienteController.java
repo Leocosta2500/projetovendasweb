@@ -40,8 +40,6 @@ public class ClienteController implements Serializable {
 //    public List<ClienteEntity> getClienteList() {
 //        return ejbFacade.buscarTodos();
 //       }
-    
-    
     public void setClienteList(List<ClienteEntity> clienteList) {
         this.clienteList = clienteList;
     }
@@ -113,10 +111,6 @@ public class ClienteController implements Serializable {
         cliente = new ClienteEntity();
         return cliente;
     }
-    
-        
-    
-    
 
     public void adicionarCliente() {
         //buscando a datahoraatual do sistema.
@@ -130,11 +124,24 @@ public class ClienteController implements Serializable {
     }
 
     public void deletarCliente() {
-        persist(ClienteController.PersistAction.DELETE,
-                "Registro excluído com sucesso!");
-    }
+        try {
+            if (selected == null) {
+                addErrorMessage("Nenhum item selecionado para exclusão.");
+                return;
+            }
 
-    
+            // Lógica de exclusão
+            ejbFacade.remove(selected);
+            selected = null; // Limpar a seleção após a exclusão
+            addSuccessMessage("Registro excluído com sucesso!");
+
+        } catch (EJBException ex) {
+            // Aqui você pode interceptar o erro específico e exibir a mensagem personalizada
+            addErrorMessage("Não é permitido excluir o cliente..");
+        } catch (Exception ex) {
+            addErrorMessage("Nenhum cliente selecionado para exclusão. " + ex.getMessage());
+        }
+    }
 
     public static void addErrorMessage(String msg) {
         FacesMessage facesMsg = new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -147,7 +154,6 @@ public class ClienteController implements Serializable {
                 msg, msg);
         FacesContext.getCurrentInstance().addMessage("successInfo", facesMsg);
     }
-
 
     public static enum PersistAction {
         CREATE,
@@ -190,8 +196,5 @@ public class ClienteController implements Serializable {
             addErrorMessage(ex.getLocalizedMessage());
         }
     }
-    
-
-
 
 }

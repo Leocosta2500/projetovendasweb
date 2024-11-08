@@ -122,8 +122,23 @@ public class ItemController implements Serializable {
     }
 
     public void deletarItem() {
-        persist(ItemController.PersistAction.DELETE,
-                "Registro excluído com sucesso!");
+        try {
+            if (selected == null) {
+                addErrorMessage("Nenhum item selecionado para exclusão.");
+                return;
+            }
+
+            // Lógica de exclusão
+            ejbFacade.remove(selected);
+            selected = null; // Limpar a seleção após a exclusão
+            addSuccessMessage("Registro excluído com sucesso!");
+
+        } catch (EJBException ex) {
+            // Aqui você pode interceptar o erro específico e exibir a mensagem personalizada
+            addErrorMessage("Não é permitido excluir o produto.");
+        } catch (Exception ex) {
+            addErrorMessage("Erro ao excluir o item: " + ex.getMessage());
+        }
     }
 
     public static void addErrorMessage(String msg) {
