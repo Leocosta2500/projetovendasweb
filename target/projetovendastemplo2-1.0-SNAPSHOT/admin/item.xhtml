@@ -187,7 +187,7 @@
             </h:form>
         </p:dialog>
 
-        <!--Editar usuario -->             
+        <!--Editar produto -->             
 
 
         <p:dialog widgetVar="dlgEdit" modal="true" resizable="false" appendTo="@(body)" header="Editar Produto">
@@ -201,9 +201,8 @@
                     <p:outputLabel id="oplCodItem" value="Código do Item:" for="iptCodItem"/>
                     <p:inputText id="iptCodItem" size="40" label="Código do Produto" required="true" 
                                  requiredMessage="O código do item é obrigatório"
-                                 value="#{itemController.selected.cod_item}">
-                        <f:convertNumber />
-                    </p:inputText>
+                                 value="#{itemController.selected.cod_item}"/>
+
 
                     <p:outputLabel id="oplCodBarras" value="Código de Barras:" for="iptCodBarras"/>
                     <p:inputText id="iptCodBarras" size="40" label="Código de Barras" 
