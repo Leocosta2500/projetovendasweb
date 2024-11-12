@@ -192,6 +192,21 @@ public class PagamentoController implements Serializable {
     }
 
     public void calcularSaldoDevedorComAdicional() {
+
+        if (valorAdicional != null && valorAdicional.compareTo(BigDecimal.ZERO) <= 0) {
+            // Exibe mensagem de erro
+            addErrorMessage("O valor adicional deve ser maior que zero.");
+
+            // Fecha o campo de valor adicional (define como nulo ou zero)
+            valorAdicional = null;
+
+            // Atualiza a interface para mostrar a mensagem e ocultar o valor adicional
+            PrimeFaces.current().ajax().update("frmEditPagamento:growl", "adicionalValorPanel");
+
+            // Recarrega a página após um breve intervalo
+            PrimeFaces.current().executeScript("setTimeout(function(){ location.reload(); }, 3000);");
+            return;
+        }
         if (selected != null) {
             BigDecimal total = selected.getVlr_total_pag() != null ? selected.getVlr_total_pag() : BigDecimal.ZERO;
             BigDecimal pago = selected.getVlr_pago() != null ? selected.getVlr_pago() : BigDecimal.ZERO;
@@ -344,12 +359,15 @@ public class PagamentoController implements Serializable {
             // Atualiza o item no banco de dados
             ejbFacade.edit(selected);
 
+            // Mantém as mensagens no contexto do Flash para serem exibidas após o redirecionamento
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            facesContext.getExternalContext().getFlash().setKeepMessages(true);
+
             // Exibe mensagem de sucesso
-            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
             addSuccessMessage("Registro alterado com sucesso!");
 
-            // Redirecionar para a página pagamentos.xhtml
-            FacesContext.getCurrentInstance().getExternalContext().redirect("pagamento.xhtml");
+            // Redireciona para a página pagamentos.xhtml
+            facesContext.getExternalContext().redirect("pagamento.xhtml");
 
         } catch (IOException e) {
             addErrorMessage("Erro ao redirecionar: " + e.getMessage());

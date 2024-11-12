@@ -140,8 +140,9 @@
                                              requiredMessage="O valor adicional é obrigatório">
                                     <f:convertNumber pattern="#,##0.00" />
                                     <p:ajax event="blur" process="@this" listener="#{pagamentoController.calcularSaldoDevedorComAdicional}" 
-                                            update="iptSaldoDevedor iptVlrPago growl" />
+                                            update="iptSaldoDevedor iptVlrPago growl adicionalValorPanel" />
                                 </p:inputText>
+
 
                             </div>
                         </p:outputPanel>
@@ -157,9 +158,9 @@
                     <p:commandButton id="btnSalvarEdicao"
                                      value="Salvar"
                                      action="#{pagamentoController.editarItem}"
-                                     update=":frmEditPagamento:growl"
+                                     update="growl"
                                      icon="pi pi-save"
-                                     oncomplete="if (!args.validationFailed) {window.location.href='pagamento.xhtml'}" />
+                                     oncomplete="if (!args.validationFailed) { PF('growl').show(); setTimeout(() => { window.location.href='pagamento.xhtml' }, 3000); }" />
 
 
                     <!-- Botão de Adicionar -->

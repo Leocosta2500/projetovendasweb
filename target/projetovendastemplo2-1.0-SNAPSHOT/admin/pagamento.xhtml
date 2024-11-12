@@ -12,7 +12,7 @@
     <ui:define name="content">
         <h:form id="frmList">
             <h:panelGroup id="pngList">
-                <p:growl id="growl" showDetail="true" />
+                <p:growl id="growl" showDetail="true" life="3000" />
                 <p:fieldset toggleable="true">
                     <p:dataTable id="datalist" value="#{pagamentoController.pagamentoAll()}" var="item"                                 
                                  selectionMode="single" selection="#{pagamentoController.selected}"
@@ -100,12 +100,12 @@
                         </p:column>
 
 
-<p:column width="4" sortBy="#{item.num_cupom.num_cupom}" filterBy="#{item.num_cupom.num_cupom}" filterMatchMode="exact">
-    <f:facet name="header">
-        <h:outputText value="Número Cupom"/>
-    </f:facet>
-    <h:outputText value="#{item.num_cupom.num_cupom}"/> 
-</p:column>
+                        <p:column width="4" sortBy="#{item.num_cupom.num_cupom}" filterBy="#{item.num_cupom.num_cupom}" filterMatchMode="exact">
+                            <f:facet name="header">
+                                <h:outputText value="Número Cupom"/>
+                            </f:facet>
+                            <h:outputText value="#{item.num_cupom.num_cupom}"/> 
+                        </p:column>
 
 
 
@@ -129,13 +129,13 @@
 
 
                             <!--Botão utilizado para abrir a modal de edição -->
-<p:commandButton 
-    id="btnEdit" 
-    icon="pi pi-user-edit" 
-    value="Novo pagamento" 
-    action="#{pagamentoController.prepararEdicao()}" 
-    update="@form" 
-    disabled="#{empty pagamentoController.selected or pagamentoController.selected.vlr_pago eq pagamentoController.selected.vlr_total_pag}" />
+                            <p:commandButton 
+                                id="btnEdit" 
+                                icon="pi pi-user-edit" 
+                                value="Novo pagamento" 
+                                action="#{pagamentoController.prepararEdicao()}" 
+                                update="@form" 
+                                disabled="#{empty pagamentoController.selected or pagamentoController.selected.vlr_pago eq pagamentoController.selected.vlr_total_pag}" />
 
 
 
