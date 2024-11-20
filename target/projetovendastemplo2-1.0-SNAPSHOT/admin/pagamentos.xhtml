@@ -5,7 +5,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
-    <!-- Título da página -->
+    <!-- Título da página pagamentos abre apos clicar no botão incluir pagamento-->
     <ui:define name="title">
         <h:outputText value="Pagamento"></h:outputText>
     </ui:define>
@@ -98,7 +98,7 @@
                                          </p:selectOneMenu>
                                      </div> -->
 
-
+                                 <!-- Tipo de Pagamento  FAZER ENUM -->
                                 <div class="field col-12 md:col-6">
                                     <p:outputLabel value="Tipo de Pagamento:" for="tipo_pagamento" style="display: block;" />
                                     <p:selectOneMenu id="tipo_pagamento" value="#{pagamentoController.pagamento.tipo_pag}" 
