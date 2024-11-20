@@ -54,6 +54,10 @@ public class PagamentoController implements Serializable {
     public void setHistoricoPagamentoList(List<PagamentoEntity> historicoPagamentoList) {
         this.historicoPagamentoList = historicoPagamentoList;
     }
+    
+    
+    
+    //Carrega o histórico de pagamentos e exibe uma mensagem se nenhum for encontrado.
 
     public void prepareHistorico() {
         try {
@@ -75,6 +79,9 @@ public class PagamentoController implements Serializable {
     public void setDetalhesPagamentoList(List<PagamentoEntity> detalhesPagamentoList) {
         this.detalhesPagamentoList = detalhesPagamentoList;
     }
+
+    
+    //Adiciona os detalhes do pagamento selecionado à lista de exibição.
 
     public void prepareDetalhesPagamento() {
         if (selected != null) {
@@ -187,9 +194,13 @@ public class PagamentoController implements Serializable {
         }
     }
 
+    // Exibe o campo para adicionar um valor extra ao pagamento.
+
     public void mostrarCampoAdicional() {
         this.valorAdicional = BigDecimal.ZERO; // Define um valor inicial para exibir o campo
     }
+
+    //Valida e recalcula o saldo devedor ao incluir um valor adicional:
 
     public void calcularSaldoDevedorComAdicional() {
 
@@ -234,6 +245,8 @@ public class PagamentoController implements Serializable {
         }
     }
 
+    //Adiciona o valor extra ao valor pago do pagamento selecionado.
+
     public void somarValorAdicional() {
         if (selected != null && selected.getVlr_pago() != null && valorAdicional != null) {
             // Soma o valor adicional ao valor pago
@@ -241,6 +254,8 @@ public class PagamentoController implements Serializable {
             selected.setVlr_pago(novoValorPago);
         }
     }
+
+    //Verifica se o cupom já tem pagamento associado.
 
     public void onCupomSelect() {
         VendaEntity venda = null;
@@ -269,6 +284,8 @@ public class PagamentoController implements Serializable {
             itensVendaController.setItensVendaList(itensVendaController.findByNumCupom(pagamento.getNum_cupom().getNum_cupom()));
         }
     }
+
+    //Calcula o saldo devedor com base no total e no valor já pago.
 
     public void calcularSaldoDevedor() {
         BigDecimal total = (pagamento != null && pagamento.getVlr_total_pag() != null) ? pagamento.getVlr_total_pag() : BigDecimal.ZERO;
@@ -303,6 +320,8 @@ public class PagamentoController implements Serializable {
         }
     }
 
+    
+    // Inicializa um novo pagamento e redireciona para a página pagamentos.xhtml
     public PagamentoEntity prepareAdicionar() {
         pagamento = new PagamentoEntity(); // Inicializa uma nova entidade de pagamento
         try {
@@ -313,6 +332,9 @@ public class PagamentoController implements Serializable {
         }
         return pagamento;
     }
+
+    
+    //Valida e adiciona um pagamento ao banco de dados:
 
     public void adicionarItem() {
 
@@ -354,6 +376,8 @@ public class PagamentoController implements Serializable {
         }
     }
 
+    
+    //Salva as alterações no pagamento selecionado e Redireciona para a página principal com uma mensagem de sucesso.
     public void editarItem() {
         try {
             // Atualiza o item no banco de dados
@@ -376,10 +400,15 @@ public class PagamentoController implements Serializable {
         }
     }
 
+    //Remove o pagamento selecionado do banco de dados.
+
     public void deletarItem() {
         persist(PagamentoController.PersistAction.DELETE,
                 "Registro excluído com sucesso!");
     }
+
+    
+    // Ajusta automaticamente o valor pago para ser igual ao total se o status for "Pago".
 
     public void validarValorPago() {
         if ("Pago".equals(pagamento.getStatus_pag())) {
