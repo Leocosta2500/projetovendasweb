@@ -136,6 +136,8 @@ public class VendaController implements Serializable {
         }
     }
 
+    //Calcula o valor total da venda com base nos itens associados ao número do cupom (numCupom).
+
     public void calcularValorTotalVenda(Integer numCupom) {
         BigDecimal valorTotalVenda = BigDecimal.ZERO;
         List<ItensVendaEntity> itensVendaList = itensVendaFacade.findByNumCupom(numCupom);  // Use a instância injetada
@@ -195,6 +197,8 @@ public class VendaController implements Serializable {
         this.selected = venda;
     }
 
+    
+    // Valida os campos obrigatórios da venda, como cliente, UF e tipo de venda
     public void adicionarVenda() {
 
         if (venda.getCod_cliente() == null || venda.getDes_cliente() == null || venda.getDes_cliente().isEmpty()
@@ -221,6 +225,8 @@ public class VendaController implements Serializable {
         vendaList.add(venda);
     }
 
+    
+    //Carrega os itens associados à venda selecionada (selected) usando o número do cupom.
     public void prepareItensVenda() {
         if (selected != null && selected.getNum_cupom() != null) {
             itensVendaList = itensVendaFacade.findByNumCupom(selected.getNum_cupom());
@@ -229,10 +235,15 @@ public class VendaController implements Serializable {
         }
     }
 
+    //Atualiza os dados da venda selecionada no banco de dados.
+
     public void editarVenda() {
         persist(VendaController.PersistAction.UPDATE,
                 "Registro alterado com sucesso!");
     }
+
+    
+   // Verifica se a venda possui pagamentos associados
 
     public void deletarVenda() {
         if (selected != null) {
@@ -382,6 +393,9 @@ public class VendaController implements Serializable {
         }
     }
 
+    
+    //Subtrai o valor de um item excluído do total da venda.
+
     public void diminuirValorTotalVenda(Integer numCupom, BigDecimal valorItemExcluido) {
         VendaEntity venda = ejbFacade.find(numCupom);
         if (venda != null && venda.getVlr_total_vda() != null) {
@@ -391,6 +405,8 @@ public class VendaController implements Serializable {
             ejbFacade.edit(venda);
         }
     }
+
+    //Subtrai a quantidade de itens excluídos do total de itens da venda.
 
     public void diminuirQuantidadeTotalItens(Integer numCupom, int qtdItensExcluidos) {
         VendaEntity venda = ejbFacade.find(numCupom);
